@@ -12,8 +12,13 @@ class RepresentativesController extends AppController {
  *
  * @return void
  */
+    //public $paginate = array('contain' => array('Mobile'));
+    
 	public function index() {
-		$this->Representative->recursive = 0;
+		//$this->Representative->recursive = 0;
+            $this->Representative->Behaviors->load('Containable');
+            $this->paginate = array('contain' => array('House' => array('fields' => array('id','title')),
+                'Mobile' => array('fields' => array('mobile_no'))));
 		$this->set('representatives', $this->paginate());
 	}
 
@@ -39,13 +44,26 @@ class RepresentativesController extends AppController {
  */
 	public function add() {
 		if ($this->request->is('post')) {
+                    //unsetting empty mobile_no field
+                    $mobile_found = false;
+                    foreach( $this->request->data['Mobile'] as $k => $v){                        
+                        if( empty($v['mobile_no']) ){
+                            unset($this->request->data['Mobile'][$k]);
+                        }else{
+                            $mobile_found = true;
+                        }
+                    }
+                    if( !$mobile_found ){
+                        $this->Session->setFlash('Please give at least single mobile no. It\'s essential');
+                    }else{
 			$this->Representative->create();
-			if ($this->Representative->save($this->request->data)) {
+			if ($this->Representative->saveAssociated($this->request->data)) {
 				$this->Session->setFlash(__('The representative has been saved'));
 				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash(__('The representative could not be saved. Please, try again.'));
 			}
+                    }
 		}
 		$houses = $this->Representative->House->find('list');
 		$this->set(compact('houses'));

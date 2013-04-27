@@ -1,19 +1,11 @@
 <?php
 App::uses('AppModel', 'Model');
 /**
- * Representative Model
+ * Mobile Model
  *
- * @property House $House
- * @property Sale $Sale
+ * @property Representative $Representative
  */
-class Representative extends AppModel {
-
-/**
- * Display field
- *
- * @var string
- */
-	public $displayField = 'name';
+class Mobile extends AppModel {
 
 /**
  * Validation rules
@@ -21,7 +13,7 @@ class Representative extends AppModel {
  * @var array
  */
 	public $validate = array(
-		'house_id' => array(
+		'representative_id' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
@@ -30,8 +22,6 @@ class Representative extends AppModel {
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
-		),
-		'name' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
 				//'message' => 'Your custom message here',
@@ -51,16 +41,6 @@ class Representative extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'type' => array(
-			'notempty' => array(
-				'rule' => array('notempty'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
 	);
 
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
@@ -71,42 +51,12 @@ class Representative extends AppModel {
  * @var array
  */
 	public $belongsTo = array(
-		'House' => array(
-			'className' => 'House',
-			'foreignKey' => 'house_id',
+		'Representative' => array(
+			'className' => 'Representative',
+			'foreignKey' => 'representative_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
 		)
 	);
-
-/**
- * hasMany associations
- *
- * @var array
- */
-	public $hasMany = array(
-		'Sale' => array(
-			'className' => 'Sale',
-			'foreignKey' => 'representative_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		),
-		'Section' => array(
-			'className' => 'Section',
-			'foreignKey' => 'representative_id',
-		),
-                'Mobile' => array(
-                    'className' => 'Mobile',
-                    'foreignKey' => 'representative_id'
-                )
-	);
-
 }

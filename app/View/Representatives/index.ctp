@@ -1,5 +1,6 @@
 <div class="representatives index">
-	<h2><?php echo __('Representatives'); ?></h2>
+	<h2><?php 
+        echo __('Representatives'); ?></h2>
 	<table cellpadding="0" cellspacing="0">
 	<tr>
 			<th><?php echo $this->Paginator->sort('id'); ?></th>
@@ -16,7 +17,13 @@
 			<?php echo $this->Html->link($representative['House']['title'], array('controller' => 'houses', 'action' => 'view', $representative['House']['id'])); ?>
 		</td>
 		<td><?php echo h($representative['Representative']['name']); ?>&nbsp;</td>
-		<td><?php echo h($representative['Representative']['mobile_no']); ?>&nbsp;</td>
+		<td><?php 
+                        if( !empty($representative['Mobile']) ){
+                            foreach($representative['Mobile'] as $mb){
+                                echo $mb['mobile_no'].'&nbsp;';
+                            }
+                        }
+                    ?>&nbsp;</td>
 		<td><?php echo h($representative['Representative']['type']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $representative['Representative']['id'])); ?>

@@ -5,7 +5,14 @@
 	<?php
 		echo $this->Form->input('house_id');
 		echo $this->Form->input('name');
-		echo $this->Form->input('mobile_no');
+                echo $this->Form->input('sr_code');
+                ?>
+                <div class="mobile_nos">
+                    <label>Mobile No</label>
+                    <input type="text" name="data[Mobile][0][mobile_no]" class="mobile_no"/>                
+                    <a href="javascript:void(0);" id="add_more_mobile">Add More mobile</a>
+                </div>
+                <?php
 		echo $this->Form->input('type');
 	?>
 	</fieldset>
@@ -22,3 +29,12 @@
 		<li><?php echo $this->Html->link(__('New Sale'), array('controller' => 'sales', 'action' => 'add')); ?> </li>
 	</ul>
 </div>
+<script>
+    $(document).ready(function(){        
+        var total_mobile = 1;
+        $("#add_more_mobile").click(function(){
+            $(".mobile_nos").append('<br /><input type="text" name="data[Mobile]['+total_mobile+'][mobile_no]" class="mobile_no" />');
+            total_mobile++;
+        });
+    });
+</script>

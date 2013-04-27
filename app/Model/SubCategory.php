@@ -1,19 +1,18 @@
 <?php
 App::uses('AppModel', 'Model');
 /**
- * Representative Model
+ * SubCategory Model
  *
- * @property House $House
- * @property Sale $Sale
+ * @property Category $Category
  */
-class Representative extends AppModel {
+class SubCategory extends AppModel {
 
 /**
  * Display field
  *
  * @var string
  */
-	public $displayField = 'name';
+	public $displayField = 'title';
 
 /**
  * Validation rules
@@ -21,7 +20,7 @@ class Representative extends AppModel {
  * @var array
  */
 	public $validate = array(
-		'house_id' => array(
+		'category_id' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
@@ -30,8 +29,6 @@ class Representative extends AppModel {
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
-		),
-		'name' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
 				//'message' => 'Your custom message here',
@@ -41,7 +38,7 @@ class Representative extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'mobile_no' => array(
+		'title' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
 				//'message' => 'Your custom message here',
@@ -51,7 +48,7 @@ class Representative extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'type' => array(
+		'code' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
 				//'message' => 'Your custom message here',
@@ -71,42 +68,12 @@ class Representative extends AppModel {
  * @var array
  */
 	public $belongsTo = array(
-		'House' => array(
-			'className' => 'House',
-			'foreignKey' => 'house_id',
+		'Category' => array(
+			'className' => 'Category',
+			'foreignKey' => 'category_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
 		)
 	);
-
-/**
- * hasMany associations
- *
- * @var array
- */
-	public $hasMany = array(
-		'Sale' => array(
-			'className' => 'Sale',
-			'foreignKey' => 'representative_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		),
-		'Section' => array(
-			'className' => 'Section',
-			'foreignKey' => 'representative_id',
-		),
-                'Mobile' => array(
-                    'className' => 'Mobile',
-                    'foreignKey' => 'representative_id'
-                )
-	);
-
 }
