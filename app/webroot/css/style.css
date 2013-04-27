@@ -1,0 +1,95 @@
+/***
+ * Date: Jan 3, 2013
+ * Purpose: Reflect Project
+***/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	background: transparent;
+	border: 0;
+	margin: 0;
+	padding: 0;
+	vertical-align: baseline;
+}
+
+/***GENERAL STYLES***/
+body { font-family: DroidSansRegular, "Segoe UI", "Lucida Sans Unicode", "Lucida Grande", sans-serif; font-size: 12px; }
+body { background: #fff url(../images/texturebg.png); line-height: 21px; }
+input, select, textarea, button { outline: none; font-family: DroidSansRegular, "Lucida Sans Unicode", "Lucida Grande", sans-serif; font-size: 120%; }
+input, select, textarea, button { border: 1px solid #ccc; padding: 5px; }
+
+a { text-decoration: none; outline: none; color: #069; }
+a:hover { text-decoration: underline; }
+button { margin: 0; outline: 0; }
+small { font-size: 11px; line-height: 12px; }
+
+.bodywhite { background: #fff; }
+.bodygrey { background: #eee url(../images/leftbg.png) repeat-y top left; }
+.page404 { background: #eee; }
+
+h1.prize { font-size: 28px; color: #000; font-family: Arial, Helvetica, sans-serif; margin-bottom: 5px; }
+h2.prize { font-size: 20px; color: #069; font-family: Arial, Helvetica, sans-serif; margin-bottom: 5px; }
+
+/***NOTIFICATION MESSAGES (login.html, dashboard.html)***/
+.notification { padding: 10px 10px 10px 45px; margin: 0 0 20px 0; -moz-border-radius: 2px; -webkit-border-radius: 2px; border-radius: 2px; position: relative; }
+.notification .close { position: absolute; right: 5px; top: 5px; display: inline-block; width: 8px; height: 8px; cursor: pointer; }
+.notification .close { background: url(../images/icons/close.png) no-repeat 0 0; -moz-border-radius: 2px; -webkit-border-radius: 2px; border-radius: 2px; }
+.notifyError { border: 1px solid #ff0000; background: #FFECEC; color: #ff0000; font-size: 11px; }
+
+.msgalert { border: 1px solid #eac572; background: #ffe9ad url(../images/icons/warning.png) no-repeat 10px center; }
+.msginfo { border: 1px solid #99c4ea; background: #d1e4f3 url(../images/icons/info.png) no-repeat 10px center; }
+.msgsuccess { border: 1px solid #c1d779; background: #effeb9 url(../images/icons/success.png) no-repeat 10px center; }
+.msgerror { border: 1px solid #e18b7c; background: #fad5cf url(../images/icons/error.png) no-repeat 10px center; }
+
+/***LOGIN PAGE (index.html)***/
+.loginlogo { width: 279px; height: 50px; /*background: url(../images/gradcircle.png) no-repeat top left;*/ margin: 80px auto 20px auto; padding: 75px 50px; }
+.loginbox { width: 580px; height: 62px; margin: 10px auto; background: url(../images/loginbox.png) no-repeat right -62px; padding-right: 11px; }
+.loginbox_inner { background: url(../images/loginbox.png) no-repeat 0 0; height: 62px; padding-left: 11px; }
+.loginbox_content { background: url(../images/loginbox.png) repeat-x 0 -124px; height: 62px; overflow: hidden; padding: 15px 2px; }
+
+.loginbox .username { border: 0; background: #eee url(../images/usernamefield.png) no-repeat; background-position: top left; width: 190px; margin-right: 10px; }
+.loginbox .username { -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; padding: 7px 5px 6px 40px; display: inline-block; font-size: 14px; }
+.loginbox .username:focus { background-color: #fff; background-position: 0 -32px; }
+.loginbox .password { border: 0; background: #eee url(../images/passwordfield.png) no-repeat; background-position: top left; width: 190px; margin-right: 10px; }
+.loginbox .password { -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; padding: 7px 5px 6px 40px; display: inline-block; font-size: 14px; }
+.loginbox .password:focus { background-color: #fff; background-position: 0 -32px; }
+.loginbox button { background: #4b6592 url(../images/buttonbg.png) repeat-x top left; font-size: 13px; padding: 6px 14px; width: 67px; font-weight: bold;}
+.loginbox button { -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; cursor: pointer; color: #fff; text-shadow: 1px 1px #333; border: 0; }
+.loginbox button:active { -moz-box-shadow: inset 1px 1px 2px #000; -webkit-box-shadow: inset 1px 1px 2px #000; box-shadow: inset 1px 1px 2px #000;}
+.loginbox button:hover { background: #364f7e url(../images/buttonbg.png) repeat-x 0 -34px; }
+
+.loginoption { width: 570px; margin: 10px auto; background: url(../images/blacktrans.png); padding: 7px 10px; font-size: 11px; color: #fff; text-align:center; }
+.loginoption { -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; }
+.loginoption input { margin: 0; padding: 0; vertical-align: middle; }
+.loginoption a { float: right; font-size: 11px; color: #000; }
+
+.loginNotify { display: none; padding: 7px; border: 0; width: 580px; margin: auto; background: url(../images/blacktrans.png); }
+.loginNotify { -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; text-align: center; }
+
+
+#loading
+{
+width: 100%;
+position: absolute;
+}
+li
+{
+list-style: none;
+float: left;
+margin-right: 16px;
+padding:5px;
+border:solid 1px #dddddd;
+color:#0063DC;
+}
+li:hover
+{
+color:#FF0084;
+cursor: pointer;
+}
