@@ -6,8 +6,42 @@
 		echo $this->Form->input('id');
 		echo $this->Form->input('house_id');
 		echo $this->Form->input('name');
-		echo $this->Form->input('mobile_no');
-		echo $this->Form->input('type');
+        ?>
+            <table>
+                <tr>
+                    <td>
+                        <div  class="mobile_nos">
+                            <?php
+                                if( count($this->request->data['Mobile'])>0 ){
+                                    $i = 0;
+                                    foreach($this->request->data['Mobile'] as $mb){
+                                        if( $i==0 ){?>
+                                            <label>Mobile No</label>
+                                            <input type="hidden" name="data[Mobile][0][id]" value="<?php echo $mb['id'];?>" />
+                                            <input type="text" name="data[Mobile][0][mobile_no]" value="<?php echo $mb['mobile_no'];?>" />
+
+                            <?php
+                                        }else{
+                                            echo '<p id="p_'.$mb['id'].'"><input type="hidden" name="data[Mobile]['.$i.'][id]" value="'.$mb['id'].'" />
+                                                <input type="text" name="data[Mobile]['.$i.'][mobile_no]" value="'.$mb['mobile_no'].'"/>
+                                                <a href="javascript:void(0);" class="del_mobile" id="mob_id_'.$mb['id'].'">Delete</a></p>';
+                                        }
+                                        $i++;
+                                    }
+                                }
+                            ?>       
+
+                        </div>
+                    </td>
+                    <td>
+                        <div style="float:left"><a href="javascript:void(0);" id="add_more_mobile">Add More Mobile</a><br/></div>
+                    </td>
+                </tr>
+            </table>
+        <?php
+		echo $this->Form->input('type', array('type' => 'select', 'options' => 
+                    array('Sales' => 'Sales','Coupon' => 'Coupon'),
+                    'label' => 'Type', 'selected' => $this->request->data['Representative']['type']));
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>
@@ -24,3 +58,29 @@
 		<li><?php echo $this->Html->link(__('New Sale'), array('controller' => 'sales', 'action' => 'add')); ?> </li>
 	</ul>
 </div>
+<script>
+    $(document).ready(function(){        
+        var total_mobile = <?php echo count($this->request->data['Mobile']);?>;
+        $("#add_more_mobile").click(function(){
+            $(".mobile_nos").append('<br /><input type="text" name="data[Mobile]['+total_mobile+'][mobile_no]" class="mobile_no" />');
+            total_mobile++;
+        });
+        
+        $(".del_mobile").click(function(){
+            if( confirm('Are you sure you want to delete this mobile no?') ){
+                var mobile_id = $(this).attr('id').replace('mob_id_','');
+                $.ajax({
+                   url:'/representatives/delete_mobile',
+                   type:'post',
+                   data:'id='+mobile_id,
+                   success:function(res){
+                       if( res=='success' ){
+                           $("#p_"+mobile_id).remove();
+                           alert('Mobile number has been removed');
+                       }
+                   }
+                });
+            }
+        })
+    });
+</script>

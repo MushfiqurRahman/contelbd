@@ -8,45 +8,72 @@
             <div class="mws-panel-content">
                 
                 <div>
-                    <div style="display:inline-block;width:100%"> <!-- 1st row start -->
+<!--                    <div style="display:inline-block;width:100%">  1st row start 
                         <div style="float:left;width:20%">
                                 <label>Representative</label>
                         </div>
                         <div style="float:left;width:72%">
                                 <?php 
-                                echo $this->Form->input('Representative.id', array('type' => 'select', 
-                                'options' => $representatives,'empty' => 'All', 'label' => false, 'style' => 'width:100%', 'id' => 'repId'));
+//                                echo $this->Form->input('Representative.id', array('type' => 'select', 
+//                                'options' => $representatives,'empty' => 'All', 'label' => false, 'style' => 'width:100%', 'id' => 'repId'));
                                 ?>
 
                         </div>
                     </div>
                     
-                    <div style="display:inline-block;width:100%"> <!-- 1st row start -->
+                    <div style="display:inline-block;width:100%">  1st row start 
                         <div style="float:left;width:20%">
                                 <label>Section</label>
                         </div>
                         <div style="float:left;width:72%">
                         <?php
 
-                        echo $this->Form->input('Section.id', array('type' => 'select', 'empty' => 'All', 
-                            'label' => false, 'options' => $sections, 'style' => 'width:100%','id' => 'secId'));
+//                        echo $this->Form->input('Section.id', array('type' => 'select', 'empty' => 'All', 
+//                            'label' => false, 'options' => $sections, 'style' => 'width:100%','id' => 'secId'));
                         ?>
                         </div>
                         
                     </div>
                     
-                    <div style="display:inline-block;width:100%"> <!-- 1st row start -->
+                    <div style="display:inline-block;width:100%">  1st row start 
                             <div style="float:left;width:20%">
                                     <label>Outlet</label>
                             </div>
                             <div style="float:left;width:72%">
                                     <?php
                             
-                            echo $this->Form->input('Outlet.id', array('type' => 'select', 'empty' => 'All', 
-                                'label' => false, 'options' => $outlets, 'style' => 'width:100%', 'id' => 'outletId'));    		
+//                            echo $this->Form->input('Outlet.id', array('type' => 'select', 'empty' => 'All', 
+//                                'label' => false, 'options' => $outlets, 'style' => 'width:100%', 'id' => 'outletId'));    		
                     ?>
                             </div>
                         
+                    </div>-->
+
+                    <div style="display:inline-block;width:100%;"> <!-- 1st row start -->
+                        <div style="float:left;width:20%;">
+                                <label>House</label>
+                        </div>
+                        <div style="float:left;width:72%;">
+                                <?php 
+                                echo $this->Form->input('House.id', array('type' => 'select', 
+                                'options' => $houses,'empty' => 'All', 'label' => false, 'style' => 'width:100%'));
+                                ?>
+
+                        </div>
+                    </div>
+
+                    <div style="display:inline-block;width:100%;"> <!-- 1st row start -->
+                        <div style="float:left;width:20%;">
+                                <label>Value Priority</label>
+                        </div>
+                        <div style="float:left;width:72%;">
+                                <?php 
+                                echo $this->Form->input('Outlet.priority', array('type' => 'select', 
+                                    'options' => array('MVP' => 'MVP', 'VP' => 'VP', 'P' => 'P'),
+                                    'empty' => 'All', 'label' => false, 'style' => 'width:100%'));
+                                ?>
+
+                        </div>
                     </div>
                     
 

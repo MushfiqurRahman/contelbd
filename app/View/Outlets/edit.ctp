@@ -8,6 +8,10 @@
 		echo $this->Form->input('house_id');
 		echo $this->Form->input('title');
 		echo $this->Form->input('code');
+                echo $this->Form->input('priority', array('type' => 'select', 'options' => 
+                    array('MVP' => 'MVP','VP' => 'VP', 'P' => 'P'), 
+                    'selected' => $this->request->data['Outlet']['priority'],
+                    'empty' => 'Select value','label' => 'Priority Value'));
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>

@@ -12,8 +12,10 @@
                     <input type="text" name="data[Mobile][0][mobile_no]" class="mobile_no"/>                
                     <a href="javascript:void(0);" id="add_more_mobile">Add More mobile</a>
                 </div>
-                <?php
-		echo $this->Form->input('type');
+        <?php
+		echo $this->Form->input('type', array('type' => 'select', 'options' => 
+                    array('Sales' => 'Sales','Coupon' => 'Coupon'),
+                    'empty' => 'Select type','label' => 'Type'));
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>

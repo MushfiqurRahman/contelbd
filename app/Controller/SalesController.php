@@ -61,7 +61,7 @@ class SalesController extends AppController {
 
                 $titles = $this->Sale->Outlet->House->Area->Region->get_titles($this->request->data);
 
-                $houseIds = $this->Sale->Outlet->House->get_ids( $this->request->data);
+                $houseIds = $this->Sale->Outlet->House->get_ids( $this->request->data);                
 
                 $repList = $this->Sale->Representative->find('list',array('conditions' => array(
                     'Representative.house_id' => $houseIds, 'Representative.type' => 'Sales'
@@ -78,11 +78,12 @@ class SalesController extends AppController {
                 $outletIds = $this->Sale->Outlet->id_from_list($outletList);                                
 
                 $this->set('titles', $titles);            
-                $this->set('representatives',$repList);
-                $this->set('sections', $secList);
-                $this->set('outlets', $outletList);
+//                $this->set('representatives',$repList);
+//                $this->set('sections', $secList);
+//                $this->set('outlets', $outletList);
                 $this->set('outlet_by_priority',$this->Sale->Outlet->outlet_by_priority($outletIds));
                 $this->set('house_id', str_replace('"','\"',serialize($houseIds)));
+                $this->set('houses', $this->Sale->Outlet->House->house_list( $this->request->data));
                 
                 $this->Sale->Behaviors->load('Containable');
                 $this->paginate = array(

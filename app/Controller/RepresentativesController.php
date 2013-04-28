@@ -36,6 +36,22 @@ class RepresentativesController extends AppController {
 		$options = array('conditions' => array('Representative.' . $this->Representative->primaryKey => $id));
 		$this->set('representative', $this->Representative->find('first', $options));
 	}
+        
+        /**
+         * Unset blank mobile_no field. Return true if at least one mobile no present. Otherwise false
+         * @return boolean 
+         */
+        protected function _check_mobile_nos(){
+            $mobile_found = false;
+            foreach( $this->request->data['Mobile'] as $k => $v){                        
+                if( empty($v['mobile_no']) ){
+                    unset($this->request->data['Mobile'][$k]);
+                }else{
+                    $mobile_found = true;
+                }
+            }
+            return $mobile_found;
+        }
 
 /**
  * add method
@@ -44,15 +60,8 @@ class RepresentativesController extends AppController {
  */
 	public function add() {
 		if ($this->request->is('post')) {
-                    //unsetting empty mobile_no field
-                    $mobile_found = false;
-                    foreach( $this->request->data['Mobile'] as $k => $v){                        
-                        if( empty($v['mobile_no']) ){
-                            unset($this->request->data['Mobile'][$k]);
-                        }else{
-                            $mobile_found = true;
-                        }
-                    }
+                    
+                    $mobile_found = $this->_check_mobile_nos();                    
                     if( !$mobile_found ){
                         $this->Session->setFlash('Please give at least single mobile no. It\'s essential');
                     }else{
@@ -81,14 +90,24 @@ class RepresentativesController extends AppController {
 			throw new NotFoundException(__('Invalid representative'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
-			if ($this->Representative->save($this->request->data)) {
+                    
+                    $mobile_found = $this->_check_mobile_nos();                    
+                    if( !$mobile_found ){
+                        $this->Session->setFlash('Please give at least single mobile no. It\'s essential');
+                    }else{
+                        //pr($this->request->data);exit;
+			if ($this->Representative->saveAll($this->request->data)) {
 				$this->Session->setFlash(__('The representative has been saved'));
 				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash(__('The representative could not be saved. Please, try again.'));
 			}
+                    }
 		} else {
-			$options = array('conditions' => array('Representative.' . $this->Representative->primaryKey => $id));
+                    $this->Representative->Behaviors->load('Containable');
+			$options = array('conditions' => array('Representative.' . $this->Representative->primaryKey => $id),
+                            'contain' => array('Mobile' => array('fields' => array('id','mobile_no'))), 'recursive' => -1);
+                        
 			$this->request->data = $this->Representative->find('first', $options);
 		}
 		$houses = $this->Representative->House->find('list');
@@ -116,4 +135,21 @@ class RepresentativesController extends AppController {
 		$this->Session->setFlash(__('Representative was not deleted'));
 		$this->redirect(array('action' => 'index'));
 	}
+        
+        /**
+         * To delete a specific mobile no 
+         */
+        public function delete_mobile(){
+            $this->layout = $this->autoRender = false;
+            
+            if( $this->request->isAjax()){
+                if( !empty($_POST['id']) ){
+                    if( $this->Representative->Mobile->delete($_POST['id']) ){
+                        echo 'success';
+                    }else{
+                        echo 'failure';
+                    }
+                }
+            }
+        }
 }
