@@ -201,4 +201,62 @@ class MoLogsController extends AppController{
             }
         }
     }
+    
+    /**
+     * 
+     */
+    public function get_coupon_point(){
+        $this->layout = $this->autoRender = false;
+        
+        $error = '';
+        $date = date("Y-m-d");
+        $dates = date("Y-m-d H:i:s");
+        $time_int = strtotime($dates);
+
+        $mobile_number_temp = $_REQUEST['MSISDN'];
+        $sms_text_temp = $_REQUEST['MSG'];
+
+        $sms = $this->MoLog->sms_process($sms_text_temp);
+        $mobile_number = $this->MoLog->mobile_number_process($mobile_number_temp);
+
+        $sms_slice = explode(' ', $sms);
+        $keyword = $sms_slice[0];
+        $this->MoLog->query("INSERT INTO mo_logs VALUES(NULL,'$mobile_number','$sms','$keyword','$date',$time_int)");
+        
+        $params = array();
+        
+        $tok = strtok( $sms, ' ,\t\n');
+        $tok = trim($tok);
+        while( $tok ){
+            $params[] = $tok;
+            $tok = strtok(' ,\t\n');
+            $tok = trim($tok);
+        }
+        
+        $params[0] = isset($params[0]) ? strtoupper($params[0]) : 'XXX';        
+
+        if( ($params[0]=='POINT' && count($params)!=2) || $params[0]!='POINT' )
+        {
+            $error = "Your SMS format is wrong, plesae try again with right format.";
+            $this->MoLog->send_sms_free_of_charge($mobile_number, $error, 796, $keyword, $date, $time_int);
+            die();
+        }else{
+            $outletId = $this->MoLog->get_outlet_id( $params[1], $mobile_number);
+        
+            if( !$outletId ){
+                $error = 'Invalid Outlet code or mobile no! Please try again with valid info.';
+                $this->MoLog->send_sms_free_of_charge($mobile_number, $error, 796, $keyword, $date, $time_int);
+                die();
+            }else{
+                
+            }
+        }        
+    }
+    
+    /**
+     * 
+     */
+    public function redeem(){
+        
+    }
 }

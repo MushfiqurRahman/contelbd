@@ -62,6 +62,23 @@ class MoLog extends AppModel{
     
     /**
      *
+     * @param type $outletCode
+     * @param type $mobile
+     * @return boolean 
+     */
+    public function get_outlet_id( $outletCode, $mobile ){
+        $res = $this->query('SELECT * FROM outlets WHERE outlets.code="'.$tlp.'" AND outlets.mobile_no="'.
+                $mobile.'"');
+        pr($res);
+        
+        if( count($res)>0 ){
+            return $res[0]['outlets']['id'];
+        }
+        return false;
+    }
+    
+    /**
+     *
      * @param type $mobile_number
      * @param type $tlp_code
      * @return boolean 
