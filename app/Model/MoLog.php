@@ -27,16 +27,35 @@ class MoLog extends AppModel{
      * @param type $mobile
      * @return boolean 
      */
-    public function check_sr_tlp_mobile($sr, $tlp, $mobile){
+//    public function check_sr_tlp_mobile($sr, $tlp, $mobile){
+//        
+//        $res = $this->query('SELECT representatives.id, outlets.code FROM representatives LEFT JOIN outlets ON '.
+//                'representatives.house_id = outlets.house_id WHERE representatives.mobile_no="'.
+//                $mobile.'" AND representatives.sr_code="'.$sr.'" AND outlets.code="'.$tlp.'"');
+//        
+////        pr($res);
+//        
+//        if( count($res)>0 && $res[0]['outlets']['code']==$tlp ){
+//            return true;
+//        }
+//        return false;
+//    }
+
+     public function check_sr_tlp_mobile($tlp, $mobile){
+         
+         /**** Representative may have multiple mobiles ****/
         
-        $res = $this->query('SELECT representatives.id, outlets.code FROM representatives LEFT JOIN outlets ON '.
-                'representatives.house_id = outlets.house_id WHERE representatives.mobile_no="'.
-                $mobile.'" AND representatives.sr_code="'.$sr.'" AND outlets.code="'.$tlp.'"');
+        $res = $this->query('SELECT mobiles.mobile_no, representatives.id, representatives.type, outlets.id,'.
+                'outlets.code, sections.id FROM mobiles INNER JOIN representatives ON mobiles.representative_id = '.
+                'representatives.id INNER JOIN outlets ON representatives.house_id = outlets.house_id'.
+                ' LEFT JOIN sections ON representatives.id=sections.representative_id WHERE mobiles.mobile_no ="'.
+                $mobile.'" AND outlets.code="'.$tlp.'"');
         
-//        pr($res);
+//        pr($res);exit;
         
-        if( count($res)>0 && $res[0]['outlets']['code']==$tlp ){
-            return true;
+        if( count($res)>0 && $res[0]['outlets']['code']==$tlp && ($res[0]['representatives']['type']=='ss' ||
+                $res[0]['representatives']['type']=='sr') ){
+            return $res;
         }
         return false;
     }

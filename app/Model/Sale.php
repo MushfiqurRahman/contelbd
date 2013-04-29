@@ -188,6 +188,13 @@ class Sale extends AppModel {
 		)
 	);
         
+        public $hasMany = array(
+            'SaleDetail' => array(
+                'className' => 'SaleDetail',
+                'foreignKey' => 'sale_id'
+            )
+        );
+        
         /**
         *
         * @return type 

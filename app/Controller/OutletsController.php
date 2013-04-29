@@ -54,6 +54,18 @@ class OutletsController extends AppController {
 		$options = array('conditions' => array('Outlet.' . $this->Outlet->primaryKey => $id));
 		$this->set('outlet', $this->Outlet->find('first', $options));
 	}
+        
+        /**
+         * 
+         */
+        protected function _check_mobile_nos(){
+                                    
+            if( !empty($this->request->data['Outlet']['phone_no']) ){
+                if( strpos($this->request->data['Outlet']['phone_no'], '88')!==0 ){
+                    $this->request->data['Outlet']['phone_no'] = '88'.$this->request->data['Outlet']['phone_no'];
+                }
+            }
+        }
 
 /**
  * add method
@@ -62,7 +74,9 @@ class OutletsController extends AppController {
  */
 	public function add() {
 		if ($this->request->is('post')) {
+                    $this->_check_mobile_nos();
 			$this->Outlet->create();
+                        
 			if ($this->Outlet->save($this->request->data)) {
 				$this->Session->setFlash(__('The outlet has been saved'));
 				$this->redirect(array('action' => 'index'));
@@ -87,6 +101,7 @@ class OutletsController extends AppController {
 			throw new NotFoundException(__('Invalid outlet'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
+                    $this->_check_mobile_nos();
 			if ($this->Outlet->save($this->request->data)) {
 				$this->Session->setFlash(__('The outlet has been saved'));
 				$this->redirect(array('action' => 'index'));

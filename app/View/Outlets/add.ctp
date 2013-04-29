@@ -5,9 +5,11 @@
 	<?php
 		echo $this->Form->input('section_id');
 		echo $this->Form->input('house_id');
-		echo $this->Form->input('title');
-		echo $this->Form->input('code');
-                
+		echo $this->Form->input('title', array('label' => 'Outlet Name'));
+		echo $this->Form->input('outlet_retailer_name');
+		echo $this->Form->input('phone_no', array('label' => 'Retailer Phone no'));
+		echo $this->Form->input('code', array('label' => 'Outlet Code'));
+        echo $this->Form->input('address', array('label' => 'Outlet Address'));
 		echo $this->Form->input('priority', array('type' => 'select', 'options' => 
                     array('MVP' => 'MVP','VP' => 'VP', 'P' => 'P'),
                     'empty' => 'Select value','label' => 'Priority Value'));

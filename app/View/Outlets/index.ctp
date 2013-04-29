@@ -6,7 +6,12 @@
 			<th><?php echo $this->Paginator->sort('section_id'); ?></th>
 			<th><?php echo $this->Paginator->sort('house_id'); ?></th>
 			<th><?php echo $this->Paginator->sort('title'); ?></th>
+			<th><?php echo $this->Paginator->sort('outlet_retailer_name'); ?></th>
+			<th><?php echo $this->Paginator->sort('phone_no'); ?></th>
 			<th><?php echo $this->Paginator->sort('code'); ?></th>
+			<th><?php echo $this->Paginator->sort('priority'); ?></th>
+			<th><?php echo $this->Paginator->sort('address'); ?></th>
+			
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	<?php foreach ($outlets as $outlet): ?>
@@ -19,7 +24,11 @@
 			<?php echo $this->Html->link($outlet['House']['title'], array('controller' => 'houses', 'action' => 'view', $outlet['House']['id'])); ?>
 		</td>
 		<td><?php echo h($outlet['Outlet']['title']); ?>&nbsp;</td>
+		<td><?php echo h($outlet['Outlet']['outlet_retailer_name']); ?>&nbsp;</td>
+		<td><?php echo h($outlet['Outlet']['phone_no']); ?>&nbsp;</td>		
 		<td><?php echo h($outlet['Outlet']['code']); ?>&nbsp;</td>
+		<td><?php echo h($outlet['Outlet']['priority']); ?>&nbsp;</td>
+		<td><?php echo h($outlet['Outlet']['address']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $outlet['Outlet']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $outlet['Outlet']['id'])); ?>

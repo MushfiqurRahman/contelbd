@@ -1,12 +1,12 @@
 <div class="representatives form">
 <?php echo $this->Form->create('Representative'); ?>
 	<fieldset>
-		<legend><?php echo __('Add Representative'); ?></legend>
+		<legend><?php echo __('Add SS, SR or TSA'); ?></legend>
 	<?php
 		echo $this->Form->input('house_id');
 		echo $this->Form->input('name');
-                echo $this->Form->input('sr_code');
-                ?>
+        echo $this->Form->input('sr_code', array('label' => 'SS/SR/TSA Code'));
+    ?>
                 <div class="mobile_nos">
                     <label>Mobile No</label>
                     <input type="text" name="data[Mobile][0][mobile_no]" class="mobile_no"/>                
@@ -14,7 +14,7 @@
                 </div>
         <?php
 		echo $this->Form->input('type', array('type' => 'select', 'options' => 
-                    array('Sales' => 'Sales','Coupon' => 'Coupon'),
+                    array('ss' => 'Sales Superviser','sr' => 'Sales Representative', 'tsa' => 'TSA'),
                     'empty' => 'Select type','label' => 'Type'));
 	?>
 	</fieldset>

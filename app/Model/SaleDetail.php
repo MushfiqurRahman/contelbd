@@ -77,6 +77,11 @@ class SaleDetail extends AppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
-		)
+		),
+            'Product' => array(
+                'className' => 'Product',
+                'foreignKey' => 'product_id',
+            )
 	);
+        
 }

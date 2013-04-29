@@ -46,7 +46,10 @@ class RepresentativesController extends AppController {
             foreach( $this->request->data['Mobile'] as $k => $v){                        
                 if( empty($v['mobile_no']) ){
                     unset($this->request->data['Mobile'][$k]);
-                }else{
+                }else{                    
+                    if( strpos($v['mobile_no'], '88')!==0 ){
+                        $this->request->data['Mobile'][$k]['mobile_no'] = '88'.$v['mobile_no'];
+                    }
                     $mobile_found = true;
                 }
             }
