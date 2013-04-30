@@ -132,10 +132,11 @@ class House extends AppModel {
         public function house_list(  $data ){
             //pr($data);
             $conditions = array();
-            
-            if( isset($data['House']['id']) && $data['House']['id'] ){
-                $conditions = array('House.id' => $data['House']['id']);
-            }else if( $data['Area']['id'] ){
+//            
+//            if( isset($data['House']['id']) && $data['House']['id'] ){
+//                $conditions = array('House.id' => $data['House']['id']);
+//            }else if( $data['Area']['id'] ){
+            if( $data['Area']['id'] ){
                 $conditions = array('House.area_id' => $data['Area']['id']);
             }else if( $data['Region']['id'] ){
                 $areaIds = $this->Area->find('list', array('fields' => array('Area.id'),

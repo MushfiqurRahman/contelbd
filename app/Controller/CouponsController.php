@@ -38,13 +38,9 @@ class CouponsController extends AppController {
  */
 	public function index() {
             
-            pr($this->request->data);
-            
-            if( !$this->request->is('post') && !empty($this->request->params['named'])){
-                $this->request->data['Region']['id'] = $this->request->params['named']['region_id'];
-                $this->request->data['Area']['id'] = $this->request->params['named']['area_id'];
-                $this->request->data['House']['id'] = $this->request->params['named']['house_id'];                
-            }            
+            //pr($this->request->data);
+
+            $this->_set_request_data_from_params();
             $titles = $this->Coupon->Outlet->House->Area->Region->get_titles($this->request->data);                            
             
             $this->Coupon->Behaviors->load('Containable');
@@ -90,8 +86,16 @@ class CouponsController extends AppController {
          * @param type $outletIds
          * @return type 
          */
-        protected function _set_condition( ){
-            $houseIds = $this->Coupon->Outlet->House->get_ids( $this->request->data );
+        protected function _set_condition(){
+            
+            //when searching for specific house
+            if( $this->request->data['House']['id'] ){
+                $houseIds = array($this->request->data['House']['id']);
+            }//when need to search for all houses
+            else{
+                $houseIds = $this->Coupon->Outlet->House->get_ids( $this->request->data );
+            }
+            
             if( !empty($this->request->data['Outlet']['priority']) ){
                 $outletList = $this->Coupon->Outlet->find('list', array('conditions' => array(
                     'Outlet.house_id' => $houseIds, 'Outlet.priority' => $this->request->data['Outlet']['priority']
@@ -102,16 +106,19 @@ class CouponsController extends AppController {
                 )));
             }
             
-            $outletIds = $this->Coupon->Outlet->id_from_list($outletList);
-            
-            $this->total_outlet = count($outletIds);
-            
+            $outletIds = $this->Coupon->Outlet->id_from_list($outletList);            
+            $this->total_outlet = count($outletIds);            
             $this->set('outlet_by_priority',$this->Coupon->Outlet->outlet_by_priority($outletIds));
             
             $conditions = array();
-            if( !empty($outletIds) ){
-                $conditions[]['Coupon.outlet_id'] = $outletIds;
+            
+            $conditions[]['Coupon.outlet_id'] = $outletIds;
+            if( isset($this->request->data['from_date']) && !empty($this->request->data['from_date']) ){
+                $conditions[]['Coupon.date >='] = $this->request->data['from_date'];
             }
+            if( isset($this->request->data['till_date']) && !empty($this->request->data['till_date']) ){
+                $conditions[]['Coupon.date <='] = $this->request->data['till_date'];
+            }                        
             return $conditions;
         }
         
@@ -129,7 +136,7 @@ class CouponsController extends AppController {
             
             $coupons = $this->_format_for_report($coupons);
             
-            pr($coupons);exit;
+            //pr($coupons);exit;
             
             $this->set('coupons', $coupons);            
         }

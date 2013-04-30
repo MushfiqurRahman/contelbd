@@ -189,7 +189,8 @@
     $url_params = array();            
     $url_params['region_id'] = $data['Region']['id'];
     $url_params['area_id'] = $data['Area']['id'];
-    $url_params['house_id'] = $data['House']['id'];
+    $url_params['house_id'] = $data['House']['id'];    
+    $url_params['priority'] = isset($data['Outlet']['priority']) ? $data['Outlet']['priority'] : '';
     
     if( isset($this->data['from_date']) ){
         $url_params['from_date'] = is_numeric($this->data['from_date']) ? $this->data['from_date'] : strtotime($this->data['from_date']);
