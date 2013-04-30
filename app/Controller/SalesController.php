@@ -14,42 +14,6 @@ class SalesController extends AppController {
         
     }
 
-
-    //public $uses = array('Sale','House');
-    
-    
-    
-    /**
-     * 
-     */
-//    protected function _set_request_data_from_params(){
-//        
-//        if( !$this->request->is('post') && !empty($this->request->params['named'])){
-//            $this->request->data['Region']['id'] = $this->request->params['named']['region_id'];
-//            $this->request->data['Area']['id'] = $this->request->params['named']['area_id'];
-//            $this->request->data['House']['id'] = $this->request->params['named']['house_id'];
-//            
-//            if( isset($this->request->params['named']['house_id']) ){
-//                $this->request->data['House']['id'] = $this->request->params['named']['house_id'];
-//            }
-////            if( isset($this->request->params['named']['representative_id']) ){
-////                $this->request->data['Representative']['id'] = $this->request->params['named']['representative_id'];
-////            }
-////            if( isset($this->request->params['named']['section_id']) ){
-////                $this->request->data['Section']['id'] = $this->request->params['named']['section_id'];
-////            }
-////            if( isset($this->request->params['named']['outlet_id']) ){
-////                $this->request->data['Outlet']['id'] = $this->request->params['named']['outlet_id'];
-////            }
-//            if( isset($this->request->params['named']['from_date']) ){
-//                $this->request->data['from_date'] = $this->request->params['named']['from_date'];
-//            }
-//            if( isset($this->request->params['named']['till_date']) ){
-//                $this->request->data['till_date'] = $this->request->params['named']['till_date'];
-//            }
-//        } 
-//    }
-
 /**
  * index method
  *
@@ -61,39 +25,35 @@ class SalesController extends AppController {
 
                 $titles = $this->Sale->Outlet->House->Area->Region->get_titles($this->request->data);
 
-                $houseIds = $this->Sale->Outlet->House->get_ids( $this->request->data);                
-
-                $repList = $this->Sale->Representative->find('list',array('conditions' => array(
-                    'Representative.house_id' => $houseIds, 'Representative.type' => 'Sales'
-                )));
-
-                $secList = $this->Sale->Section->find('list', array('conditions' => array(
-                    'Section.house_id' => $houseIds
-                )));
-
+                $houseIds = $this->Sale->Outlet->House->get_ids( $this->request->data);
                 $outletList = $this->Sale->Outlet->find('list', array('conditions' => array(
                     'Outlet.house_id' => $houseIds
                 )));
-
-                $outletIds = $this->Sale->Outlet->id_from_list($outletList);                                
-
-                $this->set('titles', $titles);            
-//                $this->set('representatives',$repList);
-//                $this->set('sections', $secList);
-//                $this->set('outlets', $outletList);
-                $this->set('outlet_by_priority',$this->Sale->Outlet->outlet_by_priority($outletIds));
-                $this->set('house_id', str_replace('"','\"',serialize($houseIds)));
-                $this->set('houses', $this->Sale->Outlet->House->house_list( $this->request->data));
-                
+                $outletIds = $this->Sale->Outlet->id_from_list($outletList);
                 $this->Sale->Behaviors->load('Containable');
+                
+//                $this->paginate = array(
+//                    'contain' => array(
+//                        ''
+//                    )
+//                )
+                
+                
                 $this->paginate = array(
                     'contain' => $this->Sale->get_contain_array(),
                     'conditions' => $this->Sale->set_conditions($outletIds, $this->request->data),
-                    'limit' => 1
+                    'group' => 'outlet_id',
+                    'limit' => 1,                    
                 );
                 
                 $this->_format_date_fields();
-
+                
+                pr($this->paginate());exit;
+                
+                $this->set('titles', $titles);
+                $this->set('outlet_by_priority',$this->Sale->Outlet->outlet_by_priority($outletIds));
+                $this->set('house_id', str_replace('"','\"',serialize($houseIds)));
+                $this->set('houses', $this->Sale->Outlet->House->house_list( $this->request->data));
                 $this->set('sales', $this->paginate());
 	}
         
@@ -194,36 +154,6 @@ class SalesController extends AppController {
                 $this->set('sales',$sales);                
             }
         }
-        
-        
-        
-        /**
-         *
-         * @return type 
-         */
-//        protected function _set_conditions( $outletIds = null ){
-//            $conditions = array();
-//            if( !empty($this->request->data['Representative']['id']) ){
-//                $conditions[]['Sale.representative_id'] = $this->request->data['Representative']['id'];
-//            }
-//            if( !empty($this->request->data['Section']['id']) ){
-//                $conditions[]['Sale.section_id'] = $this->request->data['Section']['id'];
-//            }
-//            
-//            if( !empty($this->request->data['Outlet']['id'])){
-//                $conditions[]['Sale.outlet_id'] = $this->request->data['Outlet']['id'];
-//            }else if( $outletIds ){
-//                $conditions[]['Sale.outlet_id'] = $outletIds;
-//                $this->total_outlet = count($outletIds);
-//            }
-//            if( !empty($this->request->data['from_date']) ){
-//                $conditions[]['date_time >='] = strtotime($this->request->data['from_date']);
-//            }
-//            if( !empty($this->request->data['till_date']) ){
-//                $conditions[]['date_time <='] = strtotime($this->request->data['till_date']);
-//            }            
-//            return $conditions;
-//        }
 
         /**
  * view method

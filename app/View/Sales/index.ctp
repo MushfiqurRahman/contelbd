@@ -141,17 +141,20 @@
                                         <div class="br_h"> <span class = "title" ><strong>Region</strong></span></td><td><span class="data"><?php echo $titles['region_title'];?></span></div>
                                         <input type="hidden" name="data[Region][id]" value="<?php echo $this->data['Region']['id'];?>"/>        
                                     </td>
-                                    <td><div class="br_h"><span class="title"><strong>Total MVP</strong></span></td><td><span class="data"><?php echo isset($outlet_by_priority['MVP']) ? $outlet_by_priority['MVP'] : 0;?></span></div></td>
+                                    <td><div class="br_h"><span class="title"><strong>Total MVP</strong></span></td>
+                                    <td><span class="data"><?php echo isset($outlet_by_priority['MVP']) ? $outlet_by_priority['MVP'] : 0;?></span></div></td>
                                 </tr>
                                 <tr>
                                     <td><div class="br_h"><span class="title"><strong>Area</strong></span></td>
                                     <td><span class="data"><?php echo $titles['area_title'];?></span></div></td>
                                     <input type="hidden" name="data[Area][id]" value="<?php echo $this->data['Area']['id'];?>"/>        
-                                    <td><div class="br_h"><span class="title"><strong>Total VP</strong></span></td><td><span class="data"><?php echo isset($outlet_by_priority['VP']) ? $outlet_by_priority['VP'] : 0;?></span></div></td>
+                                    <td><div class="br_h"><span class="title"><strong>Total VP</strong></span></td>
+                                    <td><span class="data"><?php echo isset($outlet_by_priority['VP']) ? $outlet_by_priority['VP'] : 0;?></span></div></td>
                                 </tr>
                                 <tr>
                                     <td><div class="br_h"><span class="title"><strong>House</strong></span></td><td><span class="data"><?php echo $titles['house_title'];?></span></div></td>
-                                    <td><div class="br_h"><span class="title"><strong>Total P</strong></span></td><td><span class="data"><?php echo isset($outlet_by_priority['P']) ? $outlet_by_priority['P'] : 0;?></span></div></td>
+                                    <td><div class="br_h"><span class="title"><strong>Total P</strong></span></td>
+                                    <td><span class="data"><?php echo isset($outlet_by_priority['P']) ? $outlet_by_priority['P'] : 0;?></span></div></td>
                                     <input type="hidden" name="data[House][id]" id="hdn_house_id" value="<?php echo $this->data['House']['id'];?>"/>
                                 </tr>
                             </table> <br /><hr />

@@ -1,4 +1,5 @@
 
+<?php //pr($coupons);?>
 <div class="mws-panel grid_8">
     <div class="mws-panel-header">
         <span style="text-align:center; font-size:18px; color:#fff;">Coupon Point Till Date</span>

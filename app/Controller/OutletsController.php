@@ -7,15 +7,59 @@ App::uses('AppController', 'Controller');
  */
 class OutletsController extends AppController {
 
+    public $helpers = array('Excel');
+    
+    public function beforeFilter() {
+        parent::beforeFilter();
+        
+    }
 /**
  * index method
  *
  * @return void
  */
-	public function index() {
+	public function index_old() {
 		$this->Outlet->recursive = 0;
 		$this->set('outlets', $this->paginate());
 	}
+        
+        public function index(){
+            $this->_set_request_data_from_params();
+
+                $titles = $this->Outlet->House->Area->Region->get_titles($this->request->data);
+
+                $houseIds = $this->Outlet->House->get_ids( $this->request->data);
+                $outletList = $this->Outlet->find('list', array('conditions' => array(
+                    'Outlet.house_id' => $houseIds
+                )));
+                $outletIds = $this->Outlet->id_from_list($outletList);
+                $this->Outlet->Behaviors->load('Containable');
+                
+//                $this->paginate = array(
+//                    'contain' => array(
+//                        ''
+//                    )
+//                )
+                
+                
+                $this->paginate = array(
+                    'contain' => array(
+                        
+                    ),
+                    'conditions' => $this->Outlet->set_conditions($outletIds, $this->request->data),
+                    'limit' => 1,                    
+                );
+                
+                $this->_format_date_fields();
+                
+                pr($this->paginate());exit;
+                
+                $this->set('titles', $titles);
+                $this->set('outlet_by_priority',$this->Outlet->outlet_by_priority($outletIds));
+                $this->set('house_id', str_replace('"','\"',serialize($houseIds)));
+                $this->set('houses', $this->Outlet->House->house_list( $this->request->data));
+                $this->set('sales', $this->paginate());
+        }
         
         /**
          * 

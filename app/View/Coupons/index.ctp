@@ -174,12 +174,9 @@
                     'value' => isset($data['Outlet']['priority'])? $data['Outlet']['priority'] : ''));
             
         ?>
+        <input type="hidden" id="hdn_from_date" name="from_date" value="<?php echo isset($this->data['from_date']) ? $this->data['from_date'] : '';?>" />
+        <input type="hidden" id="hdn_till_date" name="till_date" value="<?php echo isset($this->data['till_date']) ? $this->data['till_date'] : '';?>" />
         <input class="mws-button orange" value="View Till Data Total" type="submit"/>
-        
-
-<!--        <a href="<?php //echo Configure::read('base_url');?>coupons/coupon_point_till_date" style="text-decoration:none;">
-            
-        </a>-->
         </div>
     </div>
     <div id="chart_reportbr_content1" style="font-size:11px"></div>
@@ -234,6 +231,12 @@
             
             $("#OutletPriority").change(function(){
                 $("#hdn_outlet_priority_for_till_date").val($(this).val());
+            });
+            
+            $("#CouponCouponPointTillDateForm").submit(function(){
+                $("#hdn_from_date").val( $("input[name='from_date']").val() );
+                $("#hdn_till_date").val( $("input[name='till_date']").val() );
+                return true;
             });
         });
 </script>

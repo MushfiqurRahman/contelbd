@@ -114,29 +114,5 @@ class AppController extends Controller {
                 $this->request->data['till_date'] = date('Y-m-d',$this->request->params['named']['till_date']);
             }
         } 
-    }
-    
-//    protected function _find_titles( $data ){
-//        $titles = array();
-//        if( !$data['Region']['id'] ){
-//            $titles['region_title'] = 'All';
-//            $titles['area_title'] = 'All';
-//            $titles['house_title'] = 'All';
-//        }else{
-//            $titles['region_title'] = $reg_area_house_detail[0]['Region']['title'];
-//
-//            if( !$this->request->data['Area']['id'] ){
-//                $title_n_ids['area_title'] = 'All';
-//                $title_n_ids['house_title'] = 'All';
-//            }else{
-//                $title_n_ids['area_title'] = $this->Sale->find_title( 'Area', $reg_area_house_detail, $this->request->data['Area']['id'] );
-//
-//                if( !isset($this->request->data['House']['id']) ){
-//                    $title_n_ids['house_title'] = 'All';
-//                }else{
-//                    $title_n_ids['house_title'] = $this->Sale->find_title( 'House', $reg_area_house_detail, $this->request->data['House']['id'] );
-//                }
-//            }
-//        }
-//    }
+    }    
 }

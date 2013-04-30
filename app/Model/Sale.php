@@ -201,16 +201,16 @@ class Sale extends AppModel {
         */
         public function get_contain_array(){
 
-            return array(
-                            'Outlet' => array(
+            return array(                
+                        'Outlet' => array(
+                            'fields' => array('title'),
+                            'House' => array(
                                 'fields' => array('title'),
-                                'House' => array(
+                                'Area' => array(
                                     'fields' => array('title'),
-                                    'Area' => array(
-                                        'fields' => array('title'),
-                                        'Region' => array('fields' => array('title'))))),
-                            'Section' => array('title'),
-                            'Representative' => array('name'));
+                                    'Region' => array('fields' => array('title'))))),
+                        'Section' => array('title'),
+                        'Representative' => array('name'));
         }
         
         /**

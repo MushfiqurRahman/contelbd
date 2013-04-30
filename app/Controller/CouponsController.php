@@ -134,7 +134,7 @@ class CouponsController extends AppController {
                 'conditions' => $this->_set_condition(),
             ));
             
-            $coupons = $this->_format_for_report($coupons);
+            $coupons = $this->_format_for_report($coupons, null);
             
             //pr($coupons);exit;
             
@@ -165,8 +165,8 @@ class CouponsController extends AppController {
          * @param type $coupons
          * @return type 
          */
-        protected function _format_for_report( $coupons ){
-            pr($coupons);
+        protected function _format_for_report( $coupons, $report_type = 'full' ){
+            //pr($coupons);
             $formatted = array();
             $i = 0;
             foreach( $coupons as $coupon ){
@@ -175,10 +175,17 @@ class CouponsController extends AppController {
                 $formatted[$i]['house'] = $coupon['Outlet']['House']['title'];
                 $formatted[$i]['outlet'] = $coupon['Outlet']['title'];
                 $formatted[$i]['representative'] = $coupon['Representative']['name'];
-                $formatted[$i]['total_point'] = $coupon[0]['total'];
-                $formatted[$i]['total_first_kpi'] = $coupon[0]['f_total'];
-                $formatted[$i]['total_second_kpi'] = $coupon[0]['sec_total'];
-                $formatted[$i]['total_third_kpi'] = $coupon[0]['third_total'];
+                if( $report_type=='full' ){
+                    $formatted[$i]['total_point'] = $coupon[0]['total'];
+                    $formatted[$i]['total_first_kpi'] = $coupon[0]['f_total'];
+                    $formatted[$i]['total_second_kpi'] = $coupon[0]['sec_total'];
+                    $formatted[$i]['total_third_kpi'] = $coupon[0]['third_total'];
+                }else{
+                    $formatted[$i]['total_point'] = $coupon['Coupon']['total_score'];
+                    $formatted[$i]['first_kpi'] = $coupon['Coupon']['first_act_score'];
+                    $formatted[$i]['second_kpi'] = $coupon['Coupon']['second_act_score'];
+                    $formatted[$i]['third_kpi'] = $coupon['Coupon']['third_act_score'];
+                }
                 $i++;
             }
             return $formatted;
