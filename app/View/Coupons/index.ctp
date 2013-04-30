@@ -16,26 +16,41 @@
                 <div style="display:inline-block;width:100%"> <!-- 1st row start -->
                     <div style="float:left;width:20%">
                             <label>House Name</label>
-                    </div>
-                    <div style="float:left;width:72%">
-                            <select name="house_id" id="ms_code" style="width:100%;">									
-                                    <option value="">All House</option>
-                            </select>
+                    </div>                    
+                    <div style="float:left;width:72%;">
+                                <?php 
+                                echo $this->Form->input('House.id', array('type' => 'select', 
+                                'options' => $houses,'empty' => 'All', 'label' => false, 'style' => 'width:100%'));
+                                ?>
 
                     </div>
-                </div> <!-- Inner Row End -->						
+                </div> <!-- Inner Row End -->	
+                
+                <div style="display:inline-block;width:100%; margin-top:10px;"> <!-- 1st row start -->
+                        <div style="float:left;width:20%;">
+                                <label>Value Priority</label>
+                        </div>
+                        <div style="float:left;width:72%;">
+                                <?php 
+                                echo $this->Form->input('Outlet.priority', array('type' => 'select', 
+                                    'options' => array('MVP' => 'MVP', 'VP' => 'VP', 'P' => 'P'),
+                                    'empty' => 'All', 'label' => false, 'style' => 'width:100%'));
+                                ?>
+
+                        </div>
+                </div>
 
 
                 <div style="display:inline-block;width:100%; margin-top:10px; margin-bottom:10px;"> <!-- 3rd row start -->
                         <hr />
                     <div style="float:left;width:20%"><label>Start Date</label></div>
                     <div style="float:left;width:30%">
-                            <input size="30" class="mws-textinput" name="from_date" onFocus="this.value=''" onClick="showCalendarControl(this);" type="text" value="" />
+                            <input size="30" class="mws-textinput" name="from_date" onFocus="this.value=''" onClick="showCalendarControl(this);" type="text" value="<?php echo isset($this->data['from_date']) ? $this->data['from_date'] : '';?>" />
                     </div>
 
                     <div style="float:left;width:20%"><label>End Date</label></div>
                     <div style="float:left;width:30%">
-                            <input size="30" class="mws-textinput" name="till_date" onFocus="this.value=''" onClick="showCalendarControl(this);" type="text" value="" />
+                            <input size="30" class="mws-textinput" name="till_date" onFocus="this.value=''" onClick="showCalendarControl(this);" type="text" value="<?php echo isset($this->data['till_date']) ? $this->data['till_date'] : '';?>" />
                     </div>			
                 </div> <!-- 3rd row end -->
 						
@@ -81,14 +96,20 @@
                         <tr>
                             <td><div class="br_h"><span class="title"><strong>House</strong></span></div></td>
                             <td><span class="data"><?php echo $titles['house_title'];?></span>
-                                <input type="hidden" name="data[House][id]" value="<?php echo $data['House']['id'];?>"/>
+                                <input type="hidden" name="data[House][id]" id="hdn_house_id" value="<?php echo $data['House']['id'];?>"/>
                             </td>
                             <td><div class="br_h"><span class="title"><strong>Total P</strong></span></td>
                             <td><span class="data"><?php echo isset($outlet_by_priority['P']) ? $outlet_by_priority['P'] : 0;?></span></div></td>
                         </tr>
                         
                         <tr>
-                            <td><div class="br_h"><span class="title"><strong>Base Period</strong></span></td><td><span class="data">16-02-13 to 17-02-13</span></div></td>
+                            <td><div class="br_h"><span class="title"><strong>Base Period</strong></span></div></td>
+                            <td>
+                                <span class="data">
+                                    <?php echo isset($this->data['from_date']) ? $this->data['from_date'] : 'Beginning';?> to 
+                                    <?php echo isset($this->data['till_date']) ? $this->data['till_date'] : 'Today';?>
+                                </span>
+                            </td>
                             <td><div class="br_h"><span class="title"><strong> </strong></span></td><td><span class="data"></span></div></td>
                         </tr>
 <!--                        <tr>
@@ -148,7 +169,9 @@
             echo $this->Form->create('Coupon',array('action' => 'coupon_point_till_date', 'type' => 'post'));
             echo $this->Form->input('Region.id',array('type' =>'hidden','value' => $data['Region']['id']));
             echo $this->Form->input('Area.id',array('type' =>'hidden','value' => $data['Area']['id']));
-            echo $this->Form->input('House.id',array('type' =>'hidden','value' => $data['House']['id']));
+            echo $this->Form->input('House.id',array('type' =>'hidden','id' => 'hdn_house_id_for_till_date','value' => $data['House']['id']));
+            echo $this->Form->input('Outlet.priority',array('type' =>'hidden','id' => 'hdn_outlet_priority_for_till_date',
+                    'value' => isset($data['Outlet']['priority'])? $data['Outlet']['priority'] : ''));
             
         ?>
         <input class="mws-button orange" value="View Till Data Total" type="submit"/>
@@ -168,12 +191,12 @@
     $url_params['area_id'] = $data['Area']['id'];
     $url_params['house_id'] = $data['House']['id'];
     
-//    if( isset($this->data['from_date']) ){
-//        $url_params['from_date'] = is_numeric($this->data['from_date']) ? $this->data['from_date'] : strtotime($this->data['from_date']);
-//    }
-//    if( isset($this->data['till_date']) ){
-//        $url_params['till_date'] = is_numeric($this->data['till_date']) ? $this->data['till_date'] : strtotime($this->data['till_date']);
-//    }
+    if( isset($this->data['from_date']) ){
+        $url_params['from_date'] = is_numeric($this->data['from_date']) ? $this->data['from_date'] : strtotime($this->data['from_date']);
+    }
+    if( isset($this->data['till_date']) ){
+        $url_params['till_date'] = is_numeric($this->data['till_date']) ? $this->data['till_date'] : strtotime($this->data['till_date']);
+    }
     
     $this->Paginator->options(array('url' => $url_params));
 
@@ -201,6 +224,15 @@
                 e.preventDefault();
                $("#CouponGetReportForm").attr('action', base_url+'coupons/index');
                $("#CouponGetReportForm").submit();
+            });
+            
+            $("#HouseId").change(function(){
+               $("#hdn_house_id").val($(this).val());
+               $("#hdn_house_id_for_till_date").val($(this).val());
+            });
+            
+            $("#OutletPriority").change(function(){
+                $("#hdn_outlet_priority_for_till_date").val($(this).val());
             });
         });
 </script>

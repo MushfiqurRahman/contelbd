@@ -152,7 +152,7 @@
                                 <tr>
                                     <td><div class="br_h"><span class="title"><strong>House</strong></span></td><td><span class="data"><?php echo $titles['house_title'];?></span></div></td>
                                     <td><div class="br_h"><span class="title"><strong>Total P</strong></span></td><td><span class="data"><?php echo isset($outlet_by_priority['P']) ? $outlet_by_priority['P'] : 0;?></span></div></td>
-                                    <input type="hidden" name="data[House][id]" value="<?php echo $this->data['House']['id'];?>"/>
+                                    <input type="hidden" name="data[House][id]" id="hdn_house_id" value="<?php echo $this->data['House']['id'];?>"/>
                                 </tr>
                             </table> <br /><hr />
 	<table  class="mws-table" style="font-size:11px;">
@@ -284,5 +284,9 @@
                 
                 $("#fromDate").datetimepicker();
 		$("#tillDate").datetimepicker();
+                
+            $("#HouseId").change(function(){
+               $("#hdn_house_id").val($(this).val());
+            });
 	});
 </script>

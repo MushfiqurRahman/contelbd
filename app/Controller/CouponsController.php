@@ -45,7 +45,7 @@ class CouponsController extends AppController {
                 $this->request->data['Area']['id'] = $this->request->params['named']['area_id'];
                 $this->request->data['House']['id'] = $this->request->params['named']['house_id'];                
             }            
-            $titles = $this->Coupon->Outlet->House->Area->Region->get_titles($this->request->data);  
+            $titles = $this->Coupon->Outlet->House->Area->Region->get_titles($this->request->data);                            
             
             $this->Coupon->Behaviors->load('Containable');
             
@@ -54,6 +54,7 @@ class CouponsController extends AppController {
                 'conditions' => $this->_set_condition(),
                 'limit' => 1                
             );
+            $this->set('houses', $this->Coupon->Outlet->House->house_list( $this->request->data));
             $this->set('total_outlet',$this->total_outlet);       
             $this->set('titles', $titles);
             $this->set('data',$this->request->data);
@@ -91,9 +92,16 @@ class CouponsController extends AppController {
          */
         protected function _set_condition( ){
             $houseIds = $this->Coupon->Outlet->House->get_ids( $this->request->data );
-            $outletList = $this->Coupon->Outlet->find('list', array('conditions' => array(
+            if( !empty($this->request->data['Outlet']['priority']) ){
+                $outletList = $this->Coupon->Outlet->find('list', array('conditions' => array(
+                    'Outlet.house_id' => $houseIds, 'Outlet.priority' => $this->request->data['Outlet']['priority']
+                )));
+            }else{
+                $outletList = $this->Coupon->Outlet->find('list', array('conditions' => array(
                 'Outlet.house_id' => $houseIds
-            )));
+                )));
+            }
+            
             $outletIds = $this->Coupon->Outlet->id_from_list($outletList);
             
             $this->total_outlet = count($outletIds);
@@ -120,6 +128,8 @@ class CouponsController extends AppController {
             ));
             
             $coupons = $this->_format_for_report($coupons);
+            
+            pr($coupons);exit;
             
             $this->set('coupons', $coupons);            
         }
@@ -149,6 +159,7 @@ class CouponsController extends AppController {
          * @return type 
          */
         protected function _format_for_report( $coupons ){
+            pr($coupons);
             $formatted = array();
             $i = 0;
             foreach( $coupons as $coupon ){
