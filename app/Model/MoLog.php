@@ -41,7 +41,7 @@ class MoLog extends AppModel{
 //        return false;
 //    }
 
-     public function check_sr_tlp_mobile($tlp, $mobile){
+     public function check_sr_tlp_mobile($tlp, $mobile, $sr_type = null){
          
          /**** Representative may have multiple mobiles ****/
         
@@ -53,9 +53,13 @@ class MoLog extends AppModel{
         
 //        pr($res);exit;
         
-        if( count($res)>0 && $res[0]['outlets']['code']==$tlp && ($res[0]['representatives']['type']=='ss' ||
+        if( count($res)>0 && $res[0]['outlets']['code']==$tlp ){
+            if( $sr_type && $res[0]['representatives']['type']== $sr_type ){                
+                return $res;
+            }else if( !$sr_type && ($res[0]['representatives']['type']=='ss' ||
                 $res[0]['representatives']['type']=='sr') ){
-            return $res;
+                return $res;
+            }
         }
         return false;
     }
@@ -86,9 +90,9 @@ class MoLog extends AppModel{
      * @return boolean 
      */
     public function get_outlet_id( $outletCode, $mobile ){
-        $res = $this->query('SELECT * FROM outlets WHERE outlets.code="'.$tlp.'" AND outlets.mobile_no="'.
+        $res = $this->query('SELECT * FROM outlets WHERE outlets.code="'.$outletCode.'" AND outlets.phone_no="'.
                 $mobile.'"');
-        pr($res);
+        //pr($res);
         
         if( count($res)>0 ){
             return $res[0]['outlets']['id'];
@@ -121,8 +125,8 @@ class MoLog extends AppModel{
      * @return boolean 
      */
     public function numeric_check( $params ){
-        if( $params[0] == 'TLP' ){
-            $total = 15;
+        if( $params[0] == 'RP' ){
+            $total = 4;
         }else if( $params[0] == 'CUP' ){
             $total = 7;
         }else{

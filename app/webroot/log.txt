@@ -49,3 +49,12 @@
 8801914825528 Your record have been successfully updated, thanks.	2013-04-30 02:26 AM
 8801914825528 Your record have been successfully updated, thanks.	2013-04-30 02:26 AM
 8801914825528 Your record have been successfully updated, thanks.	2013-04-30 02:26 AM
+8801730071842 We have received your request. Thank you.	2013-04-30 10:29 AM
+8801730071842 Your record have been successfully updated, thanks.	2013-04-30 10:29 AM
+8801911819492 Till today you total point is:Array	2013-04-30 10:33 AM
+8801911819492 Till today you total point is:250	2013-04-30 10:36 AM
+8801911819493 Invalid Outlet code or mobile no! Please try again with valid info.	2013-04-30 10:36 AM
+8801911819492 Till today you total point is:250	2013-04-30 10:36 AM
+8801730071842 Your record have been successfully updated, thanks.	2013-04-30 10:38 AM
+8801730071842 We have received your request. Thank you.	2013-04-30 10:39 AM
+8801911819492 Till today you total point is:150	2013-04-30 10:39 AM
