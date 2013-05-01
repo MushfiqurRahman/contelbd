@@ -1,4 +1,5 @@
-    <?php pr($sales); echo $this->Form->create('Sale',array('controller' => 'sales', 'action' => 'index'));?>
+    <?php //pr($sales); 
+    echo $this->Form->create('Outlet',array('controller' => 'outlets', 'action' => 'sales_report'));?>
     
     <div class="mws-panel grid_8">
         <div class="mws-panel-header">
@@ -118,8 +119,8 @@
             <th>TLP Name</th>
             <!--<th>Representative</th>-->
             <?php
-                foreach( $productsSum as $pd ){
-                    echo '<th>'.$pd['name'].'</th>';
+                foreach( $productsList as $pd ){
+                    echo '<th>'.$pd.'</th>';
                 }
             ?>
 	</tr>
@@ -139,7 +140,7 @@
 		<td><?php echo $sale['Outlet']['title']; ?></td>
 		<!--<td><?php echo $sale['Representative']['name']; ?></td>-->
 		<?php
-                    foreach( $productsSum as $pd ){
+                    foreach( $productsSum[ $sale['Outlet']['id'] ] as $pd ){
                         echo '<td>'.$pd['quantity'].'</td>';
                     }
                 ?>
@@ -171,59 +172,19 @@
     </div>
 </div>
 
-<?php //echo $this->Js->writeBuffer(); ?>
-
 <script>
 	var base_url = '<?php echo Configure::read('base_url');?>';
-        var house_id = '<?php echo $house_id;?>';
         
-	$(document).ready(function(){
-            
-            $("#export_sale_report").click(function(){                
-               $("#SaleIndexForm").attr('action', base_url+'sales/get_report');
-               $("#SaleIndexForm").submit();
+	$(document).ready(function(){            
+            $("#export_sale_report").click(function(){
+               $("#OutletSalesReportForm").attr('action', base_url+'outlets/get_report');
+               $("#OutletSalesReportForm").submit();
             });
             
             $("#btn_sales").click( function(){
-                $("#SaleIndexForm").attr('action', base_url+'sales/index');
-                $("#SaleIndexForm").submit();
-            });
-            
-		$('#repId').change(function(){
-                    representative_id = $(this).val();
-			$.ajax({
-                            url: base_url+'sections/ajax_section_list',
-                            type: 'post',
-                            data: 'representative_id='+$(this).val(),
-                            success: function(response){
-                                    var sections = $.parseJSON(response);
-
-                                    $('#secId').html('<select name="data[Section][id]" id="secId"><option value="">All</option></select>');
-                                    $.each(sections, function(ind,val){
-                                            $('#secId').append('<option value="'+ind+'">'+val+'</option>');						
-                                    });
-                            }
-                        });
-		});
-
-		$('#secId').change(function(){
-			$.ajax({
-                            url: base_url+'outlets/ajax_outlet_list',
-                            type: 'post',
-                            data: 'house_id='+house_id+'&section_id='+$(this).val(),
-                            success: function(response){
-                            var outlets = $.parseJSON(response);
-
-                            $('#outletId').html('<select name="data[Outlet][id]" id="outletId"><option value="">All</option></select>');
-                            $.each(outlets, function(ind,val){
-                                    $('#outletId').append('<option value="'+ind+'">'+val+'</option>');						
-                            });
-                        }
-                    });
-		});
-                
-                $("#fromDate").datetimepicker();
-		$("#tillDate").datetimepicker();
+                $("#OutletSalesReportForm").attr('action', base_url+'outlets/sales_report');
+                $("#OutletSalesReportForm").submit();
+            }); 
                 
             $("#HouseId").change(function(){
                $("#hdn_house_id").val($(this).val());

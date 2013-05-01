@@ -29,38 +29,73 @@ class OutletsController extends AppController {
          */
         protected function _make_products_sum( $sales ){
             $productsList = $this->Outlet->Sale->SaleDetail->Product->find('list',array('fields' => array('id','name')));
-            $productsSum = array();
             
-            foreach( $productsList as $k => $pd ){
-                $productsSum[$k]['name'] = $pd;
-                $productsSum[$k]['quantity'] = 0;
-            }
-            //pr($productsSum);exit;
-            //pr($sales);
+            $productsSum = array();
+
             foreach( $sales as $v ){
-                if( isset($v['Sale'][0]['SaleDetail']) && !empty($v['Sale'][0]['SaleDetail']) ){
+                foreach( $productsList as $k => $pd ){
+                    $productsSum[ $v['Outlet']['id'] ][$k]['name'] = $pd;
+                    $productsSum[ $v['Outlet']['id'] ][$k]['quantity'] = 0;
+                }
+                if( isset($v['Sale'][0]['SaleDetail']) && !empty($v['Sale'][0]['SaleDetail']) ){                    
                     foreach( $v['Sale'][0]['SaleDetail'] as  $sld ){
-                        $productsSum[$sld['product_id']]['quantity'] += $sld['quantity'];
+                        $productsSum[ $v['Outlet']['id'] ][ $sld['product_id'] ]['quantity'] += $sld['quantity'];
                     }            
                 }
             }
+            $this->set('productsList',$productsList);
             return $productsSum;
         }
         
-        public function sales_report(){
-            $this->_set_request_data_from_params();
-
-            $titles = $this->Outlet->House->Area->Region->get_titles($this->request->data);
-
-            $houseIds = $this->Outlet->House->get_ids( $this->request->data);
-            $outletList = $this->Outlet->find('list', array('conditions' => array(
-                'Outlet.house_id' => $houseIds
-            )));
-            $outletIds = $this->Outlet->id_from_list($outletList);
-            $this->Outlet->Behaviors->load('Containable');
-            
-                $this->paginate = array(
-                    'contain' => array(    
+        /**
+         *
+         * @param type $sales
+         * @return type 
+         */
+        protected function _format_report( $sales ){
+            $productsSum = $this->_make_products_sum($sales);
+            $formatted = array();
+            $i = 0;
+            foreach( $sales as $sale ){
+                $formatted[$i]['region'] = $sale['House']['Area']['Region']['title'];
+                $formatted[$i]['area'] = $sale['House']['Area']['title'];
+                $formatted[$i]['house'] = $sale['House']['title'];
+                $formatted[$i]['outlet'] = $sale['Outlet']['title'];
+                $formatted[$i]['section'] = $sale['Section']['title'];
+                //$formatted[$i]['representative'] = $sale['Representative']['name'];
+                foreach($productsSum[ $sale['Outlet']['id'] ] as $k => $v ){
+                    $formatted[$i][ $v['name'] ] = $v['quantity'];
+                }                                
+                $i++;
+            }
+            if( empty($formatted) ){
+                $formatted[0]['region'] = $formatted[0]['area'] = $formatted[0]['house'] = $formatted[0]['outlet'] = '';
+                $formatted[0]['section'] = '';
+            }
+            return $formatted;
+        }
+        
+        /**
+         *
+         * @return type 
+         */
+        protected function _set_conditions(){
+            $conditions = array();
+            if( $this->request->data['House']['id'] ){
+                $conditions[]['house_id'] = $this->request->data['House']['id'];
+            }
+            if( isset($this->request->data['Outlet']['priority']) && !empty($this->request->data['Outlet']['priority']) ){
+                $conditions[]['priority'] = $this->request->data['Outlet']['priority'];
+            }
+            return $conditions;
+        }
+        
+        /**
+         *
+         * @return type 
+         */
+        protected function _set_contain(){
+            return array(    
                         'Sale' => array(
                             'fields' => array('Sale.outlet_id','Sale.id','Sale.date'),
                             'conditions' => array('DATE(Sale.date) <=' =>  '2013-04-30','DATE(Sale.date) >=' => '2013-04-28'),
@@ -81,22 +116,69 @@ class OutletsController extends AppController {
                                 'Region' => array('fields' => array('Region.id','Region.title'))
                             )
                         ),                        
-                    ),
-                    'fields' => array('id','house_id','title','outlet_retailer_name'),
-                    'conditions' => array('Outlet.id' => $outletIds),
-                    'limit' => 1,                    
-                );
-                $sales = $this->paginate();
-                $productsSum = $this->_make_products_sum($sales);
-                
-                $this->_format_date_fields();
-                
-                $this->set('titles', $titles);
-                $this->set('outlet_by_priority',$this->Outlet->outlet_by_priority($outletIds));
-                $this->set('house_id', str_replace('"','\"',serialize($houseIds)));
-                $this->set('houses', $this->Outlet->House->house_list( $this->request->data));
-                $this->set('sales', $sales);
-                $this->set('productsSum',$productsSum);
+                    );
+        }
+        
+        
+        
+        /**
+         * 
+         */
+        public function sales_report(){
+            $this->_set_request_data_from_params();
+
+            $titles = $this->Outlet->House->Area->Region->get_titles($this->request->data);
+
+            //$houseIds = $this->Outlet->House->get_ids( $this->request->data);
+            $outletList = $this->Outlet->find('list', array('conditions' => $this->_set_conditions()));
+            $outletIds = $this->Outlet->id_from_list($outletList);
+            
+            $this->Outlet->Behaviors->load('Containable');
+            
+            $this->paginate = array(
+                'contain' => $this->_set_contain(),
+                'fields' => array('id','house_id','title','outlet_retailer_name'),
+                'conditions' => array('Outlet.id' => $outletIds),
+                'limit' => 1,                    
+            );
+            $sales = $this->paginate();
+            $productsSum = $this->_make_products_sum($sales);
+
+//            pr($sales);
+//            pr($productsSum);
+
+            $this->_format_date_fields();
+
+            $this->set('titles', $titles);
+            $this->set('outlet_by_priority',$this->Outlet->outlet_by_priority($outletIds));
+            //$this->set('house_id', str_replace('"','\"',serialize($houseIds)));
+            $this->set('houses', $this->Outlet->House->house_list( $this->request->data));
+            $this->set('sales', $sales);
+            $this->set('productsSum',$productsSum);
+        }
+        
+        /**
+         * 
+         */
+        public function get_report(){
+            $this->layout = 'ajax';     
+            $this->_set_request_data_from_params();
+            $outletList = $this->Outlet->find('list', array('conditions' => $this->_set_conditions()));
+            $outletIds = $this->Outlet->id_from_list($outletList);
+            
+            $this->Outlet->Behaviors->load('Containable');
+            
+            $sales = $this->Outlet->find('all',array(
+                'contain' => $this->_set_contain(),
+                'fields' => array('id','house_id','title','outlet_retailer_name'),
+                'conditions' => array('Outlet.id' => $outletIds)
+            ));
+            $reportSummery = $this->_format_report($sales);
+            if( empty($reportSummery) ){
+                $reportSummery = null;
+            }
+            //pr($reportSummery);exit;
+            $this->set('sales', $reportSummery);
         }
         
         /**
