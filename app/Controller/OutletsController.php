@@ -18,47 +18,85 @@ class OutletsController extends AppController {
  *
  * @return void
  */
-	public function index_old() {
+	public function index() {
 		$this->Outlet->recursive = 0;
 		$this->set('outlets', $this->paginate());
 	}
         
-        public function index(){
+        /**
+         *
+         * @param type $sales 
+         */
+        protected function _make_products_sum( $sales ){
+            $productsList = $this->Outlet->Sale->SaleDetail->Product->find('list',array('fields' => array('id','name')));
+            $productsSum = array();
+            
+            foreach( $productsList as $k => $pd ){
+                $productsSum[$k]['name'] = $pd;
+                $productsSum[$k]['quantity'] = 0;
+            }
+            //pr($productsSum);exit;
+            //pr($sales);
+            foreach( $sales as $v ){
+                if( isset($v['Sale'][0]['SaleDetail']) && !empty($v['Sale'][0]['SaleDetail']) ){
+                    foreach( $v['Sale'][0]['SaleDetail'] as  $sld ){
+                        $productsSum[$sld['product_id']]['quantity'] += $sld['quantity'];
+                    }            
+                }
+            }
+            return $productsSum;
+        }
+        
+        public function sales_report(){
             $this->_set_request_data_from_params();
 
-                $titles = $this->Outlet->House->Area->Region->get_titles($this->request->data);
+            $titles = $this->Outlet->House->Area->Region->get_titles($this->request->data);
 
-                $houseIds = $this->Outlet->House->get_ids( $this->request->data);
-                $outletList = $this->Outlet->find('list', array('conditions' => array(
-                    'Outlet.house_id' => $houseIds
-                )));
-                $outletIds = $this->Outlet->id_from_list($outletList);
-                $this->Outlet->Behaviors->load('Containable');
-                
-//                $this->paginate = array(
-//                    'contain' => array(
-//                        ''
-//                    )
-//                )
-                
-                
+            $houseIds = $this->Outlet->House->get_ids( $this->request->data);
+            $outletList = $this->Outlet->find('list', array('conditions' => array(
+                'Outlet.house_id' => $houseIds
+            )));
+            $outletIds = $this->Outlet->id_from_list($outletList);
+            $this->Outlet->Behaviors->load('Containable');
+            
                 $this->paginate = array(
-                    'contain' => array(
-                        
+                    'contain' => array(    
+                        'Sale' => array(
+                            'fields' => array('Sale.outlet_id','Sale.id','Sale.date'),
+                            'conditions' => array('DATE(Sale.date) <=' =>  '2013-04-30','DATE(Sale.date) >=' => '2013-04-28'),
+                            'Representative' => array(
+                                'fields' => array('id','name'),
+                            ),
+                            'SaleDetail' => array(
+                                'fields' => array('sale_id','product_id','quantity')
+                            )
+                        ),
+                        'Section' => array(
+                            'fields' => array('id','title')
+                        ),
+                        'House' => array(
+                            'fields' => array('House.id','House.title'),
+                            'Area' => array(
+                                'fields' => array('Area.id','Area.title'),
+                                'Region' => array('fields' => array('Region.id','Region.title'))
+                            )
+                        ),                        
                     ),
-                    'conditions' => $this->Outlet->set_conditions($outletIds, $this->request->data),
+                    'fields' => array('id','house_id','title','outlet_retailer_name'),
+                    'conditions' => array('Outlet.id' => $outletIds),
                     'limit' => 1,                    
                 );
+                $sales = $this->paginate();
+                $productsSum = $this->_make_products_sum($sales);
                 
                 $this->_format_date_fields();
-                
-                pr($this->paginate());exit;
                 
                 $this->set('titles', $titles);
                 $this->set('outlet_by_priority',$this->Outlet->outlet_by_priority($outletIds));
                 $this->set('house_id', str_replace('"','\"',serialize($houseIds)));
                 $this->set('houses', $this->Outlet->House->house_list( $this->request->data));
-                $this->set('sales', $this->paginate());
+                $this->set('sales', $sales);
+                $this->set('productsSum',$productsSum);
         }
         
         /**

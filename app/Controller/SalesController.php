@@ -48,7 +48,7 @@ class SalesController extends AppController {
                 
                 $this->_format_date_fields();
                 
-                pr($this->paginate());exit;
+                //pr($this->paginate());exit;
                 
                 $this->set('titles', $titles);
                 $this->set('outlet_by_priority',$this->Sale->Outlet->outlet_by_priority($outletIds));

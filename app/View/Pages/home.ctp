@@ -8,7 +8,8 @@
 						
                                                     <!-- 1st Feedback row start -->
                             <?php	
-                            echo $this->Form->create('Sale',array('type' => 'post', 'action' => 'index', 'class' => 'mws-form'));?>
+                            //echo $this->Form->create('Sale',array('type' => 'post', 'action' => 'index', 'class' => 'mws-form'));
+                            echo $this->Form->create('Outlet',array('type' => 'post', 'action' => 'sales_report', 'class' => 'mws-form'));?>
                                 <div style="width:20%">
                                         <label>Partner Sales</label>
                                 </div>
