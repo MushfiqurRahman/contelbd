@@ -27,6 +27,10 @@ class OutletsController extends AppController {
          *
          * @param type $sales 
          */
+        /**********************
+         * ***************** There's error in this method. This is not summing all data********
+         * *****************************8
+         */
         protected function _make_products_sum( $sales ){
             $productsList = $this->Outlet->Sale->SaleDetail->Product->find('list',array('fields' => array('id','name')));
             
@@ -95,10 +99,17 @@ class OutletsController extends AppController {
          * @return type 
          */
         protected function _set_contain(){
+            $conditions = array();
+            if( isset($this->request->data['from_date']) && !empty($this->request->data['from_date']) ){
+                $conditions['DATE(Sale.date) >='] = $this->request->data['from_date'];
+            }
+            if( isset($this->request->data['till_date']) && !empty($this->request->data['till_date']) ){
+                $conditions['DATE(Sale.date) <='] = $this->request->data['till_date'];
+            }
             return array(    
                         'Sale' => array(
                             'fields' => array('Sale.outlet_id','Sale.id','Sale.date'),
-                            'conditions' => array('DATE(Sale.date) <=' =>  '2013-04-30','DATE(Sale.date) >=' => '2013-04-28'),
+                            'conditions' => $conditions,
                             'Representative' => array(
                                 'fields' => array('id','name'),
                             ),
@@ -126,6 +137,7 @@ class OutletsController extends AppController {
          */
         public function sales_report(){
             $this->_set_request_data_from_params();
+            $this->_format_date_fields();
 
             $titles = $this->Outlet->House->Area->Region->get_titles($this->request->data);
 
@@ -144,10 +156,10 @@ class OutletsController extends AppController {
             $sales = $this->paginate();
             $productsSum = $this->_make_products_sum($sales);
 
-//            pr($sales);
-//            pr($productsSum);
+            pr($sales);
+            pr($productsSum);
 
-            $this->_format_date_fields();
+            
 
             $this->set('titles', $titles);
             $this->set('outlet_by_priority',$this->Outlet->outlet_by_priority($outletIds));

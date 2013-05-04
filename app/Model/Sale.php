@@ -201,7 +201,10 @@ class Sale extends AppModel {
         */
         public function get_contain_array(){
 
-            return array(                
+            return array(          
+                        'SaleDetail' => array(
+                          'fields' => array('product_id','quantity'),  
+                        ),
                         'Outlet' => array(
                             'fields' => array('title'),
                             'House' => array(
@@ -221,46 +224,20 @@ class Sale extends AppModel {
             //pr($data);
             
             $conditions = array();
-//            if( !empty($this->data['Representative']['id']) ){
-//                $conditions[]['Sale.representative_id'] = $this->data['Representative']['id'];
-//            }
-//            if( !empty($this->data['Section']['id']) ){
-//                $conditions[]['Sale.section_id'] = $this->data['Section']['id'];
-//            }
-//            
-//            if( !empty($this->data['Outlet']['id'])){
-//                $conditions[]['Sale.outlet_id'] = $this->data['Outlet']['id'];
-//            }else if( $outletIds ){
-//                $conditions[]['Sale.outlet_id'] = $outletIds;                
-//            }
-//            if( !empty($this->data['from_date']) ){
-//                $conditions[]['date_time >='] = strtotime($this->data['from_date']);
-//            }
-//            if( !empty($this->data['till_date']) ){
-//                $conditions[]['date_time <='] = strtotime($this->data['till_date']);
-//            }     
             
-            //pr($data);
-            
-            if( !empty($data['Representative']['id']) ){
-                $conditions[]['Sale.representative_id'] = $data['Representative']['id'];
-            }
-            if( !empty($data['Section']['id']) ){
-                $conditions[]['Sale.section_id'] = $data['Section']['id'];
-            }
-            
-            if( !empty($data['Outlet']['id'])){
-                $conditions[]['Sale.outlet_id'] = $data['Outlet']['id'];
-            }else if( $outletIds ){
+            if( $outletIds ){
                 $conditions[]['Sale.outlet_id'] = $outletIds;                
             }
-            if( !empty($data['from_date']) && !empty($data['till_date']) ){
-                $conditions[]['Sale.date_time >='] = strtotime($data['from_date']).' AND '.
-                    '<= '.strtotime($data['till_date']);
-            }
-//            if( !empty($data['till_date']) ){
-//                $conditions[]['Sale.date_time'] = '<='.strtotime($data['till_date']);
+//            if( !empty($data['from_date']) && !empty($data['till_date']) ){
+//                $conditions[]['Sale.date_time >='] = strtotime($data['from_date']).' AND '.
+//                    '<= '.strtotime($data['till_date']);
 //            }
+            if( isset($data['from_date']) && !empty($data['from_date']) ){
+                $conditions[]['DATE(Sale.date) >='] = $data['from_date'];
+            }
+            if( isset($data['till_date']) && !empty($data['till_date']) ){
+                $conditions[]['DATE(Sale.date) <='] = $data['till_date'];
+            }
             return $conditions;
         }
         

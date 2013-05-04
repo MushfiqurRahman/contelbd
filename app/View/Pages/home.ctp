@@ -8,8 +8,8 @@
 						
                                                     <!-- 1st Feedback row start -->
                             <?php	
-                            //echo $this->Form->create('Sale',array('type' => 'post', 'action' => 'index', 'class' => 'mws-form'));
-                            echo $this->Form->create('Outlet',array('type' => 'post', 'action' => 'sales_report', 'class' => 'mws-form'));?>
+                            echo $this->Form->create('Sale',array('type' => 'post', 'action' => 'index', 'class' => 'mws-form'));
+                            //echo $this->Form->create('Outlet',array('type' => 'post', 'action' => 'sales_report', 'class' => 'mws-form'));?>
                                 <div style="width:20%">
                                         <label>Partner Sales</label>
                                 </div>
@@ -116,7 +116,7 @@
                     find_houses( $(this).val(), $(this).attr('id') );	
                 });
 		
-		function find_areas( regionId, elementId ){
+		function find_areas( regionId, elementId ){                    
 			$.ajax({
 				url: base_url+'areas/ajax_area_list',
 				type: 'post',
@@ -124,25 +124,26 @@
 				success: function(response){					
 					var areas = $.parseJSON(response);
 					var areaId = 'area_'+elementId;	
-                                        $("#area_"+elementId).html('<select name="data[Area][id]" id="area_'+elementId+'"><option value="">All</option></select>');
-                                        $("#house_"+elementId).html('<select name="data[House][id]" id="house_'+elementId+'"><option value="">All</option></select>');
-					$.each(areas, function(ind,val){
+                                        $("#area_"+elementId).html('<select name="data[Area][id]" id="area_'+elementId+'"><option value="">All Area</option></select>');
+                                        $("#house_"+elementId).html('<select name="data[House][id]" id="house_'+elementId+'"><option value="">All House</option></select>');
+					$.each(areas, function(ind,val){                                            
 						$('#area_'+elementId).append('<option value="'+ind+'">'+val+'</option>');						
 					});
 				}
 			});
 		}
                 
-                function find_houses( areaId, elementId ){                    
+                function find_houses( areaId, elementId ){                   
                     $.ajax({
                             url: base_url+'houses/ajax_house_list',
                             type: 'post',
                             data: 'area_id='+areaId,
-                            success: function(response){
+                            success: function(response){                                
                                     var houses = $.parseJSON(response);
                                     var houseId = 'house_'+elementId.substring(5,elementId.length);	
-                                    $("#"+houseId).html('<select name="data[House][id]" id="'+houseId+'"><option value="">All</option></select>');
+                                    $("#"+houseId).html('<select name="data[House][id]" id="'+houseId+'"><option value="">All House</option></select>');
                                     $.each(houses, function(ind,val){
+                                        
                                             $('#'+houseId).append('<option value="'+ind+'">'+val+'</option>');						
                                     });
                             }

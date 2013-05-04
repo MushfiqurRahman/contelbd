@@ -47,7 +47,7 @@
                             <?php echo $this->Html->link('Dashboard',array('controller' => 'pages', 'action' => 'home'), array('class' => 'mws-i-24 i-home'));?>
 <!--                            <a href="index.html" class="mws-i-24 i-home">Dashboard</a>-->
                         </li>
-					<li class="active"><a href="#" class="mws-i-24 i-refresh">Update</a></li>
+					<li class="active"><a href="#" onclick="window.location.reload(true);" class="mws-i-24 i-refresh">Update</a></li>
 					<li class="active">
                     	<a href="#" class="mws-i-24 i-list">Download Zone</a>
                         <ul class="closed">

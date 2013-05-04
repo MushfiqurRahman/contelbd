@@ -61,3 +61,21 @@
 8801685089560 We have received your request. Thank you.	2013-05-01 12:46 AM
 8801981270858 Invalid user or TLP code! Please try again with valid info.	2013-05-01 12:49 AM
 8801981270858 We have received your request. Thank you.	2013-05-01 12:49 AM
+8801730071842 Invalid Mobile no or Outlet code! Please try again with valid code.	2013-05-03 09:42 AM
+881685089560 Invalid Mobile no or Outlet code! Please try again with valid code.	2013-05-03 09:43 AM
+8801685089560 Invalid Mobile no or Outlet code! Please try again with valid code.	2013-05-03 09:43 AM
+8801914825528 We have received your request. Thank you.	2013-05-03 09:44 AM
+8801914825528 Your SMS format is wrong, plesae try again with right format.	2013-05-04 10:15 PM
+8801914825528 Your SMS format is wrong, plesae try again with right format.	2013-05-04 10:15 PM
+8801914825528 We have received your request. Thank you.	2013-05-04 10:16 PM
+8801914825528 We have received your request. Thank you.	2013-05-04 10:43 PM
+8801914825528 We have received your request. Thank you.	2013-05-05 12:23 AM
+8801914825528 We have received your request. Thank you.	2013-05-05 12:25 AM
+8801914825528 Your record have been successfully updated, thanks.	2013-05-05 12:26 AM
+8801914825528 Your record have been successfully updated, thanks.	2013-05-05 12:27 AM
+8801914825528 Your record have been successfully updated, thanks.	2013-05-05 12:27 AM
+8801914825528 Your record have been successfully updated, thanks.	2013-05-05 12:49 AM
+8801914825528 Your record have been successfully updated, thanks.	2013-05-05 12:50 AM
+8801685089560 We have received your request. Thank you.	2013-05-05 12:53 AM
+8801963329350 Your record have been successfully updated, thanks.	2013-05-05 12:55 AM
+8801963329353 Invalid Mobile no or Outlet code! Please try again with valid code.	2013-05-05 12:56 AM

@@ -22,9 +22,15 @@ class AreasController extends AppController {
          */	
 	public function ajax_area_list(){
 		$this->autoRender = $this->layout = false;
-		$conditions = !empty($_POST['region_id']) ? array('Area.region_id' => $_POST['region_id']) : array();
-		$areas = $this->Area->find('list', array('conditions' => $conditions));
-		echo json_encode($areas);				
+                if( isset($_POST['region_id']) && !empty($_POST['region_id']) ){
+                    $conditions = array('Area.region_id' => $_POST['region_id']);
+                    $areas = $this->Area->find('list', array('conditions' => $conditions));
+                    echo json_encode($areas);
+                }
+//		$conditions = !empty($_POST['region_id']) ? array('Area.region_id' => $_POST['region_id']) : array();
+//		$areas = $this->Area->find('list', array('conditions' => $conditions));
+//		echo json_encode($areas);
+                return;
 	}
 
 /**

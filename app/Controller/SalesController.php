@@ -22,6 +22,7 @@ class SalesController extends AppController {
 	public function index() {
             
                 $this->_set_request_data_from_params();
+                $this->_format_date_fields();
 
                 $titles = $this->Sale->Outlet->House->Area->Region->get_titles($this->request->data);
 
@@ -32,29 +33,24 @@ class SalesController extends AppController {
                 $outletIds = $this->Sale->Outlet->id_from_list($outletList);
                 $this->Sale->Behaviors->load('Containable');
                 
-//                $this->paginate = array(
-//                    'contain' => array(
-//                        ''
-//                    )
-//                )
-                
-                
                 $this->paginate = array(
                     'contain' => $this->Sale->get_contain_array(),
                     'conditions' => $this->Sale->set_conditions($outletIds, $this->request->data),
-                    'group' => 'outlet_id',
+                    'group' => array('outlet_id','date'),
                     'limit' => 1,                    
                 );
                 
-                $this->_format_date_fields();
+                $sales = $this->paginate();
                 
-                //pr($this->paginate());exit;
+                pr($sales);
+                
+                //$this->_format_date_fields();
                 
                 $this->set('titles', $titles);
                 $this->set('outlet_by_priority',$this->Sale->Outlet->outlet_by_priority($outletIds));
-                $this->set('house_id', str_replace('"','\"',serialize($houseIds)));
+                //$this->set('house_id', str_replace('"','\"',serialize($houseIds)));
                 $this->set('houses', $this->Sale->Outlet->House->house_list( $this->request->data));
-                $this->set('sales', $this->paginate());
+                $this->set('sales', $sales);
 	}
         
         /**

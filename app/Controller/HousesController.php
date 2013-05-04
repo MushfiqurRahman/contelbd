@@ -18,13 +18,13 @@ class HousesController extends AppController {
 	}
         
         public function ajax_house_list(){
-            $this->autoRender = $this->layout = false;
-            $conditions = array();
-            if( !empty($_POST['area_id']) && $_POST['area_id'] != 'All' ){
-                $condition = array('area_id' => $_POST['area_id']);
+            $this->autoRender = $this->layout = false;            
+            if( isset($_POST['area_id']) && !empty($_POST['area_id']) && $_POST['area_id'] != 'All' ){
+                $conditions = array('area_id' => $_POST['area_id']);
+                $houses = $this->House->find('list', array('conditions' => $conditions));
+                echo json_encode($houses);
             }
-            $houses = $this->House->find('list', array('conditions' => $conditions));
-            echo json_encode($houses);
+            return;            
         }
 
 /**
