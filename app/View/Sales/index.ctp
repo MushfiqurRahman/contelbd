@@ -1,4 +1,5 @@
-    <?php echo $this->Form->create('Sale',array('controller' => 'sales', 'action' => 'index'));?>
+    <?php 
+    echo $this->Form->create('Sale',array('controller' => 'sales', 'action' => 'index'));?>
     
     <div class="mws-panel grid_8">
         <div class="mws-panel-header">
@@ -8,47 +9,6 @@
             <div class="mws-panel-content">
                 
                 <div>
-<!--                    <div style="display:inline-block;width:100%">  1st row start 
-                        <div style="float:left;width:20%">
-                                <label>Representative</label>
-                        </div>
-                        <div style="float:left;width:72%">
-                                <?php 
-//                                echo $this->Form->input('Representative.id', array('type' => 'select', 
-//                                'options' => $representatives,'empty' => 'All', 'label' => false, 'style' => 'width:100%', 'id' => 'repId'));
-                                ?>
-
-                        </div>
-                    </div>
-                    
-                    <div style="display:inline-block;width:100%">  1st row start 
-                        <div style="float:left;width:20%">
-                                <label>Section</label>
-                        </div>
-                        <div style="float:left;width:72%">
-                        <?php
-
-//                        echo $this->Form->input('Section.id', array('type' => 'select', 'empty' => 'All', 
-//                            'label' => false, 'options' => $sections, 'style' => 'width:100%','id' => 'secId'));
-                        ?>
-                        </div>
-                        
-                    </div>
-                    
-                    <div style="display:inline-block;width:100%">  1st row start 
-                            <div style="float:left;width:20%">
-                                    <label>Outlet</label>
-                            </div>
-                            <div style="float:left;width:72%">
-                                    <?php
-                            
-//                            echo $this->Form->input('Outlet.id', array('type' => 'select', 'empty' => 'All', 
-//                                'label' => false, 'options' => $outlets, 'style' => 'width:100%', 'id' => 'outletId'));    		
-                    ?>
-                            </div>
-                        
-                    </div>-->
-
                     <div style="display:inline-block;width:100%;"> <!-- 1st row start -->
                         <div style="float:left;width:20%;">
                                 <label>House</label>
@@ -95,18 +55,9 @@
         </div>
     </div>
     
-    <?php
-    
+    <?php    
     $url_params = array();
-    if( isset($this->data['Representative']['id']) ){
-        $url_params['representative_id'] = $this->data['Representative']['id'];
-    }
-    if( isset($this->data['Section']['id']) ){
-        $url_params['section_id'] = $this->data['Section']['id'];
-    }
-    if( isset($this->data['Outlet']['id']) ){
-        $url_params['outlet_id'] = $this->data['Outlet']['id'];
-    }
+
     if( isset($this->data['from_date']) ){
         $url_params['from_date'] = is_numeric($this->data['from_date']) ? $this->data['from_date'] : strtotime($this->data['from_date']);
     }
@@ -166,17 +117,11 @@
             <th>Section</th>
             <th>TLP Name</th>
             <th>Representative</th>
-            <th>B&amp;H</th>
-            <th>JPGL</th>
-            <th>Star</th>
-            <th>Star L</th>
-            <th>Capstan</th>
-            <th>Derby</th>
-            <th>Pilot</th>
-            <th>Bristol</th>
-            <th>Hollywood</th>
-            <th>Brand 10</th>
-            <th>Brand 11</th>
+            <?php
+                foreach( $productsList as $pd ){
+                    echo '<th>'.$pd.'</th>';
+                }
+            ?>
             <th>Date &amp; Time</th>            
 	</tr>
 	<?php         //pr($sales);
@@ -194,17 +139,22 @@
 		</td>
 		<td><?php echo $sale['Outlet']['title']; ?></td>
 		<td><?php echo $sale['Representative']['name']; ?></td>
-		<td><?php echo $sale['Sale']['sls_b1']; ?></td>
-                <td><?php echo $sale['Sale']['sls_b2']; ?></td>
-		<td><?php echo $sale['Sale']['sls_b3']; ?></td>
-		<td><?php echo $sale['Sale']['sls_b4']; ?></td>
-		<td><?php echo $sale['Sale']['sls_b5']; ?></td>
-		<td><?php echo $sale['Sale']['sls_b6']; ?></td>
-		<td><?php echo $sale['Sale']['sls_b7']; ?></td>
-		<td><?php echo $sale['Sale']['sls_b8']; ?></td>
-		<td><?php echo $sale['Sale']['sls_b9']; ?></td>
-		<td><?php echo $sale['Sale']['sls_b10']; ?></td>
-		<td><?php echo $sale['Sale']['sls_b11']; ?></td>		
+		<?php
+                    foreach($productsList as $k => $pl){
+                        $found = false;
+                        foreach( $sale['SaleDetail'] as $sD ){
+                            if( $k==$sD['product_id']){
+                                echo '<td>'.$sD['quantity'].'</td>';
+                                $found = true;
+                                break;
+                            }
+                        }
+                        if( !$found ){
+                            echo '<td>0</td>';
+                        }
+                    }
+                    ?>
+                    
                 <td><?php echo $sale['Sale']['date']; ?></td>
 	</tr>
 <?php endforeach; ?>
@@ -238,7 +188,6 @@
 
 <script>
 	var base_url = '<?php echo Configure::read('base_url');?>';
-        var house_id = '<?php echo $house_id;?>';
         
 	$(document).ready(function(){
             
@@ -250,43 +199,7 @@
             $("#btn_sales").click( function(){
                 $("#SaleIndexForm").attr('action', base_url+'sales/index');
                 $("#SaleIndexForm").submit();
-            });
-            
-		$('#repId').change(function(){
-                    representative_id = $(this).val();
-			$.ajax({
-                            url: base_url+'sections/ajax_section_list',
-                            type: 'post',
-                            data: 'representative_id='+$(this).val(),
-                            success: function(response){
-                                    var sections = $.parseJSON(response);
-
-                                    $('#secId').html('<select name="data[Section][id]" id="secId"><option value="">All</option></select>');
-                                    $.each(sections, function(ind,val){
-                                            $('#secId').append('<option value="'+ind+'">'+val+'</option>');						
-                                    });
-                            }
-                        });
-		});
-
-		$('#secId').change(function(){
-			$.ajax({
-                            url: base_url+'outlets/ajax_outlet_list',
-                            type: 'post',
-                            data: 'house_id='+house_id+'&section_id='+$(this).val(),
-                            success: function(response){
-                            var outlets = $.parseJSON(response);
-
-                            $('#outletId').html('<select name="data[Outlet][id]" id="outletId"><option value="">All</option></select>');
-                            $.each(outlets, function(ind,val){
-                                    $('#outletId').append('<option value="'+ind+'">'+val+'</option>');						
-                            });
-                        }
-                    });
-		});
-                
-                $("#fromDate").datetimepicker();
-		$("#tillDate").datetimepicker();
+            });           
                 
             $("#HouseId").change(function(){
                $("#hdn_house_id").val($(this).val());

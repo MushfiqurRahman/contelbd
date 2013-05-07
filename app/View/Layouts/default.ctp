@@ -64,7 +64,16 @@ $cakeDescription = __d('cake_dev', 'ContelBD Mobile based reporting system');
                         <?php echo $this->Session->flash(); ?>
 
                         <?php echo $this->fetch('content'); ?>
-                    <?php echo $this->Html->link('Home',array('controller' => 'pages', 'action' => 'display'));?>
+                    <?php 
+                        echo $this->Html->link('Home',array('controller' => 'pages', 'action' => 'display'));
+                        echo ' | '.$this->Html->link('SS/SR/TSA', array('controller' => 'representatives','action' => 'index'));
+                        echo ' | '.$this->Html->link('Brands', array('controller' => 'brands','action' => 'index'));
+                        echo ' | '.$this->Html->link('Products', array('controller' => 'products','action' => 'index'));
+                        echo ' | '.$this->Html->link('Regions', array('controller' => 'regions','action' => 'index'));
+                        echo ' | '.$this->Html->link('Areas', array('controller' => 'areas','action' => 'index'));
+                        echo ' | '.$this->Html->link('Houses', array('controller' => 'houses','action' => 'index'));
+                        echo ' | '.$this->Html->link('Sections', array('controller' => 'sections','action' => 'index'));
+                    ?>
                 
             </div>
 

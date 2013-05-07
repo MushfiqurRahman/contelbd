@@ -55,8 +55,7 @@
         </div>
     </div>
     
-    <?php
-    
+    <?php    
     $url_params = array();
     
     if( isset($this->data['from_date']) ){

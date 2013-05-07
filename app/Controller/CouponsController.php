@@ -48,7 +48,7 @@ class CouponsController extends AppController {
             $this->paginate = array(
                 'contain' => $this->_get_contain_array(),
                 'conditions' => $this->_set_condition(),
-                'limit' => 1                
+                'limit' => 50                
             );
             $this->set('houses', $this->Coupon->Outlet->House->house_list( $this->request->data));
             $this->set('total_outlet',$this->total_outlet);       
@@ -71,7 +71,7 @@ class CouponsController extends AppController {
                 'contain' => $this->_get_contain_array(),
                 'conditions' => $this->_set_condition(),
                 'group' => 'Coupon.outlet_id',
-                'limit' => 2 
+                'limit' => 50 
             );
             
             //pr($this->paginate());exit;

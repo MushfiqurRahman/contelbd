@@ -13,6 +13,21 @@ class SalesController extends AppController {
         parent::beforeFilter();
         
     }
+    
+    /**
+         *
+         * @return type 
+         */
+        protected function _set_conditions(){
+            $conditions = array();
+            if( $this->request->data['House']['id'] ){
+                $conditions[]['house_id'] = $this->request->data['House']['id'];
+            }
+            if( isset($this->request->data['Outlet']['priority']) && !empty($this->request->data['Outlet']['priority']) ){
+                $conditions[]['priority'] = $this->request->data['Outlet']['priority'];
+            }
+            return $conditions;
+        }
 
 /**
  * index method
@@ -21,36 +36,34 @@ class SalesController extends AppController {
  */
 	public function index() {
             
-                $this->_set_request_data_from_params();
-                $this->_format_date_fields();
+            //pr($this->request->data);
+            
+            $this->_set_request_data_from_params();
+            $this->_format_date_fields();
 
-                $titles = $this->Sale->Outlet->House->Area->Region->get_titles($this->request->data);
+            $titles = $this->Sale->Outlet->House->Area->Region->get_titles($this->request->data);
+            $outletList = $this->Sale->Outlet->find('list', array('conditions' => $this->_set_conditions()));
+            $outletIds = $this->Sale->Outlet->id_from_list($outletList);
+            $saleIds = $this->Sale->find('list',array('fields' => 'id','conditions' => 
+                array('Sale.outlet_id' => $outletIds)));
 
-                $houseIds = $this->Sale->Outlet->House->get_ids( $this->request->data);
-                $outletList = $this->Sale->Outlet->find('list', array('conditions' => array(
-                    'Outlet.house_id' => $houseIds
-                )));
-                $outletIds = $this->Sale->Outlet->id_from_list($outletList);
-                $this->Sale->Behaviors->load('Containable');
-                
-                $this->paginate = array(
-                    'contain' => $this->Sale->get_contain_array(),
-                    'conditions' => $this->Sale->set_conditions($outletIds, $this->request->data),
-                    'group' => array('outlet_id','date'),
-                    'limit' => 1,                    
-                );
-                
-                $sales = $this->paginate();
-                
-                pr($sales);
-                
-                //$this->_format_date_fields();
-                
-                $this->set('titles', $titles);
-                $this->set('outlet_by_priority',$this->Sale->Outlet->outlet_by_priority($outletIds));
-                //$this->set('house_id', str_replace('"','\"',serialize($houseIds)));
-                $this->set('houses', $this->Sale->Outlet->House->house_list( $this->request->data));
-                $this->set('sales', $sales);
+            $this->Sale->Behaviors->load('Containable');
+
+            $this->paginate = array(
+                'contain' => $this->Sale->get_contain_array(),
+                'conditions' => $this->Sale->set_conditions($saleIds, $this->request->data),                                    
+                'order' => array('Sale.date ASC'),
+                'limit' => 50,
+            );                
+            $sales = $this->paginate();
+
+            //pr($sales);
+
+            $this->set('titles', $titles);
+            $this->set('outlet_by_priority',$this->Sale->Outlet->outlet_by_priority($outletIds));
+            $this->set('houses', $this->Sale->Outlet->House->house_list( $this->request->data));
+            $this->set('productsList',$this->Sale->SaleDetail->Product->find('list',array('fields' => array('id','name'))));
+            $this->set('sales', $sales);
 	}
         
         /**
@@ -81,7 +94,7 @@ class SalesController extends AppController {
                 'fields' => $this->Sale->make_base_fields( $this->_day_interval()),
                 'contain' => $this->Sale->get_contain_array(),
                 'conditions' => $this->Sale->set_conditions($outletIds),
-                'limit' => 1,
+                'limit' => 50,
                 'group' => 'Sale.outlet_id'
             );
             $sales = $this->paginate();
@@ -90,7 +103,6 @@ class SalesController extends AppController {
             $this->_format_date_fields();
             
             $this->set('titles', $titles); 
-            //$this->set('data',$this->request->data);
             $this->set('total_outlet', $this->total_outlet);
             $this->set('outlet_by_priority',$this->Sale->Outlet->outlet_by_priority($outletIds));
             $this->set('sales', $sales);
@@ -119,7 +131,7 @@ class SalesController extends AppController {
                 'fields' => $this->Sale->make_base_fields( $this->_day_interval()),
                 'contain' => $this->Sale->get_contain_array(),
                 'conditions' => $this->Sale->set_conditions($outletIds),
-                'limit' => 1,
+                'limit' => 50,
                 'group' => 'Sale.outlet_id'
             ));
             
@@ -143,7 +155,8 @@ class SalesController extends AppController {
                 
                 $sales = $this->Sale->find('all', array(
                     'contain' => $this->Sale->get_contain_array(),
-                    'conditions' => $this->Sale->set_conditions()));                
+                    'conditions' => $this->Sale->set_conditions(),
+                    'order' => array('Sale.date DESC')));                
                 
                 $sales = $this->Sale->format_report($sales);
                 

@@ -136,6 +136,7 @@ class OutletsController extends AppController {
          * 
          */
         public function sales_report(){
+            pr($this->request->data);
             $this->_set_request_data_from_params();
             $this->_format_date_fields();
 
@@ -151,7 +152,7 @@ class OutletsController extends AppController {
                 'contain' => $this->_set_contain(),
                 'fields' => array('id','house_id','title','outlet_retailer_name'),
                 'conditions' => array('Outlet.id' => $outletIds),
-                'limit' => 1,                    
+                'limit' => 50,                    
             );
             $sales = $this->paginate();
             $productsSum = $this->_make_products_sum($sales);

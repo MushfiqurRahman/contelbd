@@ -97,17 +97,7 @@ class AppController extends Controller {
             if( isset($this->request->params['named']['priority']) ){
                 $this->request->data['Outlet']['priority'] = $this->request->params['named']['priority'];
             }
-//            if( isset($this->request->params['named']['representative_id']) ){
-//                $this->request->data['Representative']['id'] = $this->request->params['named']['representative_id'];
-//            }
-//            if( isset($this->request->params['named']['section_id']) ){
-//                $this->request->data['Section']['id'] = $this->request->params['named']['section_id'];
-//            }
-//            if( isset($this->request->params['named']['outlet_id']) ){
-//                $this->request->data['Outlet']['id'] = $this->request->params['named']['outlet_id'];
-//            }
             if( isset($this->request->params['named']['from_date']) ){
-                //$this->request->data['from_date'] = $this->request->params['named']['from_date'];
                 $this->request->data['from_date'] = date('Y-m-d',$this->request->params['named']['from_date']);
             }
             if( isset($this->request->params['named']['till_date']) ){

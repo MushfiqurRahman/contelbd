@@ -131,7 +131,7 @@ class CampaignsController extends AppController {
                     'contain' => $this->Sale->get_contain_array(),                
                     'conditions' => $conditions,
                     'group' => 'Sale.outlet_id',
-                    'limit' => 1
+                    'limit' => 50
                 )
             );
 

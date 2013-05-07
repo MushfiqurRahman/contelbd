@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 30, 2013 at 09:59 PM
+-- Generation Time: May 06, 2013 at 11:03 PM
 -- Server version: 5.1.33
 -- PHP Version: 5.2.9
 
@@ -141,6 +141,7 @@ CREATE TABLE IF NOT EXISTS `campaigns` (
 
 CREATE TABLE IF NOT EXISTS `coupons` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `mo_log_id` int(11) NOT NULL,
   `representative_id` int(11) NOT NULL,
   `outlet_id` int(11) NOT NULL,
   `section_id` int(11) DEFAULT NULL,
@@ -149,8 +150,7 @@ CREATE TABLE IF NOT EXISTS `coupons` (
   `first_act_score` int(11) NOT NULL,
   `second_act_score` int(11) NOT NULL,
   `third_act_score` int(11) NOT NULL,
-  `date_time` int(11) NOT NULL,
-  `date` date NOT NULL,
+  `date` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
@@ -158,10 +158,10 @@ CREATE TABLE IF NOT EXISTS `coupons` (
 -- Dumping data for table `coupons`
 --
 
-INSERT INTO `coupons` (`id`, `representative_id`, `outlet_id`, `section_id`, `coupon_counter`, `total_score`, `first_act_score`, `second_act_score`, `third_act_score`, `date_time`, `date`) VALUES
-(2, 11, 1, 0, 1, -100, 0, 0, 0, 1367296148, '2013-04-30'),
-(3, 11, 1, 0, 2, 250, 80, 90, 80, 1367296758, '2013-04-30'),
-(4, 13, 2, 0, 1, 350, 180, 90, 80, 1367347762, '2013-04-30');
+INSERT INTO `coupons` (`id`, `mo_log_id`, `representative_id`, `outlet_id`, `section_id`, `coupon_counter`, `total_score`, `first_act_score`, `second_act_score`, `third_act_score`, `date`) VALUES
+(2, 0, 11, 1, 0, 1, -100, 0, 0, 0, '2013-04-30 00:00:00'),
+(3, 0, 11, 1, 0, 2, 250, 80, 90, 80, '2013-04-30 00:00:00'),
+(4, 143, 11, 1, 0, 1, 220, 80, 90, 50, '2013-05-07 11:54:10');
 
 -- --------------------------------------------------------
 
@@ -196,7 +196,7 @@ CREATE TABLE IF NOT EXISTS `mobiles` (
   `representative_id` int(7) NOT NULL,
   `mobile_no` varchar(15) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=30 ;
 
 --
 -- Dumping data for table `mobiles`
@@ -206,7 +206,8 @@ INSERT INTO `mobiles` (`id`, `representative_id`, `mobile_no`) VALUES
 (23, 11, '8801730071842'),
 (22, 10, '8801914825528'),
 (26, 12, '8801685089560'),
-(27, 13, '8801981270858');
+(27, 13, '8801981270858'),
+(29, 12, '8801963329350');
 
 -- --------------------------------------------------------
 
@@ -222,77 +223,40 @@ CREATE TABLE IF NOT EXISTS `mo_logs` (
   `datetime` varchar(30) NOT NULL,
   `time_int` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=102 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=145 ;
 
 --
 -- Dumping data for table `mo_logs`
 --
 
 INSERT INTO `mo_logs` (`id`, `msisdn`, `sms`, `keyword`, `datetime`, `time_int`) VALUES
-(38, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-04-29', 1367256621),
-(39, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-04-29', 1367256692),
-(40, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-04-29', 1367256718),
-(41, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-04-29', 1367258020),
-(42, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-04-29', 1367258051),
-(43, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-04-30', 1367260016),
-(44, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-04-30', 1367260234),
-(45, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-04-30', 1367260353),
-(46, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-04-30', 1367260715),
-(47, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-04-30', 1367260759),
-(48, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-04-30', 1367261273),
-(49, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-04-30', 1367261289),
-(50, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-04-30', 1367261374),
-(51, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-04-30', 1367261490),
-(52, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-04-30', 1367261548),
-(53, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-04-30', 1367262062),
-(54, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-04-30', 1367262193),
-(55, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-04-30', 1367263122),
-(56, '8801914825528', 'PSTT MVP00281,A01 201,A231 205,A13 25,1', 'PSTT', '2013-04-30', 1367263155),
-(57, '8801914825528', 'PSTT MVP00281,A01 201,A231 205,A13 25,1', 'PSTT', '2013-04-30', 1367263737),
-(58, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-04-30', 1367263747),
-(59, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-04-30', 1367264283),
-(60, '8801914825528', 'PSTT MVP00281,A13 125,1', 'PSTT', '2013-04-30', 1367264331),
-(61, '8801914825528', 'PSTT MVP00281,A13 125,1', 'PSTT', '2013-04-30', 1367264390),
-(62, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-04-30', 1367264433),
-(63, '8801914825528', 'PSTT MVP00281,A13 125,1', 'PSTT', '2013-04-30', 1367264455),
-(64, '8801914825528', 'PSTT MVP00281,A13 125,1', 'PSTT', '2013-04-30', 1367264541),
-(65, '8801914825528', 'PSTT MVP00281,A13 125,1', 'PSTT', '2013-04-30', 1367264797),
-(66, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-04-30', 1367264969),
-(67, '8801914825528', 'PSTT MVP00281,A13 125,1', 'PSTT', '2013-04-30', 1367264991),
-(68, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-04-30', 1367265054),
-(69, '8801914825528', 'PSTT MVP00281,A13 125,1', 'PSTT', '2013-04-30', 1367265066),
-(70, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-04-30', 1367265120),
-(71, '8801914825528', 'PSTT MVP00281,A13 125,1', 'PSTT', '2013-04-30', 1367265131),
-(72, '8801914825528', 'PSTT MVP00281,A13 125,1', 'PSTT', '2013-04-30', 1367265318),
-(73, '8801914825528', 'PSTT MVP00281,A13 125,1', 'PSTT', '2013-04-30', 1367265400),
-(74, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-04-30', 1367265740),
-(75, '8801914825528', 'PSTT MVP00281,A13 125,1', 'PSTT', '2013-04-30', 1367265754),
-(76, '8801914825528', 'PSTT MVP00281,A13 125,1', 'PSTT', '2013-04-30', 1367265812),
-(77, '8801914825528', 'PSTT MVP00281,A13 125,1', 'PSTT', '2013-04-30', 1367266284),
-(78, '8801914825528', 'PSTT MVP00281,A13 125,1', 'PSTT', '2013-04-30', 1367266310),
-(79, '8801914825528', 'PSTT MVP00281,A13 125,1', 'PSTT', '2013-04-30', 1367266451),
-(80, '8801914825528', 'PSTT MVP00281,A13 125,1', 'PSTT', '2013-04-30', 1367266700),
-(81, '8801914825528', 'PSTT MVP00281,A13 125,1', 'PSTT', '2013-04-30', 1367266813),
-(82, '8801914825528', 'PSTT MVP00281,A13 125,1', 'PSTT', '2013-04-30', 1367267132),
-(83, '8801914825528', 'PSTT MVP00281,A13 125,1', 'PSTT', '2013-04-30', 1367267170),
-(84, '8801914825528', 'PSTT MVP00281,A13 325,1', 'PSTT', '2013-04-30', 1367267186),
-(85, '8801914825528', 'PSTT MVP00281,A13 325, A09 90,1', 'PSTT', '2013-04-30', 1367267208),
-(86, '8801730071842', 'CUP MVP00281,220,80,90,50,1', 'CUP', '2013-04-30', 1367295851),
-(87, '8801730071842', 'CUP MVP00281,220,80,90,50,1', 'CUP', '2013-04-30', 1367296148),
-(88, '8801730071842', 'CUP MVP00281,250,80,90,80,1', 'CUP', '2013-04-30', 1367296197),
-(89, '8801911819492', 'POINT MVP00281', 'POINT', '2013-04-30', 1367296297),
-(90, '8801911819492', 'POINT MVP00281', 'POINT', '2013-04-30', 1367296404),
-(91, '8801911819492', 'POINT MVP00281', 'POINT', '2013-04-30', 1367296437),
-(92, '8801911819492', 'POINT MVP00281', 'POINT', '2013-04-30', 1367296598),
-(93, '8801911819493', 'POINT MVP00281', 'POINT', '2013-04-30', 1367296608),
-(94, '8801911819492', 'POINT MVP00281', 'POINT', '2013-04-30', 1367296616),
-(95, '8801730071842', 'RP MVP00281,100,1', 'RP', '2013-04-30', 1367296655),
-(96, '8801730071842', 'RP MVP00281,100,1', 'RP', '2013-04-30', 1367296716),
-(97, '8801730071842', 'CUP MVP00281,250,80,90,80,2', 'CUP', '2013-04-30', 1367296758),
-(98, '8801911819492', 'POINT MVP00281', 'POINT', '2013-04-30', 1367296772),
-(99, '8801685089560', 'PSTT VP023,A01 201,A02 205,A13 25, A15 150, A22 40,1', 'PSTT', '2013-05-01', 1367347616),
-(100, '8801981270858', 'CUP VP0023,350,180,90,80,1', 'CUP', '2013-05-01', 1367347746),
-(101, '8801981270858', 'CUP VP023,350,180,90,80,1', 'CUP', '2013-05-01', 1367347762);
+(117, '8801914825528', 'PSTT MVP00281,A02 201,A03 205,A04 25,1', 'PSTT', '2013-05-05', 1367691913),
+(118, '8801914825528', 'PSTT MVP00281,A01 201,A05 205,A06 25,2', 'PSTT', '2013-05-05', 1367691998),
+(119, '8801914825528', 'PSTT MVP00281,A01 201,A05 205,A06 55,2', 'PSTT', '2013-05-05', 1367692040),
+(120, '8801914825528', 'PSTT MVP00281,A01 201,A05 205,A08 55,2', 'PSTT', '2013-05-05', 1367692073),
+(121, '8801914825528', 'PSTT MVP00281,A01 201,A05 205,A08 55,2', 'PSTT', '2013-05-05', 1367693326),
+(122, '8801914825528', 'PSTT MVP00281,A01 201,A05 205,A08 55,2', 'PSTT', '2013-05-05', 1367693349),
+(123, '8801914825528', 'PSTT MVP00281,A01 201,A05 205,A08 55,2', 'PSTT', '2013-05-05', 1367693397),
+(124, '8801914825528', 'PSTT MVP00281,A01 201,A05 205,A08 75,2', 'PSTT', '2013-05-05', 1367693420),
+(125, '8801685089560', 'PSTT VP023,A01 201,A05 205,A08 75,1', 'PSTT', '2013-05-05', 1367693629),
+(127, '8801963329353', 'PSTT VP023,A03 201,A04 205,A07 75,2', 'PSTT', '2013-05-05', 1367693809),
+(128, '8801914825528', 'PSTT MVP00281,A01 201,A01 205,A13 25,1', 'PSTT', '2013-05-07', 1367903372),
+(129, '8801914825528', 'PSTT MVP00281,A01 201,A01 205,A13 25,2', 'PSTT', '2013-05-07', 1367903672),
+(130, '8801914825528', 'PSTT MVP00281,A01 201,A01 205,A13 25,3', 'PSTT', '2013-05-07', 1367903713),
+(131, '8801914825528', 'PSTT MVP00281,A01 201,A01 205,A13 25,4', 'PSTT', '2013-05-07', 1367904157),
+(132, '8801914825528', 'PSTT MVP00281,A01 201,A01 205,A13 25,5', 'PSTT', '2013-05-07', 1367904193),
+(133, '8801914825528', 'PSTT MVP00281,A01 201,A21 205,A13 25,6', 'PSTT', '2013-05-07', 1367904682),
+(134, '8801914825528', 'PSTT MVP00281,A01 201,A21 205,A13 25,7', 'PSTT', '2013-05-07', 1367904802),
+(135, '8801914825528', 'PSTT MVP00281,A01 201,A21 205,A13 25,7', 'PSTT', '2013-05-07', 1367904843),
+(136, '8801914825528', 'PSTT MVP00281,A01 201,A21 205,A13 25,7', 'PSTT', '2013-05-07', 1367904975),
+(137, '8801914825528', 'PSTT MVP00281,A01 201,A21 205,A13 25,7', 'PSTT', '2013-05-07', 1367904990),
+(138, '8801914825528', 'PSTT MVP00281,A01 201,A21 205,A13 25,7', 'PSTT', '2013-05-07', 1367905008),
+(139, '8801914825528', 'PSTT MVP00281,A01 201,A21 205,A13 25,7', 'PSTT', '2013-05-07', 1367905319),
+(140, '8801914825528', 'PSTT MVP00281,A01 201,A21 205,A13 25,7', 'PSTT', '2013-05-07', 1367905329),
+(141, '8801914825528', 'PSTT MVP00281,A01 201,A21 205,A13 25,8', 'PSTT', '2013-05-07', 1367905336),
+(142, '8801685089560', 'CUP MVP00281,220,80,90,50,1', 'CUP', '2013-05-07', 1367905982),
+(143, '8801730071842', 'CUP MVP00281,220,80,90,50,1', 'CUP', '2013-05-07', 1367906050),
+(144, '8801730071842', 'CUP MVP00281,220,80,90,50,1', 'CUP', '2013-05-07', 1367906061);
 
 -- --------------------------------------------------------
 
@@ -308,69 +272,34 @@ CREATE TABLE IF NOT EXISTS `mt_logs` (
   `datetime` varchar(30) NOT NULL,
   `time_int` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=57 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=87 ;
 
 --
 -- Dumping data for table `mt_logs`
 --
 
 INSERT INTO `mt_logs` (`id`, `msisdn`, `sms`, `keyword`, `datetime`, `time_int`) VALUES
-(1, '8801685089560', 'Your record have been successfully updated, thanks.', 'TLP', '2013-02-21', 1361389024),
-(2, '8801963329350', 'We have received your request. Thank you.', 'CUP', '2013-02-22', 1361470979),
-(3, '88880196332935', 'Invalid user or TLP code! Please try again with valid info.', 'CUP', '2013-02-22', 1361471258),
-(4, '8801963329350', 'Invalid user or TLP code! Please try again with valid info.', 'CUP', '2013-02-22', 1361471273),
-(5, '8801963329350', 'Invalid value! Total point is not equal to the sum of activity points', 'CUP', '2013-02-22', 1361471286),
-(6, '8801963329350', 'Invalid user or TLP code! Please try again with valid info.', 'CUP', '2013-02-22', 1361471312),
-(7, '8801963329350', 'We have received your request. Thank you.', 'CUP', '2013-02-22', 1361471321),
-(8, '8801963329350', 'Your record have been successfully updated, thanks.', 'CUP', '2013-02-22', 1361471368),
-(9, '8801685089560', 'Your SMS format is wrong, plesae try again with right format.', 'TLP', '2013-02-22', 1361472728),
-(10, '8801685089560', 'Your SMS format is wrong, plesae try again with right format.', 'TLP', '2013-02-22', 1361472777),
-(11, '8801685089560', 'Your SMS format is wrong, plesae try again with right format.', 'TLP', '2013-02-22', 1361472821),
-(12, '8801685089560', 'Invalid SR or TLP code! Please try again with valid code.', 'TLP', '2013-02-22', 1361472839),
-(13, '8801685089560', 'Invalid SR or TLP code! Please try again with valid code.', 'TLP', '2013-02-22', 1361472891),
-(14, '8801685089560', 'Invalid SR or TLP code! Please try again with valid code.', 'TLP', '2013-02-22', 1361472932),
-(15, '8801685089560', 'Invalid SR or TLP code! Please try again with valid code.', 'TLP', '2013-02-22', 1361473007),
-(16, '8801685089560', 'We have received your request. Thank you.', 'TLP', '2013-02-22', 1361473080),
-(17, '8801963329350', 'Invalid SR or TLP code! Please try again with valid code.', 'TLP', '2013-02-22', 1361473593),
-(18, '8801963329350', 'We have received your request. Thank you.', 'TLP', '2013-02-22', 1361473664),
-(19, '8801963329350', 'Your record have been successfully updated, thanks.', 'TLP', '2013-02-22', 1361478712),
-(20, '8801685089560', 'Your SMS format is wrong, plesae try again with right format.', 'CUP', '2013-03-04', 1362373427),
-(21, '88', 'Your SMS format is wrong, plesae try again with right format.', '', '2013-03-04', 1362373445),
-(22, '8801914825528', 'Invalid Mobile no or Outlet code! Please try again with valid code.', 'PSTT', '2013-04-29', 1367256621),
-(23, '8801914825528', 'We have received your request. Thank you.', 'PSTT', '2013-04-30', 1367262193),
-(24, '8801914825528', 'We have received your request. Thank you.', 'PSTT', '2013-04-30', 1367263122),
-(25, '8801914825528', 'Invalid Message format or Product code! Please try again with valid data.', 'PSTT', '2013-04-30', 1367263155),
-(26, '8801914825528', 'Invalid Message format or Product code! Please try again with valid data.', 'PSTT', '2013-04-30', 1367263737),
-(27, '8801914825528', 'We have received your request. Thank you.', 'PSTT', '2013-04-30', 1367264283),
-(28, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-04-30', 1367264331),
-(29, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-04-30', 1367264390),
-(30, '8801914825528', 'We have received your request. Thank you.', 'PSTT', '2013-04-30', 1367264433),
-(31, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-04-30', 1367264455),
-(32, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-04-30', 1367264541),
-(33, '8801914825528', 'We have received your request. Thank you.', 'PSTT', '2013-04-30', 1367264969),
-(34, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-04-30', 1367264991),
-(35, '8801914825528', 'We have received your request. Thank you.', 'PSTT', '2013-04-30', 1367265054),
-(36, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-04-30', 1367265066),
-(37, '8801914825528', 'We have received your request. Thank you.', 'PSTT', '2013-04-30', 1367265120),
-(38, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-04-30', 1367265131),
-(39, '8801914825528', 'We have received your request. Thank you.', 'PSTT', '2013-04-30', 1367265740),
-(40, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-04-30', 1367266451),
-(41, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-04-30', 1367267132),
-(42, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-04-30', 1367267170),
-(43, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-04-30', 1367267186),
-(44, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-04-30', 1367267208),
-(45, '8801730071842', 'We have received your request. Thank you.', 'CUP', '2013-04-30', 1367296148),
-(46, '8801730071842', 'Your record have been successfully updated, thanks.', 'CUP', '2013-04-30', 1367296197),
-(47, '8801911819492', 'Till today you total point is:Array', 'POINT', '2013-04-30', 1367296437),
-(48, '8801911819492', 'Till today you total point is:250', 'POINT', '2013-04-30', 1367296598),
-(49, '8801911819493', 'Invalid Outlet code or mobile no! Please try again with valid info.', 'POINT', '2013-04-30', 1367296608),
-(50, '8801911819492', 'Till today you total point is:250', 'POINT', '2013-04-30', 1367296616),
-(51, '8801730071842', 'Your record have been successfully updated, thanks.', 'RP', '2013-04-30', 1367296716),
-(52, '8801730071842', 'We have received your request. Thank you.', 'CUP', '2013-04-30', 1367296758),
-(53, '8801911819492', 'Till today you total point is:150', 'POINT', '2013-04-30', 1367296772),
-(54, '8801685089560', 'We have received your request. Thank you.', 'PSTT', '2013-05-01', 1367347616),
-(55, '8801981270858', 'Invalid user or TLP code! Please try again with valid info.', 'CUP', '2013-05-01', 1367347746),
-(56, '8801981270858', 'We have received your request. Thank you.', 'CUP', '2013-05-01', 1367347762);
+(66, '8801914825528', 'We have received your request. Thank you.', 'PSTT', '2013-05-05', 1367691913),
+(67, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-05-05', 1367691998),
+(68, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-05-05', 1367692040),
+(69, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-05-05', 1367692073),
+(70, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-05-05', 1367693397),
+(71, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-05-05', 1367693420),
+(72, '8801685089560', 'We have received your request. Thank you.', 'PSTT', '2013-05-05', 1367693629),
+(73, '8801963329350', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-05-05', 1367693706),
+(74, '8801963329353', 'Invalid Mobile no or Outlet code! Please try again with valid code.', 'PSTT', '2013-05-05', 1367693809),
+(75, '8801914825528', 'We have received your request. Thank you.', 'PSTT', '2013-05-07', 1367903372),
+(76, '8801914825528', 'We have received your request. Thank you.', 'PSTT', '2013-05-07', 1367903672),
+(77, '8801914825528', 'We have received your request. Thank you.', 'PSTT', '2013-05-07', 1367903713),
+(78, '8801914825528', 'Invalid message format. You have entered same product code for twice.', 'PSTT', '2013-05-07', 1367904157),
+(79, '8801914825528', 'Invalid message format. You have entered same product code for twice.', 'PSTT', '2013-05-07', 1367904193),
+(80, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-05-07', 1367904682),
+(81, '8801914825528', 'We have received your request. Thank you.', 'PSTT', '2013-05-07', 1367905319),
+(82, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-05-07', 1367905329),
+(83, '8801914825528', 'We have received your request. Thank you.', 'PSTT', '2013-05-07', 1367905336),
+(84, '8801685089560', 'Invalid user or TLP code! Please try again with valid info.', 'CUP', '2013-05-07', 1367905982),
+(85, '8801730071842', 'After successful add your current coupon point total is: 370. Thank you.', 'CUP', '2013-05-07', 1367906050),
+(86, '8801730071842', 'After successful update your current coupon point total is: 370. Thank you.', 'CUP', '2013-05-07', 1367906061);
 
 -- --------------------------------------------------------
 
@@ -500,19 +429,18 @@ CREATE TABLE IF NOT EXISTS `sales` (
   `representative_id` int(11) NOT NULL,
   `outlet_id` int(11) NOT NULL,
   `section_id` int(11) DEFAULT NULL,
-  `date_time` int(11) NOT NULL,
-  `sale_counter` int(4) NOT NULL,
-  `date` date DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=27 ;
 
 --
 -- Dumping data for table `sales`
 --
 
-INSERT INTO `sales` (`id`, `representative_id`, `outlet_id`, `section_id`, `date_time`, `sale_counter`, `date`) VALUES
-(16, 10, 1, NULL, 0, 1, '2013-04-30'),
-(17, 12, 2, NULL, 0, 1, '2013-05-01');
+INSERT INTO `sales` (`id`, `representative_id`, `outlet_id`, `section_id`, `date`) VALUES
+(22, 10, 1, NULL, '2013-05-05 00:00:00'),
+(23, 12, 2, NULL, '2013-05-05 21:00:00'),
+(26, 10, 1, NULL, '2013-05-07 11:42:16');
 
 -- --------------------------------------------------------
 
@@ -523,25 +451,45 @@ INSERT INTO `sales` (`id`, `representative_id`, `outlet_id`, `section_id`, `date
 CREATE TABLE IF NOT EXISTS `sale_details` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `sale_id` int(11) NOT NULL,
+  `mo_log_id` int(11) NOT NULL,
+  `sale_counter` int(3) NOT NULL,
   `product_id` int(5) NOT NULL,
   `quantity` float NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=35 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=82 ;
 
 --
 -- Dumping data for table `sale_details`
 --
 
-INSERT INTO `sale_details` (`id`, `sale_id`, `product_id`, `quantity`) VALUES
-(29, 16, 9, 90),
-(27, 16, 13, 325),
-(26, 16, 23, 205),
-(25, 16, 1, 201),
-(30, 17, 1, 201),
-(31, 17, 2, 205),
-(32, 17, 13, 25),
-(33, 17, 15, 150),
-(34, 17, 22, 40);
+INSERT INTO `sale_details` (`id`, `sale_id`, `mo_log_id`, `sale_counter`, `product_id`, `quantity`) VALUES
+(67, 26, 130, 3, 1, 201),
+(66, 25, 129, 2, 13, 25),
+(65, 25, 129, 2, 1, 205),
+(64, 25, 129, 2, 1, 201),
+(61, 24, 128, 1, 1, 201),
+(62, 24, 128, 1, 1, 205),
+(63, 24, 128, 1, 13, 25),
+(57, 23, 125, 1, 8, 75),
+(56, 23, 125, 1, 5, 205),
+(54, 22, 124, 2, 8, 75),
+(53, 22, 124, 2, 5, 205),
+(52, 22, 124, 2, 1, 201),
+(55, 23, 125, 1, 1, 201),
+(44, 22, 117, 1, 4, 25),
+(43, 22, 117, 1, 3, 205),
+(42, 22, 117, 1, 2, 201),
+(68, 26, 130, 3, 1, 205),
+(69, 26, 130, 3, 13, 25),
+(70, 24, 133, 6, 1, 201),
+(71, 24, 133, 6, 21, 205),
+(72, 24, 133, 6, 13, 25),
+(78, 26, 140, 7, 13, 25),
+(77, 26, 140, 7, 21, 205),
+(76, 26, 140, 7, 1, 201),
+(79, 26, 141, 8, 1, 201),
+(80, 26, 141, 8, 21, 205),
+(81, 26, 141, 8, 13, 25);
 
 -- --------------------------------------------------------
 

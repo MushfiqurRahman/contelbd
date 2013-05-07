@@ -79,3 +79,15 @@
 8801685089560 We have received your request. Thank you.	2013-05-05 12:53 AM
 8801963329350 Your record have been successfully updated, thanks.	2013-05-05 12:55 AM
 8801963329353 Invalid Mobile no or Outlet code! Please try again with valid code.	2013-05-05 12:56 AM
+8801914825528 We have received your request. Thank you.	2013-05-07 11:09 AM
+8801914825528 We have received your request. Thank you.	2013-05-07 11:14 AM
+8801914825528 We have received your request. Thank you.	2013-05-07 11:15 AM
+8801914825528 Invalid message format. You have entered same product code for twice.	2013-05-07 11:22 AM
+8801914825528 Invalid message format. You have entered same product code for twice.	2013-05-07 11:23 AM
+8801914825528 Your record have been successfully updated, thanks.	2013-05-07 11:31 AM
+8801914825528 We have received your request. Thank you.	2013-05-07 11:41 AM
+8801914825528 Your record have been successfully updated, thanks.	2013-05-07 11:42 AM
+8801914825528 We have received your request. Thank you.	2013-05-07 11:42 AM
+8801685089560 Invalid user or TLP code! Please try again with valid info.	2013-05-07 11:53 AM
+8801730071842 After successful add your current coupon point total is: 370. Thank you.	2013-05-07 11:54 AM
+8801730071842 After successful update your current coupon point total is: 370. Thank you.	2013-05-07 11:54 AM

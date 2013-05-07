@@ -220,18 +220,15 @@ class Sale extends AppModel {
          *
          * @return type 
          */
-        public function set_conditions( $outletIds = null, $data = array() ){
-            //pr($data);
+        public function set_conditions( $saleIds = null, $data = array() ){
+        
+            //pr($outletIds);exit;
             
             $conditions = array();
             
-            if( $outletIds ){
-                $conditions[]['Sale.outlet_id'] = $outletIds;                
+            if( $saleIds ){
+                $conditions[]['Sale.id'] = $saleIds;                
             }
-//            if( !empty($data['from_date']) && !empty($data['till_date']) ){
-//                $conditions[]['Sale.date_time >='] = strtotime($data['from_date']).' AND '.
-//                    '<= '.strtotime($data['till_date']);
-//            }
             if( isset($data['from_date']) && !empty($data['from_date']) ){
                 $conditions[]['DATE(Sale.date) >='] = $data['from_date'];
             }
