@@ -177,11 +177,13 @@ class CouponsController extends AppController {
                 $formatted[$i]['representative'] = $coupon['Representative']['name'];
                 if( $report_type=='full' ){
                     $formatted[$i]['total_point'] = $coupon[0]['total'];
+                    $formatted[$i]['total_redeemed'] = $coupon[0]['f_total'] + $coupon[0]['sec_total'] + $coupon[0]['third_total'] - $coupon[0]['total'];
                     $formatted[$i]['total_first_kpi'] = $coupon[0]['f_total'];
                     $formatted[$i]['total_second_kpi'] = $coupon[0]['sec_total'];
                     $formatted[$i]['total_third_kpi'] = $coupon[0]['third_total'];
                 }else{
                     $formatted[$i]['total_point'] = $coupon['Coupon']['total_score'];
+                    $formatted[$i]['total_redeemed'] = $coupon['Coupon']['first_act_score'] + $coupon['Coupon']['second_act_score'] + $coupon['Coupon']['third_act_score'] - $coupon['Coupon']['total_score'];
                     $formatted[$i]['first_kpi'] = $coupon['Coupon']['first_act_score'];
                     $formatted[$i]['second_kpi'] = $coupon['Coupon']['second_act_score'];
                     $formatted[$i]['third_kpi'] = $coupon['Coupon']['third_act_score'];
@@ -189,6 +191,33 @@ class CouponsController extends AppController {
                 $i++;
             }
             return $formatted;
+        }
+        
+        /**
+         * This method exports a xls file for each day. This report is used to send bulk sms to outlet owner
+         * Xls should contain the outlet owners mobile no and sms sent to tsa for this outlet coupon request
+         */
+        public function each_day_report(){            
+            $this->layout = 'ajax';
+            
+            $data = $this->Coupon->query('SELECT mt_logs.outlet_id, mt_logs.sms, outlets.phone_no
+                FROM mt_logs LEFT JOIN outlets
+                ON mt_logs.outlet_id = outlets.id WHERE mt_logs.keyword="CUP" AND DATE(mt_logs.datetime)="'.
+                    date('Y-m-d').'"');
+            
+            $outlets_n_sms = array();
+            
+            if( count($data)>0 ){           
+                $i = 0;
+                foreach( $data as $dt ){                    
+                    if( !empty($dt['outlets']['phone_no']) ){
+                        $outlets_n_sms[$i]['outlet_phone_no'] = $dt['outlets']['phone_no'];
+                        $outlets_n_sms[$i]['sms'] = $dt['mt_logs']['sms'];
+                        $i++;
+                    }
+                }
+            }            
+            $this->set('outlets_n_sms',$outlets_n_sms);            
         }
 
 /**

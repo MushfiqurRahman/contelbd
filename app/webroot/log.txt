@@ -91,3 +91,5 @@
 8801685089560 Invalid user or TLP code! Please try again with valid info.	2013-05-07 11:53 AM
 8801730071842 After successful add your current coupon point total is: 370. Thank you.	2013-05-07 11:54 AM
 8801730071842 After successful update your current coupon point total is: 370. Thank you.	2013-05-07 11:54 AM
+8801981270858 After successful add your current coupon point total is: 220. Thank you.	2013-05-08 07:30 PM
+8801981270858 After successful update your current coupon point total is: 220. Thank you.	2013-05-08 08:59 PM

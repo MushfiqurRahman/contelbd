@@ -63,6 +63,7 @@
 			<th>Section</th>
                         <th>TLP Name</th>
                         <th>Total Coupon Point</th>
+                        <th>Total Redeemed Point</th>
                         <th>Total Point for KPI 1</th>
                         <th>Total Point for KPI 2</th>
                         <th>Total Point for KPI 3</th>
@@ -82,6 +83,7 @@
 		<td><?php echo h($coupon['Section']['title']); ?>&nbsp;</td>
 		<td><?php echo h($coupon['Outlet']['title']); ?>&nbsp;</td>
                 <td><?php echo h($coupon[0]['total']); ?>&nbsp;</td>
+                <td><?php echo h($coupon[0]['f_total']+$coupon[0]['sec_total']+$coupon[0]['third_total'] - $coupon[0]['total']); ?>&nbsp;</td>
                 <td><?php echo h($coupon[0]['f_total']); ?>&nbsp;</td>
 		<td><?php echo h($coupon[0]['sec_total']); ?>&nbsp;</td>
 		<td><?php echo h($coupon[0]['third_total']); ?>&nbsp;</td>		

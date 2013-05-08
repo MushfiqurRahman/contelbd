@@ -18,28 +18,7 @@ class MoLog extends AppModel{
 		$sms_temp = str_replace('  ',' ',trim($sms_temp));
 	}
 	return strtoupper($sms_temp);
-}
-
-    /**
-     *
-     * @param type $sr
-     * @param type $tlp
-     * @param type $mobile
-     * @return boolean 
-     */
-//    public function check_sr_tlp_mobile($sr, $tlp, $mobile){
-//        
-//        $res = $this->query('SELECT representatives.id, outlets.code FROM representatives LEFT JOIN outlets ON '.
-//                'representatives.house_id = outlets.house_id WHERE representatives.mobile_no="'.
-//                $mobile.'" AND representatives.sr_code="'.$sr.'" AND outlets.code="'.$tlp.'"');
-//        
-////        pr($res);
-//        
-//        if( count($res)>0 && $res[0]['outlets']['code']==$tlp ){
-//            return true;
-//        }
-//        return false;
-//    }
+}  
 
      public function check_sr_tlp_mobile($tlp, $mobile, $sr_type = null){
          
@@ -405,8 +384,9 @@ public function get_reaction($occupation) {
 }
 
 	
-public function send_sms_free_of_charge($to,$msg,$recid,$keyword, $date = '', $time_int = 0){
-		$this->query("INSERT INTO mt_logs(msisdn,sms,keyword,datetime,time_int) VALUES('$to','$msg','$keyword','$date',$time_int)");
+public function send_sms_free_of_charge($to, $outlet_id = 0, $msg,$recid,$keyword, $date = '', $time_int = 0){
+		$this->query("INSERT INTO mt_logs(msisdn, outlet_id, sms,keyword,datetime,time_int) VALUES('$to',".
+                        $outlet_id.",'$msg','$keyword','$date',$time_int)");
 		
 		$date=date('Y-m-d h:i A');
 		$ftp = fopen("log.txt",'a+');

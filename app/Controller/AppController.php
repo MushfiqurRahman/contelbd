@@ -86,10 +86,12 @@ class AppController extends Controller {
     protected function _set_request_data_from_params(){
         
         if( !$this->request->is('post') && !empty($this->request->params['named'])){
-            $this->request->data['Region']['id'] = $this->request->params['named']['region_id'];
-            $this->request->data['Area']['id'] = $this->request->params['named']['area_id'];
-            //$this->request->data['House']['id'] = $this->request->params['named']['house_id'];
-            
+            if( isset($this->request->params['named']['region_id']) ){
+                $this->request->data['Region']['id'] = $this->request->params['named']['region_id'];
+            }
+            if( isset($this->request->params['named']['area_id']) ){
+                $this->request->data['Area']['id'] = $this->request->params['named']['area_id'];
+            }            
             if( isset($this->request->params['named']['house_id']) ){
                 $this->request->data['House']['id'] = $this->request->params['named']['house_id'];
             }

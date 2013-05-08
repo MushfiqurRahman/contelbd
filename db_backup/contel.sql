@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 06, 2013 at 11:03 PM
+-- Generation Time: May 08, 2013 at 08:23 AM
 -- Server version: 5.1.33
 -- PHP Version: 5.2.9
 
@@ -152,7 +152,7 @@ CREATE TABLE IF NOT EXISTS `coupons` (
   `third_act_score` int(11) NOT NULL,
   `date` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `coupons`
@@ -161,7 +161,8 @@ CREATE TABLE IF NOT EXISTS `coupons` (
 INSERT INTO `coupons` (`id`, `mo_log_id`, `representative_id`, `outlet_id`, `section_id`, `coupon_counter`, `total_score`, `first_act_score`, `second_act_score`, `third_act_score`, `date`) VALUES
 (2, 0, 11, 1, 0, 1, -100, 0, 0, 0, '2013-04-30 00:00:00'),
 (3, 0, 11, 1, 0, 2, 250, 80, 90, 80, '2013-04-30 00:00:00'),
-(4, 143, 11, 1, 0, 1, 220, 80, 90, 50, '2013-05-07 11:54:10');
+(4, 143, 11, 1, 0, 1, 220, 80, 90, 50, '2013-05-07 11:54:10'),
+(5, 145, 13, 2, 0, 1, 220, 80, 90, 50, '2013-05-08 19:30:29');
 
 -- --------------------------------------------------------
 
@@ -223,7 +224,7 @@ CREATE TABLE IF NOT EXISTS `mo_logs` (
   `datetime` varchar(30) NOT NULL,
   `time_int` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=145 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=147 ;
 
 --
 -- Dumping data for table `mo_logs`
@@ -256,7 +257,9 @@ INSERT INTO `mo_logs` (`id`, `msisdn`, `sms`, `keyword`, `datetime`, `time_int`)
 (141, '8801914825528', 'PSTT MVP00281,A01 201,A21 205,A13 25,8', 'PSTT', '2013-05-07', 1367905336),
 (142, '8801685089560', 'CUP MVP00281,220,80,90,50,1', 'CUP', '2013-05-07', 1367905982),
 (143, '8801730071842', 'CUP MVP00281,220,80,90,50,1', 'CUP', '2013-05-07', 1367906050),
-(144, '8801730071842', 'CUP MVP00281,220,80,90,50,1', 'CUP', '2013-05-07', 1367906061);
+(144, '8801730071842', 'CUP MVP00281,220,80,90,50,1', 'CUP', '2013-05-07', 1367906061),
+(145, '8801981270858', 'CUP VP023,220,80,90,50,1', 'CUP', '2013-05-08', 1368019829),
+(146, '8801981270858', 'CUP VP023,220,80,90,50,1', 'CUP', '2013-05-08', 1368025176);
 
 -- --------------------------------------------------------
 
@@ -266,40 +269,43 @@ INSERT INTO `mo_logs` (`id`, `msisdn`, `sms`, `keyword`, `datetime`, `time_int`)
 
 CREATE TABLE IF NOT EXISTS `mt_logs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `outlet_id` int(11) NOT NULL,
   `msisdn` varchar(15) NOT NULL,
   `sms` varchar(160) NOT NULL,
   `keyword` varchar(10) NOT NULL,
   `datetime` varchar(30) NOT NULL,
   `time_int` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=87 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=89 ;
 
 --
 -- Dumping data for table `mt_logs`
 --
 
-INSERT INTO `mt_logs` (`id`, `msisdn`, `sms`, `keyword`, `datetime`, `time_int`) VALUES
-(66, '8801914825528', 'We have received your request. Thank you.', 'PSTT', '2013-05-05', 1367691913),
-(67, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-05-05', 1367691998),
-(68, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-05-05', 1367692040),
-(69, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-05-05', 1367692073),
-(70, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-05-05', 1367693397),
-(71, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-05-05', 1367693420),
-(72, '8801685089560', 'We have received your request. Thank you.', 'PSTT', '2013-05-05', 1367693629),
-(73, '8801963329350', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-05-05', 1367693706),
-(74, '8801963329353', 'Invalid Mobile no or Outlet code! Please try again with valid code.', 'PSTT', '2013-05-05', 1367693809),
-(75, '8801914825528', 'We have received your request. Thank you.', 'PSTT', '2013-05-07', 1367903372),
-(76, '8801914825528', 'We have received your request. Thank you.', 'PSTT', '2013-05-07', 1367903672),
-(77, '8801914825528', 'We have received your request. Thank you.', 'PSTT', '2013-05-07', 1367903713),
-(78, '8801914825528', 'Invalid message format. You have entered same product code for twice.', 'PSTT', '2013-05-07', 1367904157),
-(79, '8801914825528', 'Invalid message format. You have entered same product code for twice.', 'PSTT', '2013-05-07', 1367904193),
-(80, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-05-07', 1367904682),
-(81, '8801914825528', 'We have received your request. Thank you.', 'PSTT', '2013-05-07', 1367905319),
-(82, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-05-07', 1367905329),
-(83, '8801914825528', 'We have received your request. Thank you.', 'PSTT', '2013-05-07', 1367905336),
-(84, '8801685089560', 'Invalid user or TLP code! Please try again with valid info.', 'CUP', '2013-05-07', 1367905982),
-(85, '8801730071842', 'After successful add your current coupon point total is: 370. Thank you.', 'CUP', '2013-05-07', 1367906050),
-(86, '8801730071842', 'After successful update your current coupon point total is: 370. Thank you.', 'CUP', '2013-05-07', 1367906061);
+INSERT INTO `mt_logs` (`id`, `outlet_id`, `msisdn`, `sms`, `keyword`, `datetime`, `time_int`) VALUES
+(66, 0, '8801914825528', 'We have received your request. Thank you.', 'PSTT', '2013-05-05', 1367691913),
+(67, 0, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-05-05', 1367691998),
+(68, 0, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-05-05', 1367692040),
+(69, 0, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-05-05', 1367692073),
+(70, 0, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-05-05', 1367693397),
+(71, 0, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-05-05', 1367693420),
+(72, 0, '8801685089560', 'We have received your request. Thank you.', 'PSTT', '2013-05-05', 1367693629),
+(73, 0, '8801963329350', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-05-05', 1367693706),
+(74, 0, '8801963329353', 'Invalid Mobile no or Outlet code! Please try again with valid code.', 'PSTT', '2013-05-05', 1367693809),
+(75, 0, '8801914825528', 'We have received your request. Thank you.', 'PSTT', '2013-05-07', 1367903372),
+(76, 0, '8801914825528', 'We have received your request. Thank you.', 'PSTT', '2013-05-07', 1367903672),
+(77, 0, '8801914825528', 'We have received your request. Thank you.', 'PSTT', '2013-05-07', 1367903713),
+(78, 0, '8801914825528', 'Invalid message format. You have entered same product code for twice.', 'PSTT', '2013-05-07', 1367904157),
+(79, 0, '8801914825528', 'Invalid message format. You have entered same product code for twice.', 'PSTT', '2013-05-07', 1367904193),
+(80, 0, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-05-07', 1367904682),
+(81, 0, '8801914825528', 'We have received your request. Thank you.', 'PSTT', '2013-05-07', 1367905319),
+(82, 0, '8801914825528', 'Your record have been successfully updated, thanks.', 'PSTT', '2013-05-07', 1367905329),
+(83, 0, '8801914825528', 'We have received your request. Thank you.', 'PSTT', '2013-05-07', 1367905336),
+(84, 0, '8801685089560', 'Invalid user or TLP code! Please try again with valid info.', 'CUP', '2013-05-07', 1367905982),
+(85, 0, '8801730071842', 'After successful add your current coupon point total is: 370. Thank you.', 'CUP', '2013-05-07', 1367906050),
+(86, 0, '8801730071842', 'After successful update your current coupon point total is: 370. Thank you.', 'CUP', '2013-05-07', 1367906061),
+(87, 0, '8801981270858', 'After successful add your current coupon point total is: 220. Thank you.', 'CUP', '2013-05-08', 1368019829),
+(88, 2, '8801981270858', 'After successful update your current coupon point total is: 220. Thank you.', 'CUP', '2013-05-08', 1368025176);
 
 -- --------------------------------------------------------
 

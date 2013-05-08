@@ -192,7 +192,7 @@ class MoLogsController extends AppController{
         if( $params[0]!='PSTT' || !is_numeric($params[$ttl_msg_part-1]) || $ttl_msg_part % 2 == 0 || $ttl_msg_part < 5) {
             
             $error = "Your SMS format is wrong, plesae try again with right format.";
-            $this->MoLog->send_sms_free_of_charge($mobile_number, $error, 796, $keyword, $date, $time_int);
+            $this->MoLog->send_sms_free_of_charge($mobile_number, 0, $error, 796, $keyword, $date, $time_int);
             die();
         }
         $tlp_code = $params[1];
@@ -200,7 +200,7 @@ class MoLogsController extends AppController{
         
         if( !is_array($outletId) ){
             $error = 'Invalid Mobile no or Outlet code! Please try again with valid code.';
-            $this->MoLog->send_sms_free_of_charge($mobile_number, $error, 796, $keyword, $date, $time_int);
+            $this->MoLog->send_sms_free_of_charge($mobile_number, 0, $error, 796, $keyword, $date, $time_int);
             die();
         }else{
             $this->loadModel('Sale');
@@ -213,7 +213,7 @@ class MoLogsController extends AppController{
                 $sale_detail = $this->_format_sale_detail($params, $res[0]['sales']['id'], $params[ $ttl_msg_part - 1 ], $lastMoLogId);
 
                 if( isset($sale_detail['error']) ){                    
-                    $this->MoLog->send_sms_free_of_charge($mobile_number, $sale_detail['error'], 796, $keyword, $date, $time_int);
+                    $this->MoLog->send_sms_free_of_charge($mobile_number, 0, $sale_detail['error'], 796, $keyword, $date, $time_int);
                     die();
                 }else{
                     $this->_save_sales($outletId[0]['representatives']['id'], $outletId[0]['outlets']['id'],
@@ -228,20 +228,20 @@ class MoLogsController extends AppController{
                         }
                     }
                     $msg = $is_update ? "Your record have been successfully updated, thanks." : "We have received your request. Thank you.";
-                    $this->MoLog->send_sms_free_of_charge($mobile_number, $msg, 796, $keyword, $date, $time_int);
+                    $this->MoLog->send_sms_free_of_charge($mobile_number, $outletId[0]['outlets']['id'], $msg, 796, $keyword, $date, $time_int);
                 }
             }
             else {
                 $sale_detail = $this->_format_sale_detail($params, null, $params[ $ttl_msg_part - 1 ], $lastMoLogId);
                 if( isset($sale_detail['error']) ){                    
-                    $this->MoLog->send_sms_free_of_charge($mobile_number, $sale_detail['error'], 796, $keyword, $date, $time_int);
+                    $this->MoLog->send_sms_free_of_charge($mobile_number, 0, $sale_detail['error'], 796, $keyword, $date, $time_int);
                     die();
                 }else{
                     $this->_save_sales($outletId[0]['representatives']['id'], $outletId[0]['outlets']['id'],
                             $outletId[0]['sections']['id'], $params[$ttl_msg_part-1], $dates, $sale_detail['SaleDetail']);//                    
 
                     $msg = "We have received your request. Thank you.";
-                    $this->MoLog->send_sms_free_of_charge($mobile_number, $msg, 796, $keyword, $date, $time_int);                        
+                    $this->MoLog->send_sms_free_of_charge($mobile_number, $outletId[0]['outlets']['id'], $msg, 796, $keyword, $date, $time_int);                        
                 }
             }
         }
@@ -283,12 +283,12 @@ class MoLogsController extends AppController{
         if( ($params[0]=='CUP' && count($params)!=7) || $params[0]!='CUP' || !$this->MoLog->numeric_check($params) )
         {
             $error = "Your SMS format is wrong, plesae try again with right format.";
-            $this->MoLog->send_sms_free_of_charge($mobile_number, $error, 796, $keyword, $date, $time_int);
+            $this->MoLog->send_sms_free_of_charge($mobile_number, 0, $error, 796, $keyword, $date, $time_int);
             die();
         }
         if( $params[2] != ($params[3]+$params[4]+$params[5]) ){
             $error = 'Invalid value! Total point is not equal to the sum of activity points';
-            $this->MoLog->send_sms_free_of_charge($mobile_number, $error, 796, $keyword, $date, $time_int);
+            $this->MoLog->send_sms_free_of_charge($mobile_number, 0, $error, 796, $keyword, $date, $time_int);
             die();
         }
         
@@ -296,7 +296,7 @@ class MoLogsController extends AppController{
         
         if( !is_array($outletId) ){
             $error = 'Invalid user or TLP code! Please try again with valid info.';
-            $this->MoLog->send_sms_free_of_charge($mobile_number, $error, 796, $keyword, $date, $time_int);
+            $this->MoLog->send_sms_free_of_charge($mobile_number, 0, $error, 796, $keyword, $date, $time_int);
             die();
         }else{            
             $res = $this->MoLog->query('SELECT id FROM coupons WHERE DATE(date)="'.$date.'" AND representative_id='.
@@ -315,7 +315,7 @@ class MoLogsController extends AppController{
                 $tp = $this->_get_total_coupon_point($outletId[0]['outlets']['id']);
 
                 $msg = "After successful update your current coupon point total is: ".$tp.". Thank you.";
-                $this->MoLog->send_sms_free_of_charge($mobile_number, $msg, 796, $keyword, $date, $time_int);
+                $this->MoLog->send_sms_free_of_charge($mobile_number, $outletId[0]['outlets']['id'], $msg, 796, $keyword, $date, $time_int);
             }
             else
             {
@@ -331,7 +331,7 @@ class MoLogsController extends AppController{
                 
                 $tp = $this->_get_total_coupon_point($outletId[0]['outlets']['id']);
                 $msg = "After successful add your current coupon point total is: ". $tp.". Thank you.";
-                $this->MoLog->send_sms_free_of_charge($mobile_number, $msg, 796, $keyword, $date, $time_int);                        
+                $this->MoLog->send_sms_free_of_charge($mobile_number, $outletId[0]['outlets']['id'], $msg, 796, $keyword, $date, $time_int);                        
             }
         }
     }
@@ -435,7 +435,7 @@ class MoLogsController extends AppController{
         if( ($params[0]=='RP' && count($params)!=4) || $params[0]!='RP' || !$this->MoLog->numeric_check($params) )
         {
             $error = "Your SMS format is wrong, plesae try again with right format.";
-            $this->MoLog->send_sms_free_of_charge($mobile_number, $error, 796, $keyword, $date, $time_int);
+            $this->MoLog->send_sms_free_of_charge($mobile_number, 0, $error, 796, $keyword, $date, $time_int);
             die();
         }
         
@@ -443,7 +443,7 @@ class MoLogsController extends AppController{
         
         if( !is_array($outletId) ){
             $error = 'Invalid user or TLP code! Please try again with valid info.';
-            $this->MoLog->send_sms_free_of_charge($mobile_number, $error, 796, $keyword, $date, $time_int);
+            $this->MoLog->send_sms_free_of_charge($mobile_number, 0, $error, 796, $keyword, $date, $time_int);
             die();
         }else{            
             $res = $this->MoLog->query('SELECT id FROM coupons WHERE DATE(date)="'.$date.'" AND representative_id='.
@@ -463,7 +463,7 @@ class MoLogsController extends AppController{
                 $tp = $this->_get_total_coupon_point($outletId[0]['outlets']['id']);
 
                 $msg = "After successful update your current coupon point total is: ".$tp.". Thank you.";
-                $this->MoLog->send_sms_free_of_charge($mobile_number, $msg, 796, $keyword, $date, $time_int);
+                $this->MoLog->send_sms_free_of_charge($mobile_number, $outletId[0]['outlets']['id'], $msg, 796, $keyword, $date, $time_int);
             }
             else {
                 $outletId[0]['sections']['id']  = empty($outletId[0]['sections']['id']) ? 0 : $outletId[0]['sections']['id'];
@@ -477,7 +477,7 @@ class MoLogsController extends AppController{
                 $tp = $this->_get_total_coupon_point($outletId[0]['outlets']['id']);
 
                 $msg = "After successful redeem your current coupon point total is: ".$tp.". Thank you.";
-                $this->MoLog->send_sms_free_of_charge($mobile_number, $msg, 796, $keyword, $date, $time_int);                        
+                $this->MoLog->send_sms_free_of_charge($mobile_number, $outletId[0]['outlets']['id'], $msg, 796, $keyword, $date, $time_int);                        
             }
         }
     }    
