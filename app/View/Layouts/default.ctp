@@ -75,6 +75,7 @@ $cakeDescription = __d('cake_dev', 'ContelBD Mobile based reporting system');
                         echo ' | '.$this->Html->link('Sections', array('controller' => 'sections','action' => 'index'));
                         //echo ' | '.$this->Html->link('Coupons', array('controller' => 'coupons','action' => 'index'));
                         echo ' | '.$this->Html->link('Export For Bulk SMS', array('controller' => 'coupons','action' => 'each_day_report'));
+                        echo ' | '.$this->Html->link('Import XLS', array('controller' => 'regions','action' => 'import_data'));
                     ?>
                 
             </div>

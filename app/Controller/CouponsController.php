@@ -37,8 +37,6 @@ class CouponsController extends AppController {
  * @return void
  */
 	public function index() {
-            
-            //pr($this->request->data);
 
             $this->_set_request_data_from_params();
             $titles = $this->Coupon->Outlet->House->Area->Region->get_titles($this->request->data);                            
@@ -48,6 +46,7 @@ class CouponsController extends AppController {
             $this->paginate = array(
                 'contain' => $this->_get_contain_array(),
                 'conditions' => $this->_set_condition(),
+                'order' => array('Coupon.date' => 'DESC'),
                 'limit' => 50                
             );
             $this->set('houses', $this->Coupon->Outlet->House->house_list( $this->request->data));
@@ -70,6 +69,7 @@ class CouponsController extends AppController {
                     'SUM(Coupon.second_act_score) AS sec_total','SUM(Coupon.third_act_score) AS third_total'),
                 'contain' => $this->_get_contain_array(),
                 'conditions' => $this->_set_condition(),
+                'order' => array('Coupon.date' => 'DESC'),
                 'group' => 'Coupon.outlet_id',
                 'limit' => 50 
             );
@@ -132,6 +132,7 @@ class CouponsController extends AppController {
             $coupons = $this->Coupon->find('all', array(                
                 'contain' => $this->_get_contain_array(),
                 'conditions' => $this->_set_condition(),
+                'order' => array('Coupon.date' => 'DESC'),
             ));
             
             $coupons = $this->_format_for_report($coupons, null);
@@ -153,7 +154,8 @@ class CouponsController extends AppController {
                     'SUM(Coupon.second_act_score) AS sec_total','SUM(Coupon.third_act_score) AS third_total'),
                 'contain' => $this->_get_contain_array(),
                 'conditions' => $this->_set_condition(),
-                'group' => 'Coupon.outlet_id'
+                'group' => 'Coupon.outlet_id',
+                'order' => array('Coupon.date' => 'DESC'),
             ));            
             $coupons = $this->_format_for_report($coupons);
             
@@ -166,7 +168,7 @@ class CouponsController extends AppController {
          * @return type 
          */
         protected function _format_for_report( $coupons, $report_type = 'full' ){
-            //pr($coupons);
+            //pr($coupons);exit;
             $formatted = array();
             $i = 0;
             foreach( $coupons as $coupon ){
@@ -180,13 +182,14 @@ class CouponsController extends AppController {
                     $formatted[$i]['total_redeemed'] = $coupon[0]['f_total'] + $coupon[0]['sec_total'] + $coupon[0]['third_total'] - $coupon[0]['total'];
                     $formatted[$i]['total_first_kpi'] = $coupon[0]['f_total'];
                     $formatted[$i]['total_second_kpi'] = $coupon[0]['sec_total'];
-                    $formatted[$i]['total_third_kpi'] = $coupon[0]['third_total'];
+                    $formatted[$i]['total_third_kpi'] = $coupon[0]['third_total'];                    
                 }else{
                     $formatted[$i]['total_point'] = $coupon['Coupon']['total_score'];
                     $formatted[$i]['total_redeemed'] = $coupon['Coupon']['first_act_score'] + $coupon['Coupon']['second_act_score'] + $coupon['Coupon']['third_act_score'] - $coupon['Coupon']['total_score'];
                     $formatted[$i]['first_kpi'] = $coupon['Coupon']['first_act_score'];
                     $formatted[$i]['second_kpi'] = $coupon['Coupon']['second_act_score'];
                     $formatted[$i]['third_kpi'] = $coupon['Coupon']['third_act_score'];
+                    $formatted[$i]['date_n_time'] = $coupon['Coupon']['date'];
                 }
                 $i++;
             }

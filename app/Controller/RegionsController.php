@@ -16,6 +16,64 @@ class RegionsController extends AppController {
 		$this->Region->recursive = 0;
 		$this->set('regions', $this->paginate());
 	}
+        
+        /**
+         * 
+         */
+        public function import_data(){
+            if( $this->request->is('post') ){
+                if( !empty($this->request->data['Region']['xls_file']) ){
+                    if( $this->request->data['Region']['xls_file']['error']==0){
+                        $renamed_f_name = time().$this->request->data['Region']['xls_file']['name'];
+                        if( move_uploaded_file($this->request->data['Region']['xls_file']['tmp_name'], WWW_ROOT.$renamed_f_name) ){
+                            if( $this->_import($renamed_f_name) ){
+                                $this->Session->setFlash(__('Data import successful.'));
+                            }else{
+                                $this->Session->setFlash(__('Data import failed!'));
+                            }
+                        }else{
+                            $this->Session->setFlash(__('File upload failed! Please try again.'));
+                        }
+                    }else{
+                        $this->Session->setFlash(__('Your given file is corrupted! Please try with valid file.'));
+                    }
+                }else{
+                    $this->Session->setFlash(__('You have not selected any file to upload.'));
+                }
+            }
+        }
+        
+        
+        /**
+         * 
+         */
+        protected function _import( $xlName ){
+            App::import('Vendor','PHPExcel',array('file' => 'PHPExcel/Classes/PHPExcel.php'));
+            
+            //here i used microsoft excel 2007
+            $objReader = PHPExcel_IOFactory::createReader('Excel2007');
+            //set to read only
+            $objReader->setReadDataOnly(true);
+            //load excel file
+            $objPHPExcel = $objReader->load($xlName);
+            $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+            
+            //pr($objWorksheet);
+            
+            
+            $totalRow = $objPHPExcel->getActiveSheet()->getHighestRow();
+            
+            pr($lastRow);
+            
+            for($i=1; $i<$totalRow; $i++){
+                
+                $region = $objWorksheet->getCellByColumnAndRow(0,$i)->getValue();
+                $area = $objWorksheet->getCellByColumnAndRow(1,$i)->getValue();
+                $house = $objWorksheet->getCellByColumnAndRow(1,$i)->getValue();
+                $section = $objWorksheet->getCellByColumnAndRow(1,$i)->getValue();
+                
+            }
+        }
 	
 
 

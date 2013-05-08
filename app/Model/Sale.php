@@ -35,126 +35,6 @@ class Sale extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'date_time' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'sls_b1' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'sls_b2' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'sls_b3' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'sls_b4' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'sls_b5' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'sls_b6' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'sls_b7' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'sls_b8' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'sls_b9' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'sls_b10' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'sls_b11' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
 	);
 
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
@@ -258,11 +138,7 @@ class Sale extends AppModel {
             
             for($i=1;$i<=11;$i++){                
                 $sum_fields[] = 'SUM(Sale.sls_b'.$i.') AS total_b'.$i;
-            }            
-            //$sum_fields[] = 'representative_id';
-            //$sum_fields[] = 'house_id';
-            //$sum_fields[] = 'area_id';
-            //$sum_fields[] = 'region_id';
+            }  
             return $sum_fields;
         }
         
@@ -295,7 +171,7 @@ class Sale extends AppModel {
          * @param type $sales
          * @return array 
          */
-        public function format_report( $sales, $report_type = 'sales' ){
+        public function format_report( $sales, $productsList, $report_type = 'sales' ){
             $formatted = array();
             $i = 0;
             foreach( $sales as $sale ){
@@ -305,18 +181,21 @@ class Sale extends AppModel {
                 $formatted[$i]['outlet'] = $sale['Outlet']['title'];
                 $formatted[$i]['section'] = $sale['Section']['title'];
                 $formatted[$i]['representative'] = $sale['Representative']['name'];
-                $formatted[$i]['b1'] = ( $report_type == 'base' ? $sale[0]['base_b1'] : $sale['Sale']['sls_b1'] );
-                $formatted[$i]['b2'] = ( $report_type == 'base' ? $sale[0]['base_b2'] : $sale['Sale']['sls_b2'] );
-                $formatted[$i]['b3'] = ( $report_type == 'base' ? $sale[0]['base_b3'] : $sale['Sale']['sls_b3'] );
-                $formatted[$i]['b4'] = ( $report_type == 'base' ? $sale[0]['base_b4'] : $sale['Sale']['sls_b4'] );
-                $formatted[$i]['b5'] = ( $report_type == 'base' ? $sale[0]['base_b5'] : $sale['Sale']['sls_b5'] );
-                $formatted[$i]['b6'] = ( $report_type == 'base' ? $sale[0]['base_b6'] : $sale['Sale']['sls_b6'] );
-                $formatted[$i]['b7'] = ( $report_type == 'base' ? $sale[0]['base_b7'] : $sale['Sale']['sls_b7'] );
-                $formatted[$i]['b8'] = ( $report_type == 'base' ? $sale[0]['base_b8'] : $sale['Sale']['sls_b8'] );
-                $formatted[$i]['b9'] = ( $report_type == 'base' ? $sale[0]['base_b9'] : $sale['Sale']['sls_b9'] );
-                $formatted[$i]['b10'] = ( $report_type == 'base' ? $sale[0]['base_b10'] : $sale['Sale']['sls_b10'] );
-                $formatted[$i]['b11'] = ( $report_type == 'base' ? $sale[0]['base_b11'] : $sale['Sale']['sls_b11'] );
-                $formatted[$i]['date'] = date('Y-m-d H:i:s',$sale['Sale']['date_time']);                
+                
+                foreach($productsList as $k => $pl){
+                    $found = false;
+                    foreach( $sale['SaleDetail'] as $sD ){
+                        if( $k==$sD['product_id']){
+                            $formatted[$i][$pl] = $sD['quantity'];
+                            $found = true;
+                            break;
+                        }
+                    }
+                    if( !$found ){
+                        $formatted[$i][$pl] = 0;
+                    }
+                }                
+                $formatted[$i]['date_n_time'] = $sale['Sale']['date'];  
                 $i++;
             }
             return $formatted;

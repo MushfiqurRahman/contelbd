@@ -52,7 +52,7 @@ class SalesController extends AppController {
             $this->paginate = array(
                 'contain' => $this->Sale->get_contain_array(),
                 'conditions' => $this->Sale->set_conditions($saleIds, $this->request->data),                                    
-                'order' => array('Sale.date ASC'),
+                'order' => array('Sale.date' => 'DESC'),
                 'limit' => 50,
             );                
             $sales = $this->paginate();
@@ -156,9 +156,13 @@ class SalesController extends AppController {
                 $sales = $this->Sale->find('all', array(
                     'contain' => $this->Sale->get_contain_array(),
                     'conditions' => $this->Sale->set_conditions(),
-                    'order' => array('Sale.date DESC')));                
+                    'order' => array('Sale.date DESC')));      
                 
-                $sales = $this->Sale->format_report($sales);
+                //pr($sales);exit;
+                
+                $productList = $this->Sale->SaleDetail->Product->find('list',array('fields' => array('id','name')));
+                
+                $sales = $this->Sale->format_report($sales, $productList);
                 
                 $this->set('sales',$sales);                
             }
