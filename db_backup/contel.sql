@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 09, 2013 at 10:16 AM
+-- Generation Time: May 09, 2013 at 12:27 PM
 -- Server version: 5.1.33
 -- PHP Version: 5.2.9
 
@@ -153,7 +153,7 @@ CREATE TABLE IF NOT EXISTS `coupons` (
   `third_act_score` int(11) NOT NULL,
   `date` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
 
 --
 -- Dumping data for table `coupons`
@@ -168,7 +168,12 @@ INSERT INTO `coupons` (`id`, `mo_log_id`, `representative_id`, `outlet_id`, `sec
 (7, 154, 11, 1, 0, 1, 0, 320, 80, 90, 150, '2013-05-09 23:05:59'),
 (8, 0, 11, 1, 0, 2, 1, -100, 0, 0, 0, '2013-05-09 23:06:44'),
 (9, 0, 11, 1, 0, 3, 1, -100, 0, 0, 0, '2013-05-09 23:12:53'),
-(10, 162, 11, 1, 0, 2, 0, 320, 80, 90, 150, '2013-05-09 23:14:32');
+(10, 162, 11, 1, 0, 2, 0, 320, 80, 90, 150, '2013-05-09 23:14:32'),
+(11, 0, 11, 1, 0, 1, 1, -200, 0, 0, 0, '2013-05-10 01:01:50'),
+(12, 0, 11, 1, 0, 2, 1, -200, 0, 0, 0, '2013-05-10 01:14:20'),
+(13, 0, 11, 1, 0, 3, 1, -100, 0, 0, 0, '2013-05-10 01:15:14'),
+(14, 0, 11, 1, 0, 4, 1, -100, 0, 0, 0, '2013-05-10 01:24:29'),
+(15, 184, 11, 1, 0, 1, 0, 220, 80, 90, 50, '2013-05-10 01:25:52');
 
 -- --------------------------------------------------------
 
@@ -230,7 +235,7 @@ CREATE TABLE IF NOT EXISTS `mo_logs` (
   `datetime` varchar(30) NOT NULL,
   `time_int` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=163 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=186 ;
 
 --
 -- Dumping data for table `mo_logs`
@@ -281,7 +286,30 @@ INSERT INTO `mo_logs` (`id`, `msisdn`, `sms`, `keyword`, `datetime`, `time_int`)
 (159, '8801730071842', 'RP MVP00281,100,3', 'RP', '2013-05-09', 1368119626),
 (160, '8801730071842', 'CUP MVP00281,220,80,90,150,1', 'CUP', '2013-05-09', 1368119652),
 (161, '8801730071842', 'CUP MVP00281,320,80,90,150,1', 'CUP', '2013-05-09', 1368119660),
-(162, '8801730071842', 'CUP MVP00281,320,80,90,150,2', 'CUP', '2013-05-09', 1368119672);
+(162, '8801730071842', 'CUP MVP00281,320,80,90,150,2', 'CUP', '2013-05-09', 1368119672),
+(163, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-05-10', 1368123873),
+(164, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-05-10', 1368124049),
+(165, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-05-10', 1368124098),
+(166, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-05-10', 1368124391),
+(167, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-05-10', 1368124447),
+(168, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-05-10', 1368124458),
+(169, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,1', 'PSTT', '2013-05-10', 1368124621),
+(170, '8801914825528', 'PSTT MVP00281,A01 201,A23 205,A13 25,2', 'PSTT', '2013-05-10', 1368124917),
+(171, '8801914825528', 'PSTT MVP00281,A01 201,A21 205,A03 25,2', 'PSTT', '2013-05-10', 1368124942),
+(172, '8801914825528', 'PSTT MVP00281,A02 201,A21 205,A13 25,2', 'PSTT', '2013-05-10', 1368124951),
+(173, '8801914825528', 'PSTT MVP00281,A02 201,A21 205,A03 25,2', 'PSTT', '2013-05-10', 1368124961),
+(174, '8801730071842', 'RP MVP00281,200,1', 'RP', '2013-05-10', 1368126110),
+(175, '8801730071842', 'RP MVP00281,200,1', 'RP', '2013-05-10', 1368126480),
+(176, '8801730071842', 'RP MVP00281,200,1', 'RP', '2013-05-10', 1368126847),
+(177, '8801730071842', 'RP MVP00281,200,2', 'RP', '2013-05-10', 1368126860),
+(178, '8801730071842', 'RP MVP00281,200,3', 'RP', '2013-05-10', 1368126914),
+(179, '8801730071842', 'RP MVP00281,200,4', 'RP', '2013-05-10', 1368126931),
+(180, '8801730071842', 'RP MVP00281,100,4', 'RP', '2013-05-10', 1368126945),
+(181, '8801730071842', 'RP MVP00281,100,4', 'RP', '2013-05-10', 1368127352),
+(182, '8801730071842', 'RP MVP00281,100,3', 'RP', '2013-05-10', 1368127431),
+(183, '8801730071842', 'RP MVP00281,100,4', 'RP', '2013-05-10', 1368127469),
+(184, '8801730071842', 'CUP MVP00281,220,80,90,50,1', 'CUP', '2013-05-10', 1368127552),
+(185, '8801730071842', 'CUP MVP00281,220,80,90,50,1', 'CUP', '2013-05-10', 1368127563);
 
 -- --------------------------------------------------------
 
@@ -293,12 +321,12 @@ CREATE TABLE IF NOT EXISTS `mt_logs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `outlet_id` int(11) NOT NULL,
   `msisdn` varchar(15) NOT NULL,
-  `sms` varchar(160) NOT NULL,
+  `sms` varchar(165) NOT NULL,
   `keyword` varchar(10) NOT NULL,
   `datetime` varchar(30) NOT NULL,
   `time_int` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=102 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=118 ;
 
 --
 -- Dumping data for table `mt_logs`
@@ -340,7 +368,23 @@ INSERT INTO `mt_logs` (`id`, `outlet_id`, `msisdn`, `sms`, `keyword`, `datetime`
 (98, 1, '8801730071842', 'After successful update your current coupon point total is: 190. Thank you.', 'RP', '2013-05-09', 1368119626),
 (99, 0, '8801730071842', 'Invalid value! Total point is not equal to the sum of activity points', 'CUP', '2013-05-09', 1368119652),
 (100, 1, '8801730071842', 'After successful update your current coupon point total is: 290. Thank you.', 'CUP', '2013-05-09', 1368119660),
-(101, 1, '8801730071842', 'After successful add your current coupon point total is: 610. Thank you.', 'CUP', '2013-05-09', 1368119672);
+(101, 1, '8801730071842', 'After successful add your current coupon point total is: 610. Thank you.', 'CUP', '2013-05-09', 1368119672),
+(102, 1, '8801914825528', 'Thank you! STT Report for SHAH ALOM STORE have been received.', 'PSTT', '2013-05-10', 1368124447),
+(103, 1, '8801914825528', 'Thank you! STT Report for SHAH ALOM STORE have been updated.', 'PSTT', '2013-05-10', 1368124458),
+(104, 0, '8801914825528', 'Sorry! You have already sent STT for A01. Please send your request again.', 'PSTT', '2013-05-10', 1368124917),
+(105, 0, '8801914825528', 'Sorry! You have already sent STT for A01. Please send your request again.', 'PSTT', '2013-05-10', 1368124942),
+(106, 0, '8801914825528', 'Sorry! You have already sent STT for A13. Please send your request again.', 'PSTT', '2013-05-10', 1368124951),
+(107, 1, '8801914825528', 'Thank you! STT Report for SHAH ALOM STORE have been received.', 'PSTT', '2013-05-10', 1368124961),
+(108, 1, '8801730071842', 'Thank you! Redeem points updated for SHAH ALOM STORE. Current point: 410.', 'RP', '2013-05-10', 1368126847),
+(109, 1, '8801730071842', 'Thank you!200 points redeemed from SHAH ALOM STORE. Current point: 610.', 'RP', '2013-05-10', 1368126860),
+(110, 1, '8801730071842', 'Thank you!200 points redeemed from SHAH ALOM STORE. Current point: 410.', 'RP', '2013-05-10', 1368126914),
+(111, 1, '8801730071842', 'Invalid request! Sorry, your redeem point is greater than your total point. You total point is: 10', 'RP', '2013-05-10', 1368126931),
+(112, 1, '8801730071842', 'Invalid request! Sorry, your redeem point is greater than your total point. You total point is: 10', 'RP', '2013-05-10', 1368126945),
+(113, 1, '8801730071842', 'Invalid request! Sorry, your redeem point is greater than your total point. You total point is: 10', 'RP', '2013-05-10', 1368127352),
+(114, 1, '8801730071842', 'Thank you! Redeem points updated for SHAH ALOM STORE. Current point: 110.', 'RP', '2013-05-10', 1368127431),
+(115, 1, '8801730071842', 'Thank you!100 points redeemed from SHAH ALOM STORE. Current point: 10.', 'RP', '2013-05-10', 1368127469),
+(116, 1, '8801730071842', 'Thank you! 220 coupon points added for SHAH ALOM STORE. Current point: 230.', 'CUP', '2013-05-10', 1368127552),
+(117, 1, '8801730071842', 'Thank you! 220 coupon points updated for SHAH ALOM STORE. Current point is 230.', 'CUP', '2013-05-10', 1368127563);
 
 -- --------------------------------------------------------
 
@@ -472,7 +516,7 @@ CREATE TABLE IF NOT EXISTS `sales` (
   `section_id` int(11) DEFAULT NULL,
   `date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=27 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
 
 --
 -- Dumping data for table `sales`
@@ -481,7 +525,8 @@ CREATE TABLE IF NOT EXISTS `sales` (
 INSERT INTO `sales` (`id`, `representative_id`, `outlet_id`, `section_id`, `date`) VALUES
 (22, 10, 1, NULL, '2013-05-05 00:00:00'),
 (23, 12, 2, NULL, '2013-05-05 21:00:00'),
-(26, 10, 1, NULL, '2013-05-07 11:42:16');
+(26, 10, 1, NULL, '2013-05-07 11:42:16'),
+(27, 10, 1, NULL, '2013-05-10 00:42:41');
 
 -- --------------------------------------------------------
 
@@ -497,7 +542,7 @@ CREATE TABLE IF NOT EXISTS `sale_details` (
   `product_id` int(5) NOT NULL,
   `quantity` float NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=82 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=91 ;
 
 --
 -- Dumping data for table `sale_details`
@@ -530,7 +575,13 @@ INSERT INTO `sale_details` (`id`, `sale_id`, `mo_log_id`, `sale_counter`, `produ
 (76, 26, 140, 7, 1, 201),
 (79, 26, 141, 8, 1, 201),
 (80, 26, 141, 8, 21, 205),
-(81, 26, 141, 8, 13, 25);
+(81, 26, 141, 8, 13, 25),
+(87, 27, 168, 1, 13, 25),
+(86, 27, 168, 1, 23, 205),
+(85, 27, 168, 1, 1, 201),
+(88, 27, 173, 2, 2, 201),
+(89, 27, 173, 2, 21, 205),
+(90, 27, 173, 2, 3, 25);
 
 -- --------------------------------------------------------
 

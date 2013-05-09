@@ -106,3 +106,19 @@
 8801730071842 Invalid value! Total point is not equal to the sum of activity points	2013-05-09 11:14 PM
 8801730071842 After successful update your current coupon point total is: 290. Thank you.	2013-05-09 11:14 PM
 8801730071842 After successful add your current coupon point total is: 610. Thank you.	2013-05-09 11:14 PM
+8801914825528 Thank you! STT Report for SHAH ALOM STORE have been received.	2013-05-10 12:34 AM
+8801914825528 Thank you! STT Report for SHAH ALOM STORE have been updated.	2013-05-10 12:34 AM
+8801914825528 Sorry! You have already sent STT for A01. Please send your request again.	2013-05-10 12:41 AM
+8801914825528 Sorry! You have already sent STT for A01. Please send your request again.	2013-05-10 12:42 AM
+8801914825528 Sorry! You have already sent STT for A13. Please send your request again.	2013-05-10 12:42 AM
+8801914825528 Thank you! STT Report for SHAH ALOM STORE have been received.	2013-05-10 12:42 AM
+8801730071842 Thank you! Redeem points updated for SHAH ALOM STORE. Current point: 410.	2013-05-10 01:14 AM
+8801730071842 Thank you!200 points redeemed from SHAH ALOM STORE. Current point: 610.	2013-05-10 01:14 AM
+8801730071842 Thank you!200 points redeemed from SHAH ALOM STORE. Current point: 410.	2013-05-10 01:15 AM
+8801730071842 Invalid request! Sorry, your redeem point is greater than your total point. You total point is: 10	2013-05-10 01:15 AM
+8801730071842 Invalid request! Sorry, your redeem point is greater than your total point. You total point is: 10	2013-05-10 01:15 AM
+8801730071842 Invalid request! Sorry, your redeem point is greater than your total point. You total point is: 10	2013-05-10 01:22 AM
+8801730071842 Thank you! Redeem points updated for SHAH ALOM STORE. Current point: 110.	2013-05-10 01:23 AM
+8801730071842 Thank you!100 points redeemed from SHAH ALOM STORE. Current point: 10.	2013-05-10 01:24 AM
+8801730071842 Thank you! 220 coupon points added for SHAH ALOM STORE. Current point: 230.	2013-05-10 01:25 AM
+8801730071842 Thank you! 220 coupon points updated for SHAH ALOM STORE. Current point is 230.	2013-05-10 01:26 AM

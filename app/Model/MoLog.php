@@ -25,7 +25,7 @@ class MoLog extends AppModel{
          /**** Representative may have multiple mobiles ****/
         
         $res = $this->query('SELECT mobiles.mobile_no, representatives.id, representatives.type, outlets.id,'.
-                'outlets.code, sections.id FROM mobiles INNER JOIN representatives ON mobiles.representative_id = '.
+                'outlets.title, outlets.code, sections.id FROM mobiles INNER JOIN representatives ON mobiles.representative_id = '.
                 'representatives.id INNER JOIN outlets ON representatives.house_id = outlets.house_id'.
                 ' LEFT JOIN sections ON representatives.id=sections.representative_id WHERE mobiles.mobile_no ="'.
                 $mobile.'" AND outlets.code="'.$tlp.'"');

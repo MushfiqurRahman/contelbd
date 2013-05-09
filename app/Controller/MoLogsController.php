@@ -87,7 +87,7 @@ class MoLogsController extends AppController{
     /**
      * Check the sale message format, product codes validity and also format and array for sale detail
      */
-    protected function _format_sale_detail( $params, $sale_id = null, $sale_counter = 1, $moLogId ){
+    protected function _format_sale_detail( $params, $sale_id = null, $sale_counter = 1, $moLogId, $saleDetails = null ){
         $productList = $this->Sale->SaleDetail->Product->find('list', array('fields' => array('id','code')));
         
         
@@ -101,6 +101,14 @@ class MoLogsController extends AppController{
 
                 foreach( $productList as $k => $v ){
                     if( $v == $params[$i] || strtoupper($params[$i]) == $v){
+                        
+                        //checking already inserted this product in previous requests
+                        foreach($saleDetails as $sd ){
+                            if( $sd['sale_details']['product_id']==$k ){
+                                $data['error'] = 'Sorry! You have already sent STT for '.$v.'. Please send your request again.';
+                                return $data;
+                            }
+                        }
                         
                         //checking same products code present more than one or not
                         for( $l=$i+1; $l < $total-1; $l++ ){
@@ -205,12 +213,15 @@ class MoLogsController extends AppController{
         }else{
             $this->loadModel('Sale');
                 
-            $res = $this->MoLog->query('SELECT sales.id, sale_details.sale_counter FROM sales LEFT JOIN sale_details ON sales.id=sale_details.sale_id WHERE DATE(date)="'.$date.'" AND representative_id='.
-                    $outletId[0]['representatives']['id'].' AND outlet_id='.$outletId[0]['outlets']['id']);
+            $res = $this->MoLog->query('SELECT sales.id, sale_details.sale_counter, sale_details.product_id '.
+                    'FROM sales LEFT JOIN '.
+                    'sale_details ON sales.id=sale_details.sale_id WHERE DATE(date)="'.$date.
+                    '" AND representative_id='.$outletId[0]['representatives']['id'].
+                    ' AND outlet_id='.$outletId[0]['outlets']['id']);
 
             //pr($res);exit;
             if(count($res)>0) { 
-                $sale_detail = $this->_format_sale_detail($params, $res[0]['sales']['id'], $params[ $ttl_msg_part - 1 ], $lastMoLogId);
+                $sale_detail = $this->_format_sale_detail($params, $res[0]['sales']['id'], $params[ $ttl_msg_part - 1 ], $lastMoLogId, $res);
 
                 if( isset($sale_detail['error']) ){                    
                     $this->MoLog->send_sms_free_of_charge($mobile_number, 0, $sale_detail['error'], 796, $keyword, $date, $time_int);
@@ -227,7 +238,7 @@ class MoLogsController extends AppController{
                             break;
                         }
                     }
-                    $msg = $is_update ? "Your record have been successfully updated, thanks." : "We have received your request. Thank you.";
+                    $msg = $is_update ? 'Thank you! STT Report for '.$outletId[0]['outlets']['title'].' have been updated.' : 'Thank you! STT Report for '.$outletId[0]['outlets']['title'].' have been received.';
                     $this->MoLog->send_sms_free_of_charge($mobile_number, $outletId[0]['outlets']['id'], $msg, 796, $keyword, $date, $time_int);
                 }
             }
@@ -239,8 +250,8 @@ class MoLogsController extends AppController{
                 }else{
                     $this->_save_sales($outletId[0]['representatives']['id'], $outletId[0]['outlets']['id'],
                             $outletId[0]['sections']['id'], $params[$ttl_msg_part-1], $dates, $sale_detail['SaleDetail']);//                    
-
-                    $msg = "We have received your request. Thank you.";
+                    
+                    $msg = 'Thank you! STT Report for '.$outletId[0]['outlets']['title'].' have been received.';
                     $this->MoLog->send_sms_free_of_charge($mobile_number, $outletId[0]['outlets']['id'], $msg, 796, $keyword, $date, $time_int);                        
                 }
             }
@@ -313,8 +324,9 @@ class MoLogsController extends AppController{
                 $this->MoLog->query( $update_qry );        
                 
                 $tp = $this->_get_total_coupon_point($outletId[0]['outlets']['id']);
-
-                $msg = "After successful update your current coupon point total is: ".$tp.". Thank you.";
+                
+                $msg = 'Thank you! '.$params[2].' coupon points updated for '.
+                        $outletId[0]['outlets']['title'].'. Current point is '.$tp.'.';
                 $this->MoLog->send_sms_free_of_charge($mobile_number, $outletId[0]['outlets']['id'], $msg, 796, $keyword, $date, $time_int);
             }
             else
@@ -330,7 +342,9 @@ class MoLogsController extends AppController{
                 $this->MoLog->query($insert_qry);
                 
                 $tp = $this->_get_total_coupon_point($outletId[0]['outlets']['id']);
-                $msg = "After successful add your current coupon point total is: ". $tp.". Thank you.";
+                $msg = 'Thank you! '.$params[2].' coupon points added for '.
+                        $outletId[0]['outlets']['title'].'. Current point: '.$tp.'.';
+                
                 $this->MoLog->send_sms_free_of_charge($mobile_number, $outletId[0]['outlets']['id'], $msg, 796, $keyword, $date, $time_int);                        
             }
         }
@@ -391,7 +405,7 @@ class MoLogsController extends AppController{
                 die();
             }else{
                 $tp = $this->_get_total_coupon_point($outletId);
-                $msg = 'Till now you total point is:'.$tp;
+                $msg = 'Till now your total point is:'.$tp;
                 $this->MoLog->send_sms_free_of_charge($mobile_number, $msg, 796, $keyword, $date, $time_int);
                 die();
                 
@@ -449,13 +463,15 @@ class MoLogsController extends AppController{
             $res = $this->MoLog->query('SELECT id, total_score FROM coupons WHERE DATE(date)="'.$date.'" AND representative_id='.
                     $outletId[0]['representatives']['id'].' AND outlet_id='.$outletId[0]['outlets']['id'].
                     ' AND is_redeem=1 AND coupon_counter='.$params[3]);
-                //pr($res);exit;
+                //pr($res);
             
             $totalQp = $this->_get_total_coupon_point($outletId[0]['outlets']['id']);    
             
             if( count($res)>0 ){
                 $totalQp += (-$res[0]['coupons']['total_score']);
             }
+            
+            //echo $totalQp;
             
             if( $params[2] > $totalQp ){
                 $msg = 'Invalid request! Sorry, your redeem point is greater than your total point. You total point is: '.
@@ -473,9 +489,16 @@ class MoLogsController extends AppController{
 
                 $this->MoLog->query( $update_qry );  
                 
-                $tp = $this->_get_total_coupon_point($outletId[0]['outlets']['id']);
+                $totalQp += $params[2];
+                
+                //$tp = $this->_get_total_coupon_point($outletId[0]['outlets']['id']);
+                
+                $msg = 'Thank you! Redeem points updated for '.
+                        $outletId[0]['outlets']['title'].'. Current'.
+                        ' point: '.$totalQp.'.';
+                
 
-                $msg = "After successful update your current coupon point total is: ".$tp.". Thank you.";
+                //$msg = "After successful update your current coupon point total is: ".$tp.". Thank you.";
                 $this->MoLog->send_sms_free_of_charge($mobile_number, $outletId[0]['outlets']['id'], $msg, 796, $keyword, $date, $time_int);
             }
             else {
@@ -487,9 +510,13 @@ class MoLogsController extends AppController{
                         '"'.$dates.'")';                    
 
                 $this->MoLog->query($insert_qry);
-                $totalQp -= $params[3];
+                $totalQp += $params[2];
+                
+                $msg = 'Thank you!'.(-$params[2]).' points redeemed from '.
+                        $outletId[0]['outlets']['title'].'. Current'.
+                        ' point: '.$totalQp.'.';
 
-                $msg = "Redeem successful. Redeemed ".$params[2]." point. Current total coupon point is: ".$totalQp.". Thank you.";
+                //$msg = "Redeem successful. Redeemed ".$params[2]." point. Current total coupon point is: ".$totalQp.". Thank you.";
                 $this->MoLog->send_sms_free_of_charge($mobile_number, $outletId[0]['outlets']['id'], $msg, 796, $keyword, $date, $time_int);                        
             }
         }
