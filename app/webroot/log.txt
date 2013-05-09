@@ -93,3 +93,16 @@
 8801730071842 After successful update your current coupon point total is: 370. Thank you.	2013-05-07 11:54 AM
 8801981270858 After successful add your current coupon point total is: 220. Thank you.	2013-05-08 07:30 PM
 8801981270858 After successful update your current coupon point total is: 220. Thank you.	2013-05-08 08:59 PM
+8801730071842 Invalid request! Sorry, your redeem point is larger than your total point. You total point is: 370	2013-05-09 10:54 PM
+8801730071842 After successful redeem your current coupon point total is: 370. Thank you.	2013-05-09 10:58 PM
+8801730071842 Invalid request! Sorry, your redeem point is greater than your total point. You total point is: 170	2013-05-09 10:59 PM
+8801730071842 After successful update your current coupon point total is: 170. Thank you.	2013-05-09 11:05 PM
+8801730071842 After successful add your current coupon point total is: 390. Thank you.	2013-05-09 11:05 PM
+8801730071842 Invalid request! Sorry, your redeem point is greater than your total point. You total point is: 390	2013-05-09 11:06 PM
+8801730071842 After successful redeem your current coupon point total is: 390. Thank you.	2013-05-09 11:06 PM
+8801730071842 After successful update your current coupon point total is: 290. Thank you.	2013-05-09 11:12 PM
+8801730071842 Redeem successful. Redeemed 3 point. Current total coupon point is: 287. Thank you.	2013-05-09 11:12 PM
+8801730071842 After successful update your current coupon point total is: 190. Thank you.	2013-05-09 11:13 PM
+8801730071842 Invalid value! Total point is not equal to the sum of activity points	2013-05-09 11:14 PM
+8801730071842 After successful update your current coupon point total is: 290. Thank you.	2013-05-09 11:14 PM
+8801730071842 After successful add your current coupon point total is: 610. Thank you.	2013-05-09 11:14 PM

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 08, 2013 at 08:23 AM
+-- Generation Time: May 09, 2013 at 10:16 AM
 -- Server version: 5.1.33
 -- PHP Version: 5.2.9
 
@@ -146,23 +146,29 @@ CREATE TABLE IF NOT EXISTS `coupons` (
   `outlet_id` int(11) NOT NULL,
   `section_id` int(11) DEFAULT NULL,
   `coupon_counter` int(4) NOT NULL,
+  `is_redeem` tinyint(1) NOT NULL DEFAULT '0',
   `total_score` int(11) NOT NULL,
   `first_act_score` int(11) NOT NULL,
   `second_act_score` int(11) NOT NULL,
   `third_act_score` int(11) NOT NULL,
   `date` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data for table `coupons`
 --
 
-INSERT INTO `coupons` (`id`, `mo_log_id`, `representative_id`, `outlet_id`, `section_id`, `coupon_counter`, `total_score`, `first_act_score`, `second_act_score`, `third_act_score`, `date`) VALUES
-(2, 0, 11, 1, 0, 1, -100, 0, 0, 0, '2013-04-30 00:00:00'),
-(3, 0, 11, 1, 0, 2, 250, 80, 90, 80, '2013-04-30 00:00:00'),
-(4, 143, 11, 1, 0, 1, 220, 80, 90, 50, '2013-05-07 11:54:10'),
-(5, 145, 13, 2, 0, 1, 220, 80, 90, 50, '2013-05-08 19:30:29');
+INSERT INTO `coupons` (`id`, `mo_log_id`, `representative_id`, `outlet_id`, `section_id`, `coupon_counter`, `is_redeem`, `total_score`, `first_act_score`, `second_act_score`, `third_act_score`, `date`) VALUES
+(2, 0, 11, 1, 0, 1, 1, -100, 0, 0, 0, '2013-04-30 00:00:00'),
+(3, 0, 11, 1, 0, 2, 0, 250, 80, 90, 80, '2013-04-30 00:00:00'),
+(4, 143, 11, 1, 0, 1, 0, 220, 80, 90, 50, '2013-05-07 11:54:10'),
+(5, 145, 13, 2, 0, 1, 0, 220, 80, 90, 50, '2013-05-08 19:30:29'),
+(6, 0, 11, 1, 0, 1, 1, -200, 0, 0, 0, '2013-05-09 22:58:15'),
+(7, 154, 11, 1, 0, 1, 0, 320, 80, 90, 150, '2013-05-09 23:05:59'),
+(8, 0, 11, 1, 0, 2, 1, -100, 0, 0, 0, '2013-05-09 23:06:44'),
+(9, 0, 11, 1, 0, 3, 1, -100, 0, 0, 0, '2013-05-09 23:12:53'),
+(10, 162, 11, 1, 0, 2, 0, 320, 80, 90, 150, '2013-05-09 23:14:32');
 
 -- --------------------------------------------------------
 
@@ -224,7 +230,7 @@ CREATE TABLE IF NOT EXISTS `mo_logs` (
   `datetime` varchar(30) NOT NULL,
   `time_int` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=147 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=163 ;
 
 --
 -- Dumping data for table `mo_logs`
@@ -259,7 +265,23 @@ INSERT INTO `mo_logs` (`id`, `msisdn`, `sms`, `keyword`, `datetime`, `time_int`)
 (143, '8801730071842', 'CUP MVP00281,220,80,90,50,1', 'CUP', '2013-05-07', 1367906050),
 (144, '8801730071842', 'CUP MVP00281,220,80,90,50,1', 'CUP', '2013-05-07', 1367906061),
 (145, '8801981270858', 'CUP VP023,220,80,90,50,1', 'CUP', '2013-05-08', 1368019829),
-(146, '8801981270858', 'CUP VP023,220,80,90,50,1', 'CUP', '2013-05-08', 1368025176);
+(146, '8801981270858', 'CUP VP023,220,80,90,50,1', 'CUP', '2013-05-08', 1368025176),
+(147, '8801730071842', 'RP MVP00281,400,1', 'RP', '2013-05-09', 1368118493),
+(148, '8801730071842', 'RP MVP00281,200,1', 'RP', '2013-05-09', 1368118587),
+(149, '8801730071842', 'RP MVP00281,200,1', 'RP', '2013-05-09', 1368118695),
+(150, '8801730071842', 'RP MVP00281,200,1', 'RP', '2013-05-09', 1368118770),
+(151, '8801730071842', 'RP MVP00281,200,1', 'RP', '2013-05-09', 1368118883),
+(152, '8801730071842', 'RP MVP00281,200,1', 'RP', '2013-05-09', 1368119098),
+(153, '8801730071842', 'RP MVP00281,200,1', 'RP', '2013-05-09', 1368119111),
+(154, '8801730071842', 'CUP MVP00281,220,80,90,50,1', 'CUP', '2013-05-09', 1368119159),
+(155, '8801730071842', 'RP MVP00281,400,2', 'RP', '2013-05-09', 1368119194),
+(156, '8801730071842', 'RP MVP00281,100,2', 'RP', '2013-05-09', 1368119204),
+(157, '8801730071842', 'RP MVP00281,100,2', 'RP', '2013-05-09', 1368119557),
+(158, '8801730071842', 'RP MVP00281,100,3', 'RP', '2013-05-09', 1368119573),
+(159, '8801730071842', 'RP MVP00281,100,3', 'RP', '2013-05-09', 1368119626),
+(160, '8801730071842', 'CUP MVP00281,220,80,90,150,1', 'CUP', '2013-05-09', 1368119652),
+(161, '8801730071842', 'CUP MVP00281,320,80,90,150,1', 'CUP', '2013-05-09', 1368119660),
+(162, '8801730071842', 'CUP MVP00281,320,80,90,150,2', 'CUP', '2013-05-09', 1368119672);
 
 -- --------------------------------------------------------
 
@@ -276,7 +298,7 @@ CREATE TABLE IF NOT EXISTS `mt_logs` (
   `datetime` varchar(30) NOT NULL,
   `time_int` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=89 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=102 ;
 
 --
 -- Dumping data for table `mt_logs`
@@ -305,7 +327,20 @@ INSERT INTO `mt_logs` (`id`, `outlet_id`, `msisdn`, `sms`, `keyword`, `datetime`
 (85, 0, '8801730071842', 'After successful add your current coupon point total is: 370. Thank you.', 'CUP', '2013-05-07', 1367906050),
 (86, 0, '8801730071842', 'After successful update your current coupon point total is: 370. Thank you.', 'CUP', '2013-05-07', 1367906061),
 (87, 0, '8801981270858', 'After successful add your current coupon point total is: 220. Thank you.', 'CUP', '2013-05-08', 1368019829),
-(88, 2, '8801981270858', 'After successful update your current coupon point total is: 220. Thank you.', 'CUP', '2013-05-08', 1368025176);
+(88, 2, '8801981270858', 'After successful update your current coupon point total is: 220. Thank you.', 'CUP', '2013-05-08', 1368025176),
+(89, 1, '8801730071842', 'Invalid request! Sorry, your redeem point is larger than your total point. You total point is: 370', 'RP', '2013-05-09', 1368118493),
+(90, 1, '8801730071842', 'After successful redeem your current coupon point total is: 370. Thank you.', 'RP', '2013-05-09', 1368118695),
+(91, 1, '8801730071842', 'Invalid request! Sorry, your redeem point is greater than your total point. You total point is: 170', 'RP', '2013-05-09', 1368118770),
+(92, 1, '8801730071842', 'After successful update your current coupon point total is: 170. Thank you.', 'RP', '2013-05-09', 1368119111),
+(93, 1, '8801730071842', 'After successful add your current coupon point total is: 390. Thank you.', 'CUP', '2013-05-09', 1368119159),
+(94, 1, '8801730071842', 'Invalid request! Sorry, your redeem point is greater than your total point. You total point is: 390', 'RP', '2013-05-09', 1368119194),
+(95, 1, '8801730071842', 'After successful redeem your current coupon point total is: 390. Thank you.', 'RP', '2013-05-09', 1368119204),
+(96, 1, '8801730071842', 'After successful update your current coupon point total is: 290. Thank you.', 'RP', '2013-05-09', 1368119557),
+(97, 1, '8801730071842', 'Redeem successful. Redeemed 3 point. Current total coupon point is: 287. Thank you.', 'RP', '2013-05-09', 1368119573),
+(98, 1, '8801730071842', 'After successful update your current coupon point total is: 190. Thank you.', 'RP', '2013-05-09', 1368119626),
+(99, 0, '8801730071842', 'Invalid value! Total point is not equal to the sum of activity points', 'CUP', '2013-05-09', 1368119652),
+(100, 1, '8801730071842', 'After successful update your current coupon point total is: 290. Thank you.', 'CUP', '2013-05-09', 1368119660),
+(101, 1, '8801730071842', 'After successful add your current coupon point total is: 610. Thank you.', 'CUP', '2013-05-09', 1368119672);
 
 -- --------------------------------------------------------
 

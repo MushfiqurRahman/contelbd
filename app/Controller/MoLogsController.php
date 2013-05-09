@@ -301,7 +301,7 @@ class MoLogsController extends AppController{
         }else{            
             $res = $this->MoLog->query('SELECT id FROM coupons WHERE DATE(date)="'.$date.'" AND representative_id='.
                     $outletId[0]['representatives']['id'].' AND outlet_id='.$outletId[0]['outlets']['id'].
-                    ' AND coupon_counter='.$params[6]);
+                    ' AND is_redeem=0 AND coupon_counter='.$params[6]);
 //                pr($res);
 
             if( count($res)>0 )
@@ -446,14 +446,27 @@ class MoLogsController extends AppController{
             $this->MoLog->send_sms_free_of_charge($mobile_number, 0, $error, 796, $keyword, $date, $time_int);
             die();
         }else{            
-            $res = $this->MoLog->query('SELECT id FROM coupons WHERE DATE(date)="'.$date.'" AND representative_id='.
+            $res = $this->MoLog->query('SELECT id, total_score FROM coupons WHERE DATE(date)="'.$date.'" AND representative_id='.
                     $outletId[0]['representatives']['id'].' AND outlet_id='.$outletId[0]['outlets']['id'].
-                    ' AND coupon_counter='.$params[3]);
-//                pr($res);
+                    ' AND is_redeem=1 AND coupon_counter='.$params[3]);
+                //pr($res);exit;
+            
+            $totalQp = $this->_get_total_coupon_point($outletId[0]['outlets']['id']);    
+            
+            if( count($res)>0 ){
+                $totalQp += (-$res[0]['coupons']['total_score']);
+            }
+            
+            if( $params[2] > $totalQp ){
+                $msg = 'Invalid request! Sorry, your redeem point is greater than your total point. You total point is: '.
+                        $totalQp;
+                $this->MoLog->send_sms_free_of_charge($mobile_number, $outletId[0]['outlets']['id'], $msg, 796, $keyword, $date, $time_int);
+                exit;
+            }
             
             $params[2] = -($params[2]);
 
-            if( count($res)>0 ) {
+            if( count($res)>0 ) { 
                 
                 $update_qry = 'UPDATE coupons SET total_score='.$params[2].', first_act_score = 0,'.
                         ' second_act_score=0, third_act_score = 0 WHERE coupons.id='.$res[0]['coupons']['id'];
@@ -468,15 +481,15 @@ class MoLogsController extends AppController{
             else {
                 $outletId[0]['sections']['id']  = empty($outletId[0]['sections']['id']) ? 0 : $outletId[0]['sections']['id'];
                 $insert_qry = 'INSERT INTO coupons(representative_id, outlet_id, section_id, coupon_counter,'.
-                        'total_score, first_act_score, second_act_score, third_act_score, date_time, date) '.
+                        'is_redeem, total_score, first_act_score, second_act_score, third_act_score, date) '.
                         'values('.$outletId[0]['representatives']['id'].','.$outletId[0]['outlets']['id'].','.
-                        $outletId[0]['sections']['id'].','.$params[3].','.$params[2].',0,0,0,'.
+                        $outletId[0]['sections']['id'].','.$params[3].', 1,'.$params[2].',0,0,0,'.
                         '"'.$dates.'")';                    
 
                 $this->MoLog->query($insert_qry);
-                $tp = $this->_get_total_coupon_point($outletId[0]['outlets']['id']);
+                $totalQp -= $params[3];
 
-                $msg = "After successful redeem your current coupon point total is: ".$tp.". Thank you.";
+                $msg = "Redeem successful. Redeemed ".$params[2]." point. Current total coupon point is: ".$totalQp.". Thank you.";
                 $this->MoLog->send_sms_free_of_charge($mobile_number, $outletId[0]['outlets']['id'], $msg, 796, $keyword, $date, $time_int);                        
             }
         }
