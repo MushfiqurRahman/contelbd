@@ -36,23 +36,10 @@ class SectionsController extends AppController {
             $this->layout = $this->autoRender = false;
             
             if( $this->request->is('ajax') ){
-                if( isset($_POST['house_id']) ){
+                if( isset($_POST['house_id']) ){      
                     
-                    $res = $this->Section->query('select * from representatives left join mobiles '.
-                        'on representatives.id = mobiles.representative_id where representatives.house_id='.
-                            $_POST['house_id'].' AND representatives.type="sr"');
+                    $repList = $this->Section->Representative->repList_with_mobile( $_POST['house_id'] );
                     
-                    $repList = array();
-                    
-                    foreach( $res as $r ){
-                        if( isset($repList[ $r['representatives']['id'] ]) ){
-                            $repList[ $r['representatives']['id'] ] .= ', '.$r['mobiles']['mobile_no'];
-                        }else{
-                            $repList[ $r['representatives']['id'] ] = $r['representatives']['name'].', '.$r['mobiles']['mobile_no'];
-                        }
-                    }
-                    
-                    $this->log(print_r($repList,true),'error');
                     echo json_encode($repList);
                 }else{
                     echo json_encode(array('error' => 'Invalid house id!'));
@@ -115,9 +102,11 @@ class SectionsController extends AppController {
 		} else {
 			$options = array('conditions' => array('Section.' . $this->Section->primaryKey => $id));
 			$this->request->data = $this->Section->find('first', $options);
+                        $this->set('representatives',$this->Section->Representative->repList_with_mobile(
+                                $this->request->data['Section']['house_id']));
 		}
 		$houses = $this->Section->House->find('list');
-		$this->set(compact('houses'));
+		$this->set(compact('houses'));                
 	}
 
 /**

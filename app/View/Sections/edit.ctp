@@ -5,8 +5,9 @@
 	<?php
 		echo $this->Form->input('id');
 		echo $this->Form->input('house_id');
+                echo $this->Form->input('representative_id');
 		echo $this->Form->input('title');
-		echo $this->Form->input('code');
+		echo $this->Form->input('code', array('required' => false));
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>
@@ -27,3 +28,31 @@
 		<li><?php echo $this->Html->link(__('New Sale'), array('controller' => 'sales', 'action' => 'add')); ?> </li>
 	</ul>
 </div>
+<script>
+    $(document).ready(function(){
+        
+        $("#SectionHouseId").change(function(){
+            get_rep_list();
+        });
+       function get_rep_list(){
+           $.ajax({
+                url:'/sections/ajax_rep_list',
+                type:'post',
+                data:'house_id='+$("#SectionHouseId").val(),
+                success:function(res){
+                    var options = $.parseJSON(res);
+                    var representatives = '';
+
+                    if( typeof(options['error']) != "undefined" ){
+                        alert(options['error']);
+                    }else{
+                        $.each(options, function(ind, val){
+                            representatives += '<option value="'+ind+'">'+val+'</option>';
+                        });
+                        $("#SectionRepresentativeId").html(representatives);
+                    }
+                }
+            });
+       }
+    });
+</script>

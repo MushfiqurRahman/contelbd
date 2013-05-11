@@ -108,5 +108,27 @@ class Representative extends AppModel {
                     'foreignKey' => 'representative_id'
                 )
 	);
+        
+        /**
+         *
+         * @param type $houseId
+         * @return string 
+         */
+        public function repList_with_mobile( $houseId ){
+            $res = $this->query('select * from representatives left join mobiles '.
+                        'on representatives.id = mobiles.representative_id where representatives.house_id='.
+                            $houseId.' AND representatives.type="sr"');
+                    
+            $repList = array();
+
+            foreach( $res as $r ){
+                if( isset($repList[ $r['representatives']['id'] ]) ){
+                    $repList[ $r['representatives']['id'] ] .= ', '.$r['mobiles']['mobile_no'];
+                }else{
+                    $repList[ $r['representatives']['id'] ] = $r['representatives']['name'].', '.$r['mobiles']['mobile_no'];
+                }
+            }
+            return $repList;
+        }
 
 }

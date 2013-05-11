@@ -14,7 +14,7 @@
                 
         <?php
 		echo $this->Form->input('title');
-		echo $this->Form->input('code');
+		echo $this->Form->input('code', array('required' => false));
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>
