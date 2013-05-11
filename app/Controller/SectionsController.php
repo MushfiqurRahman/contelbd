@@ -28,6 +28,37 @@ class SectionsController extends AppController {
 		echo json_encode($sections);
             }
         }
+        
+        /**
+         * This function is used in Section add methods add.ctp file 
+         */
+        public function ajax_rep_list(){
+            $this->layout = $this->autoRender = false;
+            
+            if( $this->request->is('ajax') ){
+                if( isset($_POST['house_id']) ){
+                    
+                    $res = $this->Section->query('select * from representatives left join mobiles '.
+                        'on representatives.id = mobiles.representative_id where representatives.house_id='.
+                            $_POST['house_id'].' AND representatives.type="sr"');
+                    
+                    $repList = array();
+                    
+                    foreach( $res as $r ){
+                        if( isset($repList[ $r['representatives']['id'] ]) ){
+                            $repList[ $r['representatives']['id'] ] .= ', '.$r['mobiles']['mobile_no'];
+                        }else{
+                            $repList[ $r['representatives']['id'] ] = $r['representatives']['name'].', '.$r['mobiles']['mobile_no'];
+                        }
+                    }
+                    
+                    $this->log(print_r($repList,true),'error');
+                    echo json_encode($repList);
+                }else{
+                    echo json_encode(array('error' => 'Invalid house id!'));
+                }
+            }
+        }
 
 /**
  * view method
