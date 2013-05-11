@@ -87,7 +87,7 @@ class MoLogsController extends AppController{
     /**
      * Check the sale message format, product codes validity and also format and array for sale detail
      */
-    protected function _format_sale_detail( $params, $sale_id = null, $sale_counter = 1, $moLogId, $saleDetails = null ){
+    protected function _format_sale_detail( $params, $sale_id = null, $sale_counter = 1, $moLogId, $saleDetails = array() ){
         $productList = $this->Sale->SaleDetail->Product->find('list', array('fields' => array('id','code')));
         
         
@@ -102,11 +102,14 @@ class MoLogsController extends AppController{
                 foreach( $productList as $k => $v ){
                     if( $v == $params[$i] || strtoupper($params[$i]) == $v){
                         
+                                                
                         //checking already inserted this product in previous requests
-                        foreach($saleDetails as $sd ){
-                            if( $sd['sale_details']['product_id']==$k ){
-                                $data['error'] = 'Sorry! You have already sent STT for '.$v.'. Please send your request again.';
-                                return $data;
+                        if( count($saleDetails)>0 ){
+                            foreach($saleDetails as $sd ){
+                                if( $sd['sale_details']['product_id']==$k ){
+                                    $data['error'] = 'Sorry! You have already sent STT for '.$v.'. Please send your request again.';
+                                    return $data;
+                                }
                             }
                         }
                         

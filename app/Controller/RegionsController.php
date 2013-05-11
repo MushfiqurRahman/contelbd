@@ -1,5 +1,6 @@
 <?php
 App::uses('AppController', 'Controller');
+set_time_limit ( 600 );
 /**
  * Regions Controller
  *
@@ -12,10 +13,12 @@ class RegionsController extends AppController {
  *
  * @return void
  */
-	public function index() {
-		$this->Region->recursive = 0;
-		$this->set('regions', $this->paginate());
-	}
+	var $regList, $areaList, $houseList, $secList, $repList, $ssList, $srList, $tsaList, $outletList;
+	
+	public function index() {            
+            $this->Region->recursive = 0;
+            $this->set('regions', $this->paginate());
+	}        
         
         /**
          * 
@@ -26,7 +29,9 @@ class RegionsController extends AppController {
                     if( $this->request->data['Region']['xls_file']['error']==0){
                         $renamed_f_name = time().$this->request->data['Region']['xls_file']['name'];
                         if( move_uploaded_file($this->request->data['Region']['xls_file']['tmp_name'], WWW_ROOT.$renamed_f_name) ){
-                            if( $this->_import($renamed_f_name) ){
+                        	
+                        	if( $this->_import($renamed_f_name) ){
+                            	
                                 $this->Session->setFlash(__('Data import successful.'));
                             }else{
                                 $this->Session->setFlash(__('Data import failed!'));
@@ -58,21 +63,185 @@ class RegionsController extends AppController {
             $objPHPExcel = $objReader->load($xlName);
             $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
             
-            //pr($objWorksheet);
-            
-            
             $totalRow = $objPHPExcel->getActiveSheet()->getHighestRow();
             
-            pr($lastRow);
+            //pr($totalRow);
             
-            for($i=1; $i<$totalRow; $i++){
+            for($i=2; $i<$totalRow; $i++){                
+                $region['Region']['title'] = $objWorksheet->getCellByColumnAndRow(0,$i)->getValue();
+                $regId = $this->_save_region( $region );
                 
-                $region = $objWorksheet->getCellByColumnAndRow(0,$i)->getValue();
-                $area = $objWorksheet->getCellByColumnAndRow(1,$i)->getValue();
-                $house = $objWorksheet->getCellByColumnAndRow(1,$i)->getValue();
-                $section = $objWorksheet->getCellByColumnAndRow(1,$i)->getValue();
+                $area['Area']['region_id'] = $regId;
+                $area['Area']['title'] = $objWorksheet->getCellByColumnAndRow(1,$i)->getValue();
+                $areaId = $this->_save_area( $area );
                 
+                $house['House']['area_id'] = $areaId;                
+                $house['House']['title'] = $objWorksheet->getCellByColumnAndRow(3,$i)->getValue();
+                $houseId = $this->_save_house($house);
+                
+                $sr['Representative']['house_id'] = $houseId;
+                $sr['Representative']['name'] = $objWorksheet->getCellByColumnAndRow(9,$i)->getValue();
+                $sr['Representative']['type'] = 'sr';
+                $sr['Mobile'] = $this->_get_mobile_nos( $objWorksheet->getCellByColumnAndRow(10,$i)->getValue() );
+                $srId = $this->_save_representative( $sr );
+                
+                $ss['Representative']['house_id'] = $houseId;
+                $ss['Representative']['name'] = $objWorksheet->getCellByColumnAndRow(11,$i)->getValue();
+                $ss['Representative']['type'] = 'ss';
+                $ss['Mobile'] = $this->_get_mobile_nos( $objWorksheet->getCellByColumnAndRow(12,$i)->getValue() );
+                $ssId = $this->_save_representative( $ss );
+                
+                $tsa['Representative']['house_id'] = $houseId;
+                $tsa['Representative']['name'] = $objWorksheet->getCellByColumnAndRow(13,$i)->getValue();
+                $tsa['Representative']['type'] = 'tsa';
+                $tsa['Representative']['location'] = $objWorksheet->getCellByColumnAndRow(15,$i)->getValue();
+                $tsa['Mobile'] = $this->_get_mobile_nos( $objWorksheet->getCellByColumnAndRow(14,$i)->getValue() );
+                $tsaId = $this->_save_representative( $tsa );
+                
+                $section['Section']['house_id'] = $houseId;
+                $section['Section']['representative_id'] = $srId;
+                $section['Section']['title'] = $objWorksheet->getCellByColumnAndRow(16,$i)->getValue();
+                $sectionId = $this->_save_section( $section );
+                
+                $outlet['Outlet']['section_id'] = $sectionId;
+                $outlet['Outlet']['house_id'] = $houseId;
+                $outlet['Outlet']['code'] = $objWorksheet->getCellByColumnAndRow(4,$i)->getValue();
+                $outlet['Outlet']['title'] = $objWorksheet->getCellByColumnAndRow(5,$i)->getValue();
+                $outlet['Outlet']['priority'] = $this->request->data['Region']['priority'];
+                $outlet['Outlet']['outlet_retailer_name'] = $objWorksheet->getCellByColumnAndRow(6,$i)->getValue();                
+                $outlet['Outlet']['phone_no'] = $objWorksheet->getCellByColumnAndRow(7,$i)->getValue();
+                $outlet['Outlet']['address'] = $objWorksheet->getCellByColumnAndRow(8,$i)->getValue();
+                $outletId = $this->_save_outlet($outlet);
+                
+//                pr($region);
+//                pr($area);
+//                pr($house);
+//                pr($outlet);
+//                pr($section);
+//                pr($sr);
+//                pr($ss);
+//                pr($tsa);
             }
+        }
+        
+        /**
+         * 
+         * Enter description here ...
+         * @param unknown_type $mb_nos
+         */
+        protected function _get_mobile_nos( $mb_nos ){
+        	$mobiles = array();
+        	$i = 0;
+        	$tok = strtok( $mb_nos, " ,\s\t\/");
+        	while( $tok !== false ){
+        		if( substr($tok, 0, 2) != '88' ){
+        			$tok = '88'.$tok;
+        		}
+        		$mobiles[$i]['mobile_no'] = $tok;        		
+        		$tok = strtok(" ,\s\t\/");
+        		$i++;
+        	}
+        	return $mobiles;        	
+        } 
+        
+        
+        /**
+         * 
+         * Enter description here ...
+         * @param unknown_type $region
+         */
+        protected function _save_region( $region ){
+            $rgId = $this->Region->field('id',array('title' => $region['Region']['title']));
+            if( $rgId ) return $rgId;
+            $this->Region->create();
+            $this->Region->save($region);
+            return $this->Region->id;
+        }
+        
+        /**
+         * 
+         * Enter description here ...
+         * @param unknown_type $area
+         */
+	protected function _save_area( $area ){
+            $arId = $this->Region->Area->field('id',array('Area.region_id' => $area['Area']['region_id'],
+                'Area.title' => $area['Area']['title']));
+            
+            if( $arId ) return $arId;
+            
+            $this->Region->Area->create();
+            $this->Region->Area->save($area);
+            return $this->Region->Area->id;        	
+        }
+        
+        /**
+         * 
+         * Enter description here ...
+         */
+	protected function _save_house( $house ){
+            $hsId = $this->Region->Area->House->field('id',array('House.area_id' => $house['House']['area_id'],
+                'House.title' => $house['House']['title']));
+            
+            if( $hsId ) return $hsId;
+            $this->Region->Area->House->create();
+            $this->Region->Area->House->save($house);
+            return $this->Region->Area->House->id;
+        }
+        
+        /**
+         * 
+         * Enter description here ...
+         */
+	protected function _save_section( $section ){            
+            $scId = $this->Region->Area->House->Section->field('id',array(
+                'Section.title' => $section['Section']['title'],'Section.house_id' => $section['Section']['house_id']));
+            
+            if( $scId ) return $scId;
+			
+            $this->Region->Area->House->Section->create();
+            $this->Region->Area->House->Section->save($section);
+            return $this->Region->Area->House->Section->id;
+        }
+        
+        /**
+         * 
+         * Enter description here ...
+         */
+	protected function _save_outlet( $outlet ){
+		$otId = $this->Region->Area->House->Outlet->field('id',array(
+                    'Outlet.house_id' => $outlet['Outlet']['house_id'],
+                    'Outlet.title' => $outlet['Outlet']['title'],
+                    'Outlet.code' => $outlet['Outlet']['code']));
+                
+                if( $otId ) return $otId;
+        	$this->Region->Area->House->Outlet->create();
+        	$this->Region->Area->House->Outlet->save($outlet);
+        	return $this->Region->Area->House->Outlet->id;
+        }
+        
+        /**
+         * 
+         * Enter description here ...
+         */
+	protected function _save_representative( $rep ){   
+            
+            $rpttvs = $this->Region->query('SELECT * FROM `representatives` LEFT JOIN `mobiles` ON
+                    `representatives`.`id`=`mobiles`.`representative_id` WHERE
+                `representatives`.`house_id`= '.$rep['Representative']['house_id'].' AND '.
+                    '`representatives`.`name` = "'.$rep['Representative']['name'].'" AND '.
+                '`representatives`.`type` = "'.$rep['Representative']['type'].'"');
+            
+            foreach( $rep['Mobile'] as $mb ){
+                foreach( $rpttvs as $rp ) {
+                    if( $rp['mobiles']['mobile_no']==$mb['mobile_no']){
+                        return $rp['mobiles']['representative_id'];
+                    }
+                }
+            }
+
+            $this->Region->Area->House->Representative->create();
+            $this->Region->Area->House->Representative->saveAssociated($rep);
+            return $this->Region->Area->House->Representative->id;
         }
 	
 

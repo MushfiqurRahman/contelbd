@@ -62,13 +62,17 @@
 			<th>TSA Name</th>
 			<th>Section</th>
                         <th>TLP Name</th>
-                        <th>Total Coupon Point</th>
-                        <th>Total Redeemed Point</th>
-                        <th>Total Point for KPI 1</th>
-                        <th>Total Point for KPI 2</th>
-                        <th>Total Point for KPI 3</th>
+                        <th>Till Date Total Earned Points</th>
+                        <th>Till date Point Earned for KPI 1</th>
+                        <th>Till date Point Earned for KPI 2</th>
+                        <th>Till date Point Earned for KPI 3</th>                        
+                        <th>Till date Redeemed Points</th>
+                        <th>Point Balance</th>
 	</tr>
-	<?php foreach ($coupons as $coupon): ?>
+	<?php 
+            foreach ($coupons as $coupon): 
+                $total_pt = $coupon[0]['f_total']+$coupon[0]['sec_total']+$coupon[0]['third_total'];
+        ?>
 	<tr class="gradeX">
 		<td><?php echo h($coupon['Outlet']['House']['Area']['Region']['title']); ?>&nbsp;</td>
 		<td>
@@ -82,11 +86,12 @@
 		</td>
 		<td><?php echo h($coupon['Section']['title']); ?>&nbsp;</td>
 		<td><?php echo h($coupon['Outlet']['title']); ?>&nbsp;</td>
-                <td><?php echo h($coupon[0]['total']); ?>&nbsp;</td>
-                <td><?php echo h($coupon[0]['f_total']+$coupon[0]['sec_total']+$coupon[0]['third_total'] - $coupon[0]['total']); ?>&nbsp;</td>
+                <td><?php echo h($total_pt); ?>&nbsp;</td>                
                 <td><?php echo h($coupon[0]['f_total']); ?>&nbsp;</td>
 		<td><?php echo h($coupon[0]['sec_total']); ?>&nbsp;</td>
-		<td><?php echo h($coupon[0]['third_total']); ?>&nbsp;</td>		
+		<td><?php echo h($coupon[0]['third_total']); ?>&nbsp;</td>
+                <td><?php echo h($total_pt - $coupon[0]['total']); ?>&nbsp;</td>
+                <td><?php echo h($coupon[0]['total']); ?>&nbsp;</td>
 	</tr>
 <?php endforeach; ?>
 	</table>
