@@ -114,10 +114,16 @@ class Representative extends AppModel {
          * @param type $houseId
          * @return string 
          */
-        public function repList_with_mobile( $houseId ){
+        public function repList_with_mobile( $houseId, $ss = false ){
             $res = $this->query('select * from representatives left join mobiles '.
                         'on representatives.id = mobiles.representative_id where representatives.house_id='.
                             $houseId.' AND representatives.type="sr"');
+            
+            if( $ss ){
+                $res = $this->query('select * from representatives left join mobiles '.
+                        'on representatives.id = mobiles.representative_id where representatives.house_id='.
+                            $houseId.' AND representatives.type="ss"');
+            }
                     
             $repList = array();
 

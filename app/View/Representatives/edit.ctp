@@ -5,6 +5,7 @@
 	<?php
 		echo $this->Form->input('id');
 		echo $this->Form->input('house_id');
+                echo $this->Form->input('ss_id', array('options' => $ss_id));
 		echo $this->Form->input('name');
 		echo $this->Form->input('sr_code', array('label' => 'SS/SR/TSA Code'));
     ?>
@@ -82,6 +83,32 @@
                    }
                 });
             }
-        })
+        });
+        
+        $("#RepresentativeType").change(function(){
+            alert($(this).val());
+           if( $(this).val()=='sr' ){
+               $.ajax({
+                  url:'/representatives/ajax_ss_list',
+                  type:'post',
+                  data:'house_id='+$("#RepresentativeHouseId").val(),
+                  success:function(resp){
+                      var options = $.parseJSON(resp);
+                      
+                      var ss = '';
+
+                        if( typeof(options['error']) != "undefined" ){
+                            alert(options['error']);
+                        }else{
+                            $.each(options, function(ind, val){
+                                ss += '<option value="'+ind+'">'+val+'</option>';
+                            });
+                            $("#ss_id").html(ss);
+                            $("#div_ss").show();
+                        }
+                  }
+               });
+           } 
+        });
     });
 </script>

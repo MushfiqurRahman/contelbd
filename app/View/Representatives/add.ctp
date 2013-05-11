@@ -17,6 +17,9 @@
                     array('ss' => 'Sales Superviser','sr' => 'Sales Representative', 'tsa' => 'TSA'),
                     'empty' => 'Select type','label' => 'Type'));
 	?>
+                <div id="div_ss" style="display:none;">
+                    <select id="ss_id" name="data[Representative][ss_id]"></select>
+                </div>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>
 </div>
@@ -37,6 +40,32 @@
         $("#add_more_mobile").click(function(){
             $(".mobile_nos").append('<br /><input type="text" name="data[Mobile]['+total_mobile+'][mobile_no]" class="mobile_no" />');
             total_mobile++;
+        });
+        
+        $("#RepresentativeType").change(function(){
+            
+           if( $(this).val()=='sr' ){
+               $.ajax({
+                  url:'/representatives/ajax_ss_list',
+                  type:'post',
+                  data:'house_id='+$("#RepresentativeHouseId").val(),
+                  success:function(resp){
+                      var options = $.parseJSON(resp);
+                      
+                      var ss = '';
+
+                        if( typeof(options['error']) != "undefined" ){
+                            alert(options['error']);
+                        }else{
+                            $.each(options, function(ind, val){
+                                ss += '<option value="'+ind+'">'+val+'</option>';
+                            });
+                            $("#ss_id").html(ss);
+                            $("#div_ss").show();
+                        }
+                  }
+               });
+           } 
         });
     });
 </script>

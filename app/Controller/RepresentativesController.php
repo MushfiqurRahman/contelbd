@@ -21,6 +21,24 @@ class RepresentativesController extends AppController {
                 'Mobile' => array('fields' => array('mobile_no'))));
 		$this->set('representatives', $this->paginate());
 	}
+        
+        /**
+         * 
+         */
+        public function ajax_ss_list(){
+            $this->layout = $this->autoRender = false;
+            
+            if( $this->request->is('ajax') ){
+                if( isset($_POST['house_id']) ){      
+                    
+                    $ssList = $this->Representative->repList_with_mobile($_POST['house_id'], true);
+                    
+                    echo json_encode($ssList);
+                }else{
+                    echo json_encode(array('error' => 'Invalid house id!'));
+                }
+            }
+        }
 
 /**
  * view method
@@ -112,6 +130,9 @@ class RepresentativesController extends AppController {
                             'contain' => array('Mobile' => array('fields' => array('id','mobile_no'))), 'recursive' => -1);
                         
 			$this->request->data = $this->Representative->find('first', $options);
+                        
+                        $this->set('ss_id', array($this->Representative->repList_with_mobile($this->request->data['Representative']['house_id'],
+                                true)));
 		}
 		$houses = $this->Representative->House->find('list');
 		$this->set(compact('houses'));

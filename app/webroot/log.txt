@@ -122,3 +122,4 @@
 8801730071842 Thank you!100 points redeemed from SHAH ALOM STORE. Current point: 10.	2013-05-10 01:24 AM
 8801730071842 Thank you! 220 coupon points added for SHAH ALOM STORE. Current point: 230.	2013-05-10 01:25 AM
 8801730071842 Thank you! 220 coupon points updated for SHAH ALOM STORE. Current point is 230.	2013-05-10 01:26 AM
+8801777660817 Invalid Mobile no or Outlet code! Please try again with valid code.	2013-05-12 03:24 AM
