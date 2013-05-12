@@ -99,7 +99,10 @@ class RegionsController extends AppController {
                 $tsaId = $this->_save_representative( $tsa );
                 
                 $section['Section']['house_id'] = $houseId;
-                $section['Section']['representative_id'] = $srId;
+                //$section['Section']['representative_id'] = $srId;
+                $section['Section']['sr_id'] = $srId;
+                $section['Section']['tsa_id'] = $tsaId;
+                $section['Section']['ss_id'] = $ssId;
                 $section['Section']['title'] = $objWorksheet->getCellByColumnAndRow(16,$i)->getValue();
                 $sectionId = $this->_save_section( $section );
                 
@@ -109,8 +112,7 @@ class RegionsController extends AppController {
                 $outlet['Outlet']['title'] = $objWorksheet->getCellByColumnAndRow(5,$i)->getValue();
                 $outlet['Outlet']['priority'] = $this->request->data['Region']['priority'];
                 $outlet['Outlet']['outlet_retailer_name'] = $objWorksheet->getCellByColumnAndRow(6,$i)->getValue();                
-                $outlet['Outlet']['phone_no'] = $objWorksheet->getCellByColumnAndRow(7,$i)->getValue();
-                
+                $outlet['Outlet']['phone_no'] = $objWorksheet->getCellByColumnAndRow(7,$i)->getValue();                
                 $outlet['Outlet']['address'] = $objWorksheet->getCellByColumnAndRow(8,$i)->getValue();
                 $outletId = $this->_save_outlet($outlet);
             }

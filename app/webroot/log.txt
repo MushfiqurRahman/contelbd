@@ -131,3 +131,31 @@
 88 Your SMS format is wrong, plesae try again with right format.	2013-05-12 09:27 AM
 8801816015466 796	2013-05-12 12:36 PM
 8801816015466 "Till now your total point is:0	2013-05-12 12:44 PM
+8801722041106 Thank you! STT Report for BM STORE have been received.	2013-05-13 04:00 AM
+8801722041106 Sorry! You have already sent STT for A01. Please send your request again.	2013-05-13 04:00 AM
+8801722041106 Thank you! STT Report for BM STORE have been updated.	2013-05-13 04:01 AM
+8801722041106 Sorry! You have already sent STT for A01. Please send your request again.	2013-05-13 04:02 AM
+8801722041106 Thank you! STT Report for BM STORE have been received.	2013-05-13 04:51 AM
+8801722041106 Thank you! STT Report for BM STORE have been received.	2013-05-13 04:53 AM
+8801722041106 Thank you! STT Report for BM STORE have been updated.	2013-05-13 04:53 AM
+8801722041106 Thank you! STT Report for BM STORE have been updated.	2013-05-13 04:53 AM
+8801722041106 Thank you! STT Report for BM STORE have been updated.	2013-05-13 05:00 AM
+8801722041106 Sorry! You have already sent STT for A01. Please send your request again.	2013-05-13 05:00 AM
+8801722041106 Thank you! STT Report for BM STORE have been received.	2013-05-13 05:04 AM
+8801722041106 Thank you! STT Report for BM STORE have been updated.	2013-05-13 05:05 AM
+8801722041106 Sorry! You have already sent STT for A01. Please send your request again.	2013-05-13 05:05 AM
+8801722041106 Thank you! STT Report for BM STORE have been received.	2013-05-13 05:09 AM
+8801730071809 Invalid Mobile number! Please try again with valid mobile no.	2013-05-13 05:11 AM
+8801730071809 Invalid Mobile number! Please try again with valid mobile no.	2013-05-13 05:11 AM
+8801777660813 Invalid Mobile no or Outlet code! Please try again with valid code.	2013-05-13 05:13 AM
+888801683386285 Invalid Mobile number! Please try again with valid mobile no.	2013-05-13 05:20 AM
+8801683386285 Thank you! STT Report for BM STORE have been received.	2013-05-13 05:20 AM
+8801683386285 Thank you! STT Report for BM STORE have been updated.	2013-05-13 05:21 AM
+8801727323994 Invalid Mobile no or Outlet code! Please try again with valid code.	2013-05-13 05:23 AM
+8801722041106 Invalid Mobile number! Please try again with valid mobile no.	2013-05-13 05:25 AM
+8801730071809 Thank you! 360 coupon points added for BM STORE. Current point: 360.	2013-05-13 05:25 AM
+8801816015466 Till now your total point is:360	2013-05-13 05:26 AM
+8801816015467 Invalid Outlet code or mobile no! Please try again with valid info.	2013-05-13 05:26 AM
+8801730071809 Thank you!200 points redeemed from BM STORE. Current point: 160.	2013-05-13 05:27 AM
+8801730071809 Thank you! Redeem points updated for BM STORE. Current point: 260.	2013-05-13 05:27 AM
+8801730071808 Invalid user or TLP code! Please try again with valid info.	2013-05-13 05:27 AM

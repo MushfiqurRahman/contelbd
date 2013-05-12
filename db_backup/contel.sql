@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 11, 2013 at 10:58 PM
+-- Generation Time: May 12, 2013 at 04:29 PM
 -- Server version: 5.1.33
 -- PHP Version: 5.2.9
 
@@ -31,14 +31,12 @@ CREATE TABLE IF NOT EXISTS `areas` (
   `title` varchar(40) NOT NULL,
   `code` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `areas`
 --
 
-INSERT INTO `areas` (`id`, `region_id`, `title`, `code`) VALUES
-(4, 4, 'Dhaka South', NULL);
 
 -- --------------------------------------------------------
 
@@ -152,12 +150,15 @@ CREATE TABLE IF NOT EXISTS `coupons` (
   `third_act_score` int(11) NOT NULL,
   `date` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `coupons`
 --
 
+INSERT INTO `coupons` (`id`, `mo_log_id`, `representative_id`, `outlet_id`, `section_id`, `coupon_counter`, `is_redeem`, `total_score`, `first_act_score`, `second_act_score`, `third_act_score`, `date`) VALUES
+(1, 236, 5783, 2338, 798, 1, 0, 360, 110, 120, 130, '2013-05-13 05:25:34'),
+(2, 0, 5783, 2338, 798, 1, 1, -100, 0, 0, 0, '2013-05-13 05:27:22');
 
 -- --------------------------------------------------------
 
@@ -171,15 +172,12 @@ CREATE TABLE IF NOT EXISTS `houses` (
   `title` varchar(50) NOT NULL,
   `code` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `houses`
 --
 
-INSERT INTO `houses` (`id`, `area_id`, `title`, `code`) VALUES
-(6, 4, 'Jamal [DH]', NULL),
-(8, 4, 'Test', 'tst');
 
 -- --------------------------------------------------------
 
@@ -192,7 +190,7 @@ CREATE TABLE IF NOT EXISTS `mobiles` (
   `representative_id` int(7) NOT NULL,
   `mobile_no` varchar(15) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5567 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5857 ;
 
 --
 -- Dumping data for table `mobiles`
@@ -213,7 +211,7 @@ CREATE TABLE IF NOT EXISTS `mo_logs` (
   `datetime` varchar(30) NOT NULL,
   `time_int` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=196 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=242 ;
 
 --
 -- Dumping data for table `mo_logs`
@@ -297,7 +295,53 @@ INSERT INTO `mo_logs` (`id`, `msisdn`, `sms`, `keyword`, `datetime`, `time_int`)
 (192, '88', '', '', '2013-05-12', 1368328655),
 (193, '88', '', '', '2013-05-12', 1368328837),
 (194, '88', '', '', '2013-05-12', 1368329149),
-(195, '88', '', '', '2013-05-12', 1368329229);
+(195, '88', '', '', '2013-05-12', 1368329229),
+(196, '8801816015466', 'POINT MVP00142', 'POINT', '2013-05-12', 1368339118),
+(197, '8801816015466', 'POINT MVP00142', 'POINT', '2013-05-12', 1368339316),
+(198, '8801816015466', 'POINT MVP00142', 'POINT', '2013-05-12', 1368339327),
+(199, '8801816015466', 'POINT MVP00142', 'POINT', '2013-05-12', 1368339402),
+(200, '8801816015466', 'POINT MVP00142', 'POINT', '2013-05-12', 1368340524),
+(201, '8801816015466', 'POINT MVP00142', 'POINT', '2013-05-12', 1368340600),
+(202, '8801816015466', 'POINT MVP00142', 'POINT', '2013-05-12', 1368341055),
+(203, '8801722041106', 'PSTT MVP00142,A01 201,A23 205,A13 25,1', 'PSTT', '2013-05-13', 1368396014),
+(204, '8801722041106', 'PSTT MVP00142,A01 210,A23 205,A13 25,1', 'PSTT', '2013-05-13', 1368396048),
+(205, '8801722041106', 'PSTT MVP00142,A01 210,A23 205,A13 25,1', 'PSTT', '2013-05-13', 1368396092),
+(206, '8801722041106', 'PSTT MVP00142,A01 210,A23 205,A13 25,2', 'PSTT', '2013-05-13', 1368396140),
+(207, '8801722041106', 'PSTT MVP00142,A01 210,A23 205,A13 25,2', 'PSTT', '2013-05-13', 1368396604),
+(208, '8801722041106', 'PSTT MVP00142,A01 201,A23 205,A13 25,1', 'PSTT', '2013-05-13', 1368396835),
+(209, '8801722041106', 'PSTT MVP00142,A01 201,A23 205,A13 25,1', 'PSTT', '2013-05-13', 1368397769),
+(210, '8801722041106', 'PSTT MVP00142,A01 201,A23 205,A13 25,1', 'PSTT', '2013-05-13', 1368397801),
+(211, '8801722041106', 'PSTT MVP00142,A01 201,A23 205,A13 25,1', 'PSTT', '2013-05-13', 1368398649),
+(212, '8801722041106', 'PSTT MVP00142,A01 201,A23 205,A13 25,1', 'PSTT', '2013-05-13', 1368398777),
+(213, '8801722041106', 'PSTT MVP00142,A01 201,A23 205,A13 25,1', 'PSTT', '2013-05-13', 1368398807),
+(214, '8801722041106', 'PSTT MVP00142,A01 201,A23 205,A13 25,1', 'PSTT', '2013-05-13', 1368398830),
+(215, '8801722041106', 'PSTT MVP00142,A01 201,A23 205,A13 25,1', 'PSTT', '2013-05-13', 1368398895),
+(216, '8801722041106', 'PSTT MVP00142,A01 201,A23 205,A13 25,1', 'PSTT', '2013-05-13', 1368398908),
+(217, '8801722041106', 'PSTT MVP00142,A01 201,A23 205,A13 25,1', 'PSTT', '2013-05-13', 1368399107),
+(218, '8801722041106', 'PSTT MVP00142,A01 201,A23 205,A13 25,1', 'PSTT', '2013-05-13', 1368399187),
+(219, '8801722041106', 'PSTT MVP00142,A01 201,A23 205,A13 25,1', 'PSTT', '2013-05-13', 1368399206),
+(220, '8801722041106', 'PSTT MVP00142,A01 201,A23 205,A13 25,1', 'PSTT', '2013-05-13', 1368399238),
+(221, '8801722041106', 'PSTT MVP00142,A01 201,A23 205,A13 25,1', 'PSTT', '2013-05-13', 1368399357),
+(222, '8801722041106', 'PSTT MVP00142,A01 201,A23 205,A13 25,1', 'PSTT', '2013-05-13', 1368399616),
+(223, '8801722041106', 'PSTT MVP00142,A01 201,A23 205,A13 25,2', 'PSTT', '2013-05-13', 1368399623),
+(224, '8801722041106', 'PSTT MVP00142,A01 201,A23 205,A13 25,1', 'PSTT', '2013-05-13', 1368399894),
+(225, '8801722041106', 'PSTT MVP00142,A01 211,A23 205,A13 25,1', 'PSTT', '2013-05-13', 1368399911),
+(226, '8801722041106', 'PSTT MVP00142,A01 211,A23 205,A13 25,2', 'PSTT', '2013-05-13', 1368399925),
+(227, '8801722041106', 'PSTT MVP00142,A11 211,A20 205,A17 25,2', 'PSTT', '2013-05-13', 1368400174),
+(228, '8801730071809', 'PSTT MVP00142,A11 211,A20 205,A17 25,3', 'PSTT', '2013-05-13', 1368400283),
+(229, '8801730071809', 'PSTT MVP00142,A11 211,A20 205,A17 25,1', 'PSTT', '2013-05-13', 1368400293),
+(230, '8801777660813', 'PSTT MVP00142,A11 211,A20 205,A17 25,3', 'PSTT', '2013-05-13', 1368400381),
+(231, '888801683386285', 'PSTT MVP00142,A11 211,A20 205,A17 25,1', 'PSTT', '2013-05-13', 1368400802),
+(232, '8801683386285', 'PSTT MVP00142,A11 211,A20 205,A17 25,1', 'PSTT', '2013-05-13', 1368400822),
+(233, '8801683386285', 'PSTT MVP00142,A11 211,A20 205,A17 35,1', 'PSTT', '2013-05-13', 1368400909),
+(234, '8801727323994', 'PSTT MVP00142,A11 211,A20 205,A17 35,1', 'PSTT', '2013-05-13', 1368401037),
+(235, '8801722041106', 'CUP MVP00142, 360,110, 120, 130, 1', 'CUP', '2013-05-13', 1368401113),
+(236, '8801730071809', 'CUP MVP00142, 360,110, 120, 130, 1', 'CUP', '2013-05-13', 1368401134),
+(237, '8801816015466', 'POINT MVP00142', 'POINT', '2013-05-13', 1368401209),
+(238, '8801816015467', 'POINT MVP00142', 'POINT', '2013-05-13', 1368401215),
+(239, '8801730071809', 'RP MVP00142,200,1', 'RP', '2013-05-13', 1368401242),
+(240, '8801730071809', 'RP MVP00142,100,1', 'RP', '2013-05-13', 1368401250),
+(241, '8801730071808', 'RP MVP00142,100,1', 'RP', '2013-05-13', 1368401260);
 
 -- --------------------------------------------------------
 
@@ -314,7 +358,7 @@ CREATE TABLE IF NOT EXISTS `mt_logs` (
   `datetime` varchar(30) NOT NULL,
   `time_int` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=125 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=155 ;
 
 --
 -- Dumping data for table `mt_logs`
@@ -379,7 +423,37 @@ INSERT INTO `mt_logs` (`id`, `outlet_id`, `msisdn`, `sms`, `keyword`, `datetime`
 (121, 0, '88', 'Your SMS format is wrong, plesae try again with right format.', '', '2013-05-12', 1368328655),
 (122, 0, '88', 'Your SMS format is wrong, plesae try again with right format.', '', '2013-05-12', 1368328837),
 (123, 0, '88', 'Your SMS format is wrong, plesae try again with right format.', '', '2013-05-12', 1368329149),
-(124, 0, '88', 'Your SMS format is wrong, plesae try again with right format.', '', '2013-05-12', 1368329229);
+(124, 0, '88', 'Your SMS format is wrong, plesae try again with right format.', '', '2013-05-12', 1368329229),
+(125, 0, '8801816015466', '796', '2013-05-12', '1368340600', 0),
+(126, 1921, '8801816015466', '"Till now your total point is:0', 'POINT', '2013-05-12', 1368341055),
+(127, 2060, '8801722041106', 'Thank you! STT Report for BM STORE have been received.', 'PSTT', '2013-05-13', 1368396014),
+(128, 0, '8801722041106', 'Sorry! You have already sent STT for A01. Please send your request again.', 'PSTT', '2013-05-13', 1368396048),
+(129, 2060, '8801722041106', 'Thank you! STT Report for BM STORE have been updated.', 'PSTT', '2013-05-13', 1368396092),
+(130, 0, '8801722041106', 'Sorry! You have already sent STT for A01. Please send your request again.', 'PSTT', '2013-05-13', 1368396140),
+(131, 2199, '8801722041106', 'Thank you! STT Report for BM STORE have been received.', 'PSTT', '2013-05-13', 1368399107),
+(132, 2199, '8801722041106', 'Thank you! STT Report for BM STORE have been received.', 'PSTT', '2013-05-13', 1368399187),
+(133, 2199, '8801722041106', 'Thank you! STT Report for BM STORE have been updated.', 'PSTT', '2013-05-13', 1368399206),
+(134, 2199, '8801722041106', 'Thank you! STT Report for BM STORE have been updated.', 'PSTT', '2013-05-13', 1368399238),
+(135, 2199, '8801722041106', 'Thank you! STT Report for BM STORE have been updated.', 'PSTT', '2013-05-13', 1368399616),
+(136, 0, '8801722041106', 'Sorry! You have already sent STT for A01. Please send your request again.', 'PSTT', '2013-05-13', 1368399623),
+(137, 2338, '8801722041106', 'Thank you! STT Report for BM STORE have been received.', 'PSTT', '2013-05-13', 1368399894),
+(138, 2338, '8801722041106', 'Thank you! STT Report for BM STORE have been updated.', 'PSTT', '2013-05-13', 1368399911),
+(139, 0, '8801722041106', 'Sorry! You have already sent STT for A01. Please send your request again.', 'PSTT', '2013-05-13', 1368399925),
+(140, 2338, '8801722041106', 'Thank you! STT Report for BM STORE have been received.', 'PSTT', '2013-05-13', 1368400174),
+(141, 0, '8801730071809', 'Invalid Mobile number! Please try again with valid mobile no.', 'PSTT', '2013-05-13', 1368400283),
+(142, 0, '8801730071809', 'Invalid Mobile number! Please try again with valid mobile no.', 'PSTT', '2013-05-13', 1368400293),
+(143, 0, '8801777660813', 'Invalid Mobile no or Outlet code! Please try again with valid code.', 'PSTT', '2013-05-13', 1368400381),
+(144, 0, '888801683386285', 'Invalid Mobile number! Please try again with valid mobile no.', 'PSTT', '2013-05-13', 1368400802),
+(145, 2338, '8801683386285', 'Thank you! STT Report for BM STORE have been received.', 'PSTT', '2013-05-13', 1368400822),
+(146, 2338, '8801683386285', 'Thank you! STT Report for BM STORE have been updated.', 'PSTT', '2013-05-13', 1368400909),
+(147, 0, '8801727323994', 'Invalid Mobile no or Outlet code! Please try again with valid code.', 'PSTT', '2013-05-13', 1368401037),
+(148, 0, '8801722041106', 'Invalid Mobile number! Please try again with valid mobile no.', 'CUP', '2013-05-13', 1368401113),
+(149, 2338, '8801730071809', 'Thank you! 360 coupon points added for BM STORE. Current point: 360.', 'CUP', '2013-05-13', 1368401134),
+(150, 2338, '8801816015466', 'Till now your total point is:360', 'POINT', '2013-05-13', 1368401209),
+(151, 0, '8801816015467', 'Invalid Outlet code or mobile no! Please try again with valid info.', 'POINT', '2013-05-13', 1368401215),
+(152, 2338, '8801730071809', 'Thank you!200 points redeemed from BM STORE. Current point: 160.', 'RP', '2013-05-13', 1368401242),
+(153, 2338, '8801730071809', 'Thank you! Redeem points updated for BM STORE. Current point: 260.', 'RP', '2013-05-13', 1368401250),
+(154, 0, '8801730071808', 'Invalid user or TLP code! Please try again with valid info.', 'RP', '2013-05-13', 1368401260);
 
 -- --------------------------------------------------------
 
@@ -398,7 +472,7 @@ CREATE TABLE IF NOT EXISTS `outlets` (
   `address` varchar(255) DEFAULT NULL,
   `priority` varchar(10) NOT NULL DEFAULT 'P',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1782 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2477 ;
 
 --
 -- Dumping data for table `outlets`
@@ -460,14 +534,12 @@ CREATE TABLE IF NOT EXISTS `regions` (
   `title` varchar(50) NOT NULL,
   `code` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `regions`
 --
 
-INSERT INTO `regions` (`id`, `title`, `code`) VALUES
-(4, 'Dhaka', NULL);
 
 -- --------------------------------------------------------
 
@@ -484,7 +556,7 @@ CREATE TABLE IF NOT EXISTS `representatives` (
   `sr_code` varchar(20) DEFAULT NULL,
   `type` varchar(30) NOT NULL DEFAULT 'Sales',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5549 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5839 ;
 
 --
 -- Dumping data for table `representatives`
@@ -504,7 +576,7 @@ CREATE TABLE IF NOT EXISTS `sales` (
   `section_id` int(11) DEFAULT NULL,
   `date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `sales`
@@ -525,7 +597,7 @@ CREATE TABLE IF NOT EXISTS `sale_details` (
   `product_id` int(5) NOT NULL,
   `quantity` float NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=91 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=127 ;
 
 --
 -- Dumping data for table `sale_details`
@@ -541,11 +613,13 @@ CREATE TABLE IF NOT EXISTS `sale_details` (
 CREATE TABLE IF NOT EXISTS `sections` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `house_id` int(11) NOT NULL,
-  `representative_id` int(11) DEFAULT NULL,
+  `sr_id` int(11) NOT NULL DEFAULT '0',
+  `tsa_id` int(11) NOT NULL DEFAULT '0',
+  `ss_id` int(11) NOT NULL DEFAULT '0',
   `title` varchar(50) NOT NULL,
   `code` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=610 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=845 ;
 
 --
 -- Dumping data for table `sections`

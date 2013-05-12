@@ -20,36 +20,56 @@ class MoLog extends AppModel{
 	return strtoupper($sms_temp);
 }  
 
+    /**
+     * Find out representatives type. Either sr/ss/tsa
+     * @param type $mob_no
+     * @return boolean 
+     */
+    public function find_rep_type( $mob_no ){
+        $res = $this->query('SELECT mobiles.representative_id, representatives.type FROM mobiles INNER JOIN
+            representatives ON mobiles.representative_id = representatives.id WHERE mobiles.mobile_no="'.$mob_no.'"');
+        
+        if( count($res)>0 ){
+            return $res[0]['representatives']['type'];
+        }
+        return false;
+    }
+
      public function check_sr_tlp_mobile($tlp, $mobile, $sr_type = null){
          
          /**** Representative may have multiple mobiles ****/
         
-        $res = $this->query('SELECT mobiles.mobile_no, representatives.id, representatives.type, outlets.id,'.
-                'outlets.title, outlets.code, outlets.section_id, sections.id FROM mobiles INNER JOIN '.
-                'representatives ON mobiles.representative_id = '.
-                'representatives.id INNER JOIN outlets ON representatives.house_id = outlets.house_id'.
-                ' LEFT JOIN sections ON representatives.id=sections.representative_id WHERE mobiles.mobile_no ="'.
-                $mobile.'" AND outlets.code="'.$tlp.'"');
+//        $res = $this->query('SELECT mobiles.mobile_no, representatives.id, representatives.type, outlets.id,'.
+//                'outlets.title, outlets.code, outlets.section_id, sections.id FROM mobiles INNER JOIN '.
+//                'representatives ON mobiles.representative_id = '.
+//                'representatives.id INNER JOIN outlets ON representatives.house_id = outlets.house_id'.
+//                ' LEFT JOIN sections ON representatives.id=sections.representative_id WHERE mobiles.mobile_no ="'.
+//                $mobile.'" AND outlets.code="'.$tlp.'"');
+         
+         $qry = 'SELECT mobiles.mobile_no, mobiles.representative_id, representatives.id,'.
+                ' sections.id, sections.'.$sr_type.'_id, outlets.id, outlets.section_id, '.
+                'outlets.code, outlets.title FROM mobiles INNER JOIN '.
+                'representatives ON mobiles.representative_id = representatives.id INNER JOIN '.
+                'sections ON representatives.id=';
+         
+         if( $sr_type=='sr' ){
+             $qry .= 'sections.sr_id';
+         }else if( $sr_type == 'ss' ){
+             $qry .= 'sections.ss_id';
+         }else if( $sr_type=='tsa' ){
+             $qry .= 'sections.tsa_id';
+         }
+         
+         $qry .= ' INNER JOIN outlets ON sections.id = outlets.section_id WHERE mobiles.mobile_no ="'.$mobile.
+                '" AND representatives.type="'.$sr_type.'" AND outlets.code="'.$tlp.'"';
+         
+         $res = $this->query($qry);
         
         //pr($res);exit;
         
-        if( count($res)>0 &&  !$sr_type && $res[0]['representatives']['type']=='sr' &&
-                isset($res[0]['sections']['id']) ){
-            return $res;
-        }else if( count($res)>0 && !$sr_type && $res[0]['representatives']['type']=='ss' ){
-            return $res;
-        }else if( $sr_type && $res[0]['representatives']['type']== $sr_type ){                
+        if( count($res)>0 && $res[0]['outlets']['code']==$tlp ){
             return $res;
         }
-        
-//        if( count($res)>0 && $res[0]['outlets']['code']==$tlp ){
-//            if( $sr_type && $res[0]['representatives']['type']== $sr_type ){                
-//                return $res;
-//            }else if( !$sr_type && ($res[0]['representatives']['type']=='ss' ||
-//                $res[0]['representatives']['type']=='sr') ){
-//                return $res;
-//            }
-//        }
         return false;
     }
     
@@ -394,13 +414,6 @@ public function get_reaction($occupation) {
 
 	
 public function send_sms_free_of_charge($to, $outlet_id = 0, $msg,$recid,$keyword, $date = '', $time_int = 0){
-    
-    
-//		$telcoID = $this->get_telcoID($to);
-//		$msg = urlencode($msg);
-//		
-//                
-//                $msg = urldecode($msg);
     
 		$this->query("INSERT INTO mt_logs(msisdn, outlet_id, sms,keyword,datetime,time_int) VALUES('$to',".
                         $outlet_id.",'$msg','$keyword','$date',$time_int)");

@@ -90,8 +90,7 @@ class MoLogsController extends AppController{
      */
     protected function _format_sale_detail( $params, $sale_id = null, $sale_counter = 1, $moLogId, $saleDetails = array() ){
         $productList = $this->Sale->SaleDetail->Product->find('list', array('fields' => array('id','code')));
-        
-        
+                
         $total = count($params);
         $data = array();
         
@@ -103,11 +102,10 @@ class MoLogsController extends AppController{
                 foreach( $productList as $k => $v ){
                     if( $v == $params[$i] || strtoupper($params[$i]) == $v){
                         
-                                                
                         //checking already inserted this product in previous requests
                         if( count($saleDetails)>0 ){
                             foreach($saleDetails as $sd ){
-                                if( $sd['sale_details']['product_id']==$k ){
+                                if( $sd['sale_details']['product_id']==$k && $sd['sale_details']['sale_counter']!= $sale_counter ){                                
                                     $data['error'] = 'Sorry! You have already sent STT for '.$v.'. Please send your request again.';
                                     return $data;
                                 }
@@ -181,8 +179,6 @@ class MoLogsController extends AppController{
 
         $mobile_number_temp = $_REQUEST['MSISDN'];
         $sms_text_temp = $_REQUEST['MSG'];
-        
-        //echo $sms_text_temp;exit;
 
         $sms = $this->MoLog->sms_process($sms_text_temp);
         $mobile_number = $this->MoLog->mobile_number_process($mobile_number_temp);
@@ -212,7 +208,16 @@ class MoLogsController extends AppController{
             die();
         }
         $tlp_code = $params[1];
-        $outletId = $this->MoLog->check_sr_tlp_mobile( $params[1], $mobile_number);
+        
+        $repType = $this->MoLog->find_rep_type( $mobile_number );
+        
+        if( !$repType || $repType == 'tsa' ){
+            $error = 'Invalid Mobile number! Please try again with valid mobile no.';
+            $this->MoLog->send_sms_free_of_charge($mobile_number, 0, $error, 796, $keyword, $date, $time_int);
+            die();
+        }
+        
+        $outletId = $this->MoLog->check_sr_tlp_mobile( $params[1], $mobile_number, $repType);
         
         if( !is_array($outletId) ){
             $error = 'Invalid Mobile no or Outlet code! Please try again with valid code.';
@@ -307,6 +312,14 @@ class MoLogsController extends AppController{
         }
         if( $params[2] != ($params[3]+$params[4]+$params[5]) ){
             $error = 'Invalid value! Total point is not equal to the sum of activity points';
+            $this->MoLog->send_sms_free_of_charge($mobile_number, 0, $error, 796, $keyword, $date, $time_int);
+            die();
+        }
+        
+        $repType = $this->MoLog->find_rep_type( $mobile_number );
+        
+        if( !$repType || $repType != 'tsa' ){
+            $error = 'Invalid Mobile number! Please try again with valid mobile no.';
             $this->MoLog->send_sms_free_of_charge($mobile_number, 0, $error, 796, $keyword, $date, $time_int);
             die();
         }
