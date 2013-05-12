@@ -13,9 +13,8 @@ class RegionsController extends AppController {
  *
  * @return void
  */
-	var $regList, $areaList, $houseList, $secList, $repList, $ssList, $srList, $tsaList, $outletList;
 	
-	public function index() {            
+	public function index() {
             $this->Region->recursive = 0;
             $this->set('regions', $this->paginate());
 	}        
@@ -79,17 +78,18 @@ class RegionsController extends AppController {
                 $house['House']['title'] = $objWorksheet->getCellByColumnAndRow(3,$i)->getValue();
                 $houseId = $this->_save_house($house);
                 
-                $sr['Representative']['house_id'] = $houseId;
-                $sr['Representative']['name'] = $objWorksheet->getCellByColumnAndRow(9,$i)->getValue();
-                $sr['Representative']['type'] = 'sr';
-                $sr['Mobile'] = $this->_get_mobile_nos( $objWorksheet->getCellByColumnAndRow(10,$i)->getValue() );
-                $srId = $this->_save_representative( $sr );
-                
                 $ss['Representative']['house_id'] = $houseId;
                 $ss['Representative']['name'] = $objWorksheet->getCellByColumnAndRow(11,$i)->getValue();
                 $ss['Representative']['type'] = 'ss';
                 $ss['Mobile'] = $this->_get_mobile_nos( $objWorksheet->getCellByColumnAndRow(12,$i)->getValue() );
                 $ssId = $this->_save_representative( $ss );
+                
+                $sr['Representative']['house_id'] = $houseId;
+                $sr['Representative']['name'] = $objWorksheet->getCellByColumnAndRow(9,$i)->getValue();
+                $sr['Representative']['type'] = 'sr';
+                $sr['Representative']['ss_id'] = $ssId;
+                $sr['Mobile'] = $this->_get_mobile_nos( $objWorksheet->getCellByColumnAndRow(10,$i)->getValue() );
+                $srId = $this->_save_representative( $sr );
                 
                 $tsa['Representative']['house_id'] = $houseId;
                 $tsa['Representative']['name'] = $objWorksheet->getCellByColumnAndRow(13,$i)->getValue();
@@ -112,15 +112,6 @@ class RegionsController extends AppController {
                 $outlet['Outlet']['phone_no'] = $objWorksheet->getCellByColumnAndRow(7,$i)->getValue();
                 $outlet['Outlet']['address'] = $objWorksheet->getCellByColumnAndRow(8,$i)->getValue();
                 $outletId = $this->_save_outlet($outlet);
-                
-//                pr($region);
-//                pr($area);
-//                pr($house);
-//                pr($outlet);
-//                pr($section);
-//                pr($sr);
-//                pr($ss);
-//                pr($tsa);
             }
         }
         
@@ -210,7 +201,6 @@ class RegionsController extends AppController {
 	protected function _save_outlet( $outlet ){
 		$otId = $this->Region->Area->House->Outlet->field('id',array(
                     'Outlet.house_id' => $outlet['Outlet']['house_id'],
-                    'Outlet.title' => $outlet['Outlet']['title'],
                     'Outlet.code' => $outlet['Outlet']['code']));
                 
                 if( $otId ) return $otId;
@@ -223,25 +213,23 @@ class RegionsController extends AppController {
          * 
          * Enter description here ...
          */
-	protected function _save_representative( $rep ){   
+	protected function _save_representative( $rep ){ 
             
-            $rpttvs = $this->Region->query('SELECT * FROM `representatives` LEFT JOIN `mobiles` ON
-                    `representatives`.`id`=`mobiles`.`representative_id` WHERE
-                `representatives`.`house_id`= '.$rep['Representative']['house_id'].' AND '.
-                    '`representatives`.`name` = "'.$rep['Representative']['name'].'" AND '.
-                '`representatives`.`type` = "'.$rep['Representative']['type'].'"');
-            
+            $inMob = array();
             foreach( $rep['Mobile'] as $mb ){
-                foreach( $rpttvs as $rp ) {
-                    if( $rp['mobiles']['mobile_no']==$mb['mobile_no']){
-                        return $rp['mobiles']['representative_id'];
-                    }
-                }
+                $inMob[] = $mb['mobile_no'];
             }
-
-            $this->Region->Area->House->Representative->create();
-            $this->Region->Area->House->Representative->saveAssociated($rep);
-            return $this->Region->Area->House->Representative->id;
+            
+            $rpttvs = $this->Region->Area->House->Representative->Mobile->find('all',array('conditions' =>
+                array('Mobile.mobile_no' => $inMob), 'recursive' => -1));
+            
+            if( count($rpttvs)>0 ){
+                return $rpttvs[0]['Mobile']['representative_id'];
+            }else{
+                $this->Region->Area->House->Representative->create();
+                $this->Region->Area->House->Representative->saveAssociated($rep);
+                return $this->Region->Area->House->Representative->id;
+            }
         }
 	
 

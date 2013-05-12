@@ -26,6 +26,7 @@ class MoLogsController extends AppController{
      * 
      */
     public function index(){
+        //echo urlencode(':');exit;
         $this->paginate = array('limit' => 100);
         $this->set('mo_logs',$this->paginate());
     }
@@ -169,6 +170,8 @@ class MoLogsController extends AppController{
      */
     public function add_sale(){
         
+        //$this->log(print_r($_REQUEST,true),'error');
+        
         $this->layout = $this->autoRender = false;
 
         $error = '';
@@ -178,6 +181,8 @@ class MoLogsController extends AppController{
 
         $mobile_number_temp = $_REQUEST['MSISDN'];
         $sms_text_temp = $_REQUEST['MSG'];
+        
+        //echo $sms_text_temp;exit;
 
         $sms = $this->MoLog->sms_process($sms_text_temp);
         $mobile_number = $this->MoLog->mobile_number_process($mobile_number_temp);
@@ -421,6 +426,8 @@ class MoLogsController extends AppController{
      */
     public function redeem(){
         $this->layout = $this->autoRender = false;
+        
+        
         
         $error = '';
         $date = date("Y-m-d");

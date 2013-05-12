@@ -395,6 +395,14 @@ public function get_reaction($occupation) {
 
 	
 public function send_sms_free_of_charge($to, $outlet_id = 0, $msg,$recid,$keyword, $date = '', $time_int = 0){
+    
+    
+//		$telcoID = $this->get_telcoID($to);
+//		$msg = urlencode($msg);
+//		
+//                
+//                $msg = urldecode($msg);
+    
 		$this->query("INSERT INTO mt_logs(msisdn, outlet_id, sms,keyword,datetime,time_int) VALUES('$to',".
                         $outlet_id.",'$msg','$keyword','$date',$time_int)");
 		
