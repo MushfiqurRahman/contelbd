@@ -113,6 +113,13 @@ class Outlet extends AppModel {
 		)
 	);
         
+        function beforeSave(){
+            if( strpos($this->data['Outlet']['phone_no'], '88')!==0 ){
+                $this->data['Outlet']['phone_no'] = '88'.$this->data['Outlet']['phone_no'];
+            }
+            return true;
+        }
+        
         /**
          *
          * @param type $outletList

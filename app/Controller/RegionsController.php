@@ -29,7 +29,7 @@ class RegionsController extends AppController {
                         $renamed_f_name = time().$this->request->data['Region']['xls_file']['name'];
                         if( move_uploaded_file($this->request->data['Region']['xls_file']['tmp_name'], WWW_ROOT.$renamed_f_name) ){
                         	
-                        	if( $this->_import($renamed_f_name) ){
+                            if( $this->_import($renamed_f_name) ){
                             	
                                 $this->Session->setFlash(__('Data import successful.'));
                             }else{
@@ -110,9 +110,11 @@ class RegionsController extends AppController {
                 $outlet['Outlet']['priority'] = $this->request->data['Region']['priority'];
                 $outlet['Outlet']['outlet_retailer_name'] = $objWorksheet->getCellByColumnAndRow(6,$i)->getValue();                
                 $outlet['Outlet']['phone_no'] = $objWorksheet->getCellByColumnAndRow(7,$i)->getValue();
+                
                 $outlet['Outlet']['address'] = $objWorksheet->getCellByColumnAndRow(8,$i)->getValue();
                 $outletId = $this->_save_outlet($outlet);
             }
+            return true;
         }
         
         /**

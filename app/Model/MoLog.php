@@ -81,7 +81,6 @@ class MoLog extends AppModel{
     public function get_outlet_id( $outletCode, $mobile ){
         $res = $this->query('SELECT * FROM outlets WHERE outlets.code="'.$outletCode.'" AND outlets.phone_no="'.
                 $mobile.'"');
-        //pr($res);
         
         if( count($res)>0 ){
             return $res[0]['outlets']['id'];

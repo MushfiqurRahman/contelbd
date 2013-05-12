@@ -402,19 +402,19 @@ class MoLogsController extends AppController{
         if( ($params[0]=='POINT' && count($params)!=2) || $params[0]!='POINT' )
         {
             $error = "Your SMS format is wrong, plesae try again with right format.";
-            $this->MoLog->send_sms_free_of_charge($mobile_number, $error, 796, $keyword, $date, $time_int);
+            $this->MoLog->send_sms_free_of_charge($mobile_number, 0, $error, 796, $keyword, $date, $time_int);
             die();
         }else{
             $outletId = $this->MoLog->get_outlet_id( $params[1], $mobile_number);
         
             if( !$outletId ){
                 $error = 'Invalid Outlet code or mobile no! Please try again with valid info.';
-                $this->MoLog->send_sms_free_of_charge($mobile_number, $error, 796, $keyword, $date, $time_int);
+                $this->MoLog->send_sms_free_of_charge($mobile_number, 0, $error, 796, $keyword, $date, $time_int);
                 die();
             }else{
                 $tp = $this->_get_total_coupon_point($outletId);
                 $msg = 'Till now your total point is:'.$tp;
-                $this->MoLog->send_sms_free_of_charge($mobile_number, $msg, 796, $keyword, $date, $time_int);
+                $this->MoLog->send_sms_free_of_charge($mobile_number, $outletId, $msg, 796, $keyword, $date, $time_int);
                 die();
                 
             }
