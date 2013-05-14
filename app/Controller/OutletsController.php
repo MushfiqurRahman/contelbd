@@ -216,6 +216,8 @@ class OutletsController extends AppController {
             echo json_encode($outlets);
             
         }
+        
+        
 
 /**
  * view method
@@ -261,7 +263,7 @@ class OutletsController extends AppController {
 				$this->Session->setFlash(__('The outlet could not be saved. Please, try again.'));
 			}
 		}
-		$sections = $this->Outlet->Section->find('list');
+		//$sections = $this->Outlet->Section->find('list');
 		$houses = $this->Outlet->House->find('list');
 		$this->set(compact('sections', 'houses'));
 	}

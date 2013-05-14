@@ -18,6 +18,7 @@
                     'empty' => 'Select type','label' => 'Type'));
 	?>
                 <div id="div_ss" style="display:none;">
+                    <label>Select Superviser</label>
                     <select id="ss_id" name="data[Representative][ss_id]"></select>
                 </div>
 	</fieldset>

@@ -60,10 +60,10 @@ class Section extends AppModel {
 			'fields' => '',
 			'order' => ''
 		),
-		'Representative' => array(
-			'className' => 'Representative',
-			'foreignKey' => 'representative_id'
-		)
+//		'Representative' => array(
+//			'className' => 'Representative',
+//			'foreignKey' => 'representative_id'
+//		)
 	);
 
 /**

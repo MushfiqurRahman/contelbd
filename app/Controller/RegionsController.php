@@ -66,7 +66,7 @@ class RegionsController extends AppController {
             
             //pr($totalRow);
             
-            for($i=2; $i<$totalRow; $i++){                
+            for($i=2; $i<=$totalRow; $i++){                
                 $region['Region']['title'] = $objWorksheet->getCellByColumnAndRow(0,$i)->getValue();
                 $regId = $this->_save_region( $region );
                 

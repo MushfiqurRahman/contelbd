@@ -18,15 +18,19 @@ class SectionsController extends AppController {
 	}
         
         /**
-         * 
+         * This method is used in outlets/add.ctp file. Though it may used in several other places
          */
         public function ajax_section_list(){
             $this->autoRender = $this->layout = false;
+            $conditions = array();
             if( isset($_POST['representative_id']) && is_numeric($_POST['representative_id']) ){
                 $conditions = !empty($_POST['representative_id']) ? array('Section.representative_id' => $_POST['representative_id']) : array();
-                $sections = $this->Section->find('list', array('conditions' => $conditions));
-		echo json_encode($sections);
+                
+            }else if( isset($_POST['house_id']) && is_numeric($_POST['house_id']) ){
+                $conditions = array('Section.house_id' => $_POST['house_id']);
             }
+            $sections = $this->Section->find('list', array('conditions' => $conditions));
+            echo json_encode($sections);
         }
         
         /**
