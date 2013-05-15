@@ -39,7 +39,7 @@ $(document).ready(function(){
    
    $("#OutletHouseId").change( function(){
        options = get_section_list( $(this).val() ); 
-       $("#OutletSectionId").html(options);
+       $("#OutletSectionId").html(options);       
    });
    
    function get_section_list( house_id ){

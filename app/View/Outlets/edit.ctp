@@ -3,9 +3,9 @@
 	<fieldset>
 		<legend><?php echo __('Edit Outlet'); ?></legend>
 	<?php
-		echo $this->Form->input('id');
-		echo $this->Form->input('section_id');
+		echo $this->Form->input('id');		
 		echo $this->Form->input('house_id');
+                echo $this->Form->input('section_id');
 		echo $this->Form->input('title', array('label' => 'Outlet name'));
 		echo $this->Form->input('outlet_retailer_name');
 		echo $this->Form->input('phone_no', array('label' => 'Retailer Phone no'));
@@ -35,3 +35,37 @@
 		<li><?php echo $this->Html->link(__('New Sale'), array('controller' => 'sales', 'action' => 'add')); ?> </li>
 	</ul>
 </div>
+<script>
+$(document).ready(function(){
+   var options;
+   
+   $("#OutletHouseId").change( function(){
+       options = get_section_list( $(this).val() ); 
+       $("#OutletSectionId").html(options);       
+   });
+   
+   function get_section_list( house_id ){
+       var sections = '';
+       $.ajax({
+          url:"<?php echo Configure::read('base_url');?>sections/ajax_section_list",
+          type:"post",
+          async: false,
+          cache: false,
+          data:"house_id="+house_id,
+          success:function( response ){
+              
+              var opts = $.parseJSON(response);
+              
+              if( typeof(opts['error'])=='undefined' ){
+                  $.each(opts, function(ind, val){                      
+                    sections += '<option value="'+ind+'">'+val+'</option>';
+                  });
+              }else{
+                  alert(opts['error']);
+              }
+          }          
+       });    
+       return sections;
+   }
+});
+</script>

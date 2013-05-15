@@ -253,7 +253,11 @@ class OutletsController extends AppController {
  */
 	public function add() {
 		if ($this->request->is('post')) {
-                    $this->_check_mobile_nos();
+                    if( !isset($this->request->data['Outlet']['section_id']) || 
+                            empty($this->request->data['Outlet']['section_id']) ){
+                        $this->Session->setFlash(__('Outlet save failed! Section Id can not be left blank!'));
+                    }else{
+                        $this->_check_mobile_nos();
 			$this->Outlet->create();
                         
 			if ($this->Outlet->save($this->request->data)) {
@@ -262,6 +266,7 @@ class OutletsController extends AppController {
 			} else {
 				$this->Session->setFlash(__('The outlet could not be saved. Please, try again.'));
 			}
+                    }
 		}
 		//$sections = $this->Outlet->Section->find('list');
 		$houses = $this->Outlet->House->find('list');
@@ -280,18 +285,26 @@ class OutletsController extends AppController {
 			throw new NotFoundException(__('Invalid outlet'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
-                    $this->_check_mobile_nos();
-			if ($this->Outlet->save($this->request->data)) {
-				$this->Session->setFlash(__('The outlet has been saved'));
-				$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The outlet could not be saved. Please, try again.'));
-			}
+                    
+                    if( !isset($this->request->data['Outlet']['section_id']) || 
+                        empty($this->request->data['Outlet']['section_id']) ){
+                        
+                        $this->Session->setFlash(__('Outlet save failed! Section Id can not be left blank!'));
+                    }else{
+                        $this->_check_mobile_nos();
+                        if ($this->Outlet->save($this->request->data)) {
+                                $this->Session->setFlash(__('The outlet has been saved'));
+                                $this->redirect(array('action' => 'index'));
+                        } else {
+                                $this->Session->setFlash(__('The outlet could not be saved. Please, try again.'));
+                        }
+                    }
 		} else {
 			$options = array('conditions' => array('Outlet.' . $this->Outlet->primaryKey => $id));
 			$this->request->data = $this->Outlet->find('first', $options);
 		}
-		$sections = $this->Outlet->Section->find('list');
+		$sections = $this->Outlet->Section->find('list', array('conditions' => array('Section.house_id' =>
+                    $this->request->data['Outlet']['house_id'])));
 		$houses = $this->Outlet->House->find('list');
 		$this->set(compact('sections', 'houses'));
 	}

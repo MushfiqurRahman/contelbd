@@ -82,17 +82,23 @@ class RepresentativesController extends AppController {
 	public function add() {
 		if ($this->request->is('post')) {
                     
-                    $mobile_found = $this->_check_mobile_nos();                    
-                    if( !$mobile_found ){
-                        $this->Session->setFlash('Please give at least single mobile no. It\'s essential');
+                    if( $this->request->data['Representative']['type']=='sr' && 
+                      (!isset($this->request->data['Representative']['ss_id']) || empty($this->request->data['Representative']['ss_id']))){
+                        $this->Session->setFlash(__('Save failed!Sales representative must have a Sales superviser.'));
                     }else{
-			$this->Representative->create();
-			if ($this->Representative->saveAssociated($this->request->data)) {
-				$this->Session->setFlash(__('The representative has been saved'));
-				$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The representative could not be saved. Please, try again.'));
-			}
+                    
+                        $mobile_found = $this->_check_mobile_nos();                    
+                        if( !$mobile_found ){
+                            $this->Session->setFlash('Please give at least single mobile no. It\'s essential');
+                        }else{
+                            $this->Representative->create();
+                            if ($this->Representative->saveAssociated($this->request->data)) {
+                                    $this->Session->setFlash(__('The representative has been saved'));
+                                    $this->redirect(array('action' => 'index'));
+                            } else {
+                                    $this->Session->setFlash(__('The representative could not be saved. Please, try again.'));
+                            }
+                        }
                     }
 		}
 		$houses = $this->Representative->House->find('list');
@@ -112,17 +118,23 @@ class RepresentativesController extends AppController {
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
                     
-                    $mobile_found = $this->_check_mobile_nos();                    
-                    if( !$mobile_found ){
-                        $this->Session->setFlash('Please give at least single mobile no. It\'s essential');
+                    if( $this->request->data['Representative']['type']=='sr' && 
+                      (!isset($this->request->data['Representative']['ss_id']) || empty($this->request->data['Representative']['ss_id']))){
+                        $this->Session->setFlash(__('Save failed!Sales representative must have a Sales superviser.'));
                     }else{
-                        //pr($this->request->data);exit;
-			if ($this->Representative->saveAll($this->request->data)) {
-				$this->Session->setFlash(__('The representative has been saved'));
-				$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The representative could not be saved. Please, try again.'));
-			}
+                    
+                        $mobile_found = $this->_check_mobile_nos();                    
+                        if( !$mobile_found ){
+                            $this->Session->setFlash('Please give at least single mobile no. It\'s essential');
+                        }else{
+                            //pr($this->request->data);exit;
+                            if ($this->Representative->saveAll($this->request->data)) {
+                                    $this->Session->setFlash(__('The representative has been saved'));
+                                    $this->redirect(array('action' => 'index'));
+                            } else {
+                                    $this->Session->setFlash(__('The representative could not be saved. Please, try again.'));
+                            }
+                        }
                     }
 		} else {
                     $this->Representative->Behaviors->load('Containable');

@@ -43,10 +43,22 @@
             total_mobile++;
         });
         
-        $("#RepresentativeType").change(function(){
-            
+        $("#RepresentativeHouseId").change(function(){
+            if($("#RepresentativeType").val()=='sr'){
+                select_superviser();
+            }
+        });
+        
+        $("#RepresentativeType").change(function(){            
            if( $(this).val()=='sr' ){
-               $.ajax({
+               select_superviser();
+           }else{
+               $("#ss_id").html('');
+           } 
+        });
+        
+        function select_superviser(){
+            $.ajax({
                   url:'/representatives/ajax_ss_list',
                   type:'post',
                   data:'house_id='+$("#RepresentativeHouseId").val(),
@@ -65,8 +77,7 @@
                             $("#div_ss").show();
                         }
                   }
-               });
-           } 
-        });
+             });
+        }
     });
 </script>

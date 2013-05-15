@@ -85,30 +85,41 @@
             }
         });
         
-        $("#RepresentativeType").change(function(){
-            alert($(this).val());
+        $("#RepresentativeHouseId").change(function(){
+            if($("#RepresentativeType").val()=='sr'){
+                select_superviser();
+            }
+        });
+        
+        $("#RepresentativeType").change(function(){            
            if( $(this).val()=='sr' ){
-               $.ajax({
-                  url:'/representatives/ajax_ss_list',
-                  type:'post',
-                  data:'house_id='+$("#RepresentativeHouseId").val(),
-                  success:function(resp){
-                      var options = $.parseJSON(resp);
-                      
-                      var ss = '';
-
-                        if( typeof(options['error']) != "undefined" ){
-                            alert(options['error']);
-                        }else{
-                            $.each(options, function(ind, val){
-                                ss += '<option value="'+ind+'">'+val+'</option>';
-                            });
-                            $("#ss_id").html(ss);
-                            $("#div_ss").show();
-                        }
-                  }
-               });
+               select_superviser();
+           }else{
+               $("#RepresentativeSsId").html('');
            } 
         });
+        
+        function select_superviser(){
+            $.ajax({
+                url:'/representatives/ajax_ss_list',
+                type:'post',
+                data:'house_id='+$("#RepresentativeHouseId").val(),
+                success:function(resp){
+                    var options = $.parseJSON(resp);
+
+                    var ss = '';
+
+                    if( typeof(options['error']) != "undefined" ){
+                        alert(options['error']);
+                    }else{
+                        $.each(options, function(ind, val){
+                            ss += '<option value="'+ind+'">'+val+'</option>';
+                        });
+                        $("#RepresentativeSsId").html(ss);
+                        //$("#div_ss").show();
+                    }
+                }
+            });
+        }
     });
 </script>
