@@ -161,3 +161,4 @@
 8801730071808 Invalid user or TLP code! Please try again with valid info.	2013-05-13 05:27 AM
 8801722041106 Thank you! STT Report for BM STORE have been received.	2013-05-13 08:23 AM
 8801722041106 Thank you! STT Report for BM STORE have been updated.	2013-05-13 08:29 AM
+8801730071809 Thank you! 360 coupon points added for BM STORE. Current point: 360.	2013-05-17 09:07 PM

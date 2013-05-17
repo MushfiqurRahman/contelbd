@@ -10,10 +10,43 @@
 
 <div class="mws-panel grid_8">
     <div class="mws-panel-header">
-        <span>Till Date Earned Point</span>
+        <span>Query Panel</span>
     </div>
     <div class="mws-panel-body">
         <div class="mws-panel-content">
+            <div>
+                
+                <div style="display:inline-block;width:100%; margin-top:10px; margin-bottom:10px;"> <!-- 3rd row start -->
+                        <hr />
+                    <div style="float:left;width:20%"><label>Start Date</label></div>
+                    <div style="float:left;width:30%">
+                            <input size="30" class="mws-textinput" name="from_date" onFocus="this.value=''" onClick="showCalendarControl(this);" type="text" value="<?php echo isset($this->data['from_date']) ? $this->data['from_date'] : '';?>" />
+                    </div>
+
+                    <div style="float:left;width:20%"><label>End Date</label></div>
+                    <div style="float:left;width:30%">
+                            <input size="30" class="mws-textinput" name="till_date" onFocus="this.value=''" onClick="showCalendarControl(this);" type="text" value="<?php echo isset($this->data['till_date']) ? $this->data['till_date'] : '';?>" />
+                    </div>			
+                </div> <!-- 3rd row end -->
+						
+						
+                <div style="margin:0 auto;width:100%;text-align:center">
+                        <table><tr>
+                        <td><input class="mws-button blue" value="Search" type="submit" id="search"/></td>
+                        </tr></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mws-panel grid_8">
+    <div class="mws-panel-header">
+        <span>Till Date Earned Point</span>
+    </div>
+    <div class="mws-panel-body">
+        <div class="mws-panel-content">           
+            
             <div id="reportbr_content" style="clear:both">
                 <div id="table_reportbr_content">                    
                     
@@ -113,10 +146,14 @@
 </div>
             
 <?php 
-    $url_params = array();            
-    $url_params['region_id'] = $data['Region']['id'];
-    $url_params['area_id'] = $data['Area']['id'];
-    $url_params['house_id'] = $data['House']['id'];
+    $url_params = array();
+    if( isset($this->data['from_date']) ){
+        $url_params['from_date'] = is_numeric($this->data['from_date']) ? $this->data['from_date'] : strtotime($this->data['from_date']);
+    }
+    if( isset($this->data['till_date']) ){
+        $url_params['till_date'] = is_numeric($this->data['till_date']) ? $this->data['till_date'] : strtotime($this->data['till_date']);
+    }
+    
     $this->Paginator->options(array('url' => $url_params));
 
     echo $this->Paginator->counter(array(
@@ -134,5 +171,14 @@
         </div>
     </div>
 </div>
+<script>
+	var base_url = '<?php echo Configure::read('base_url');?>';
         
-        
+	$(document).ready(function(){                      
+            $("#search").click(function(e){                
+                e.preventDefault();
+               $("#CouponGetReportTillDateForm").attr('action', base_url+'coupons/coupon_point_till_date');
+               $("#CouponGetReportTillDateForm").submit();
+            });            
+        });
+</script>

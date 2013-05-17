@@ -60,6 +60,7 @@ class CouponsController extends AppController {
          * 
          */
         public function coupon_point_till_date(){
+            $this->_set_request_data_from_params();
             $titles = $this->Coupon->Outlet->House->Area->Region->get_titles($this->request->data);  
             
             $this->Coupon->Behaviors->load('Containable');
@@ -114,10 +115,10 @@ class CouponsController extends AppController {
             
             $conditions[]['Coupon.outlet_id'] = $outletIds;
             if( isset($this->request->data['from_date']) && !empty($this->request->data['from_date']) ){
-                $conditions[]['Coupon.date >='] = $this->request->data['from_date'];
+                $conditions[]['DATE(Coupon.date) >='] = $this->request->data['from_date'];
             }
             if( isset($this->request->data['till_date']) && !empty($this->request->data['till_date']) ){
-                $conditions[]['Coupon.date <='] = $this->request->data['till_date'];
+                $conditions[]['DATE(Coupon.date) <='] = $this->request->data['till_date'];
             }                        
             return $conditions;
         }
@@ -147,6 +148,7 @@ class CouponsController extends AppController {
          */
         public function get_report_till_date(){
             $this->layout = 'ajax';
+            $this->_set_request_data_from_params();
             $this->Coupon->Behaviors->load('Containable');
             
             $coupons = $this->Coupon->find('all', array(
@@ -171,27 +173,34 @@ class CouponsController extends AppController {
             //pr($coupons);exit;
             $formatted = array();
             $i = 0;
-            foreach( $coupons as $coupon ){
-                $formatted[$i]['region'] = $coupon['Outlet']['House']['Area']['Region']['title'];
-                $formatted[$i]['area'] = $coupon['Outlet']['House']['Area']['title'];
-                $formatted[$i]['house'] = $coupon['Outlet']['House']['title'];
-                $formatted[$i]['outlet'] = $coupon['Outlet']['title'];
-                $formatted[$i]['representative'] = $coupon['Representative']['name'];
-                if( $report_type=='full' ){
-                    $formatted[$i]['total_point'] = $coupon[0]['total'];
-                    $formatted[$i]['total_redeemed'] = $coupon[0]['f_total'] + $coupon[0]['sec_total'] + $coupon[0]['third_total'] - $coupon[0]['total'];
-                    $formatted[$i]['total_first_kpi'] = $coupon[0]['f_total'];
-                    $formatted[$i]['total_second_kpi'] = $coupon[0]['sec_total'];
-                    $formatted[$i]['total_third_kpi'] = $coupon[0]['third_total'];                    
-                }else{
-                    $formatted[$i]['total_point'] = $coupon['Coupon']['total_score'];
-                    $formatted[$i]['total_redeemed'] = $coupon['Coupon']['first_act_score'] + $coupon['Coupon']['second_act_score'] + $coupon['Coupon']['third_act_score'] - $coupon['Coupon']['total_score'];
-                    $formatted[$i]['first_kpi'] = $coupon['Coupon']['first_act_score'];
-                    $formatted[$i]['second_kpi'] = $coupon['Coupon']['second_act_score'];
-                    $formatted[$i]['third_kpi'] = $coupon['Coupon']['third_act_score'];
-                    $formatted[$i]['date_n_time'] = $coupon['Coupon']['date'];
+            if( count($coupons)>0 ){
+                foreach( $coupons as $coupon ){
+                    $formatted[$i]['region'] = $coupon['Outlet']['House']['Area']['Region']['title'];
+                    $formatted[$i]['area'] = $coupon['Outlet']['House']['Area']['title'];
+                    $formatted[$i]['house'] = $coupon['Outlet']['House']['title'];
+                    $formatted[$i]['outlet'] = $coupon['Outlet']['title'];
+                    $formatted[$i]['representative'] = $coupon['Representative']['name'];
+                    if( $report_type=='full' ){
+                        $formatted[$i]['total_point'] = $coupon[0]['total'];
+                        $formatted[$i]['total_redeemed'] = $coupon[0]['f_total'] + $coupon[0]['sec_total'] + $coupon[0]['third_total'] - $coupon[0]['total'];
+                        $formatted[$i]['total_first_kpi'] = $coupon[0]['f_total'];
+                        $formatted[$i]['total_second_kpi'] = $coupon[0]['sec_total'];
+                        $formatted[$i]['total_third_kpi'] = $coupon[0]['third_total'];                    
+                    }else{
+                        $formatted[$i]['total_point'] = $coupon['Coupon']['total_score'];
+                        $formatted[$i]['total_redeemed'] = $coupon['Coupon']['first_act_score'] + $coupon['Coupon']['second_act_score'] + $coupon['Coupon']['third_act_score'] - $coupon['Coupon']['total_score'];
+                        $formatted[$i]['first_kpi'] = $coupon['Coupon']['first_act_score'];
+                        $formatted[$i]['second_kpi'] = $coupon['Coupon']['second_act_score'];
+                        $formatted[$i]['third_kpi'] = $coupon['Coupon']['third_act_score'];
+                        $formatted[$i]['date_n_time'] = $coupon['Coupon']['date'];
+                    }
+                    $i++;
                 }
-                $i++;
+            }else{
+                $formatted[$i]['region'] = $formatted[$i]['area'] = $formatted[$i]['house'] = '';
+                $formatted[$i]['outlet'] = $formatted[$i]['representative'] = $formatted[$i]['total_point'] = '';
+                $formatted[$i]['total_redeemed'] = $formatted[$i]['total_first_kpi'] = '';
+                $formatted[$i]['total_second_kpi'] = $formatted[$i]['total_third_kpi'] = '';                
             }
             return $formatted;
         }
