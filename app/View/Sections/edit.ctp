@@ -5,9 +5,11 @@
 	<?php
 		echo $this->Form->input('id');
 		echo $this->Form->input('house_id');
-                echo $this->Form->input('representative_id');
+                echo $this->Form->input('ss_id',array('label' => 'Select SS', 'options' => $ssList));
+                echo $this->Form->input('sr_id',array('label' => 'Select SR', 'options' => $srList));
+                echo $this->Form->input('tsa_id',array('label' => 'TSA', 'options' => $tsaList));
 		echo $this->Form->input('title');
-		echo $this->Form->input('code', array('required' => false));
+		//echo $this->Form->input('code', array('required' => false));
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>
@@ -32,13 +34,27 @@
     $(document).ready(function(){
         
         $("#SectionHouseId").change(function(){
-            get_rep_list();
+            get_rep_list('ss');
+            get_rep_list('sr');
+            get_rep_list('tsa');
         });
-       function get_rep_list(){
+        
+        $("#SectionSsId").change(function(){
+            get_rep_list('sr');
+        });
+        
+       function get_rep_list( rep_type ){
+           var dTa = 'house_id='+$("#SectionHouseId").val()+'&rep_type='+rep_type;
+           if( rep_type=='sr' ){
+               dTa+='&ss_id='+$("#SectionSsId").val();
+           }
+           
            $.ajax({
                 url:'/sections/ajax_rep_list',
                 type:'post',
-                data:'house_id='+$("#SectionHouseId").val(),
+                async: false,
+                cache: false,
+                data:dTa,
                 success:function(res){
                     var options = $.parseJSON(res);
                     var representatives = '';
@@ -49,7 +65,13 @@
                         $.each(options, function(ind, val){
                             representatives += '<option value="'+ind+'">'+val+'</option>';
                         });
-                        $("#SectionRepresentativeId").html(representatives);
+                        if( rep_type=='ss' ){
+                            $("#SectionSsId").html(representatives);
+                        }else if( rep_type=='sr' ){
+                            $("#SectionSrId").html(representatives);
+                        }else{
+                            $("#SectionTsaId").html(representatives);
+                        }                        
                     }
                 }
             });

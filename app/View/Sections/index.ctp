@@ -4,16 +4,18 @@
 	<tr>
 			<th><?php echo $this->Paginator->sort('id'); ?></th>
 			<th><?php echo $this->Paginator->sort('house_id'); ?></th>
+                        <th>Sales Superviser</th>
 			<th><?php echo $this->Paginator->sort('title'); ?></th>
 			<th><?php echo $this->Paginator->sort('code'); ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	<?php foreach ($sections as $section): ?>
 	<tr>
-		<td><?php echo h($section['Section']['id']); ?>&nbsp;</td>
+		<td><?php echo h($section['Section']['id']); ?>&nbsp;</td>                
 		<td>
-			<?php echo $this->Html->link($section['House']['title'], array('controller' => 'houses', 'action' => 'view', $section['House']['id'])); ?>
+			<?php echo $this->Html->link($section['House']['title'], array('controller' => 'houses', 'action' => 'view', $section['House']['id'])); ?>&nbsp;
 		</td>
+                <td><?php echo h($section['Representative']['name']); ?>&nbsp;</td>
 		<td><?php echo h($section['Section']['title']); ?>&nbsp;</td>
 		<td><?php echo h($section['Section']['code']); ?>&nbsp;</td>
 		<td class="actions">

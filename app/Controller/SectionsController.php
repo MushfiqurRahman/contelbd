@@ -38,11 +38,13 @@ class SectionsController extends AppController {
          */
         public function ajax_rep_list(){
             $this->layout = $this->autoRender = false;
+            $rep_type = isset($_POST['rep_type']) ? $_POST['rep_type'] : null;
+            $ss_id = isset($_POST['ss_id']) ? $_POST['ss_id']: 0;
             
             if( $this->request->is('ajax') ){
                 if( isset($_POST['house_id']) ){      
                     
-                    $repList = $this->Section->Representative->repList_with_mobile( $_POST['house_id'] );
+                    $repList = $this->Section->Representative->repList_with_mobile( $_POST['house_id'], $rep_type, $ss_id );
                     
                     echo json_encode($repList);
                 }else{
@@ -106,10 +108,18 @@ class SectionsController extends AppController {
 		} else {
 			$options = array('conditions' => array('Section.' . $this->Section->primaryKey => $id));
 			$this->request->data = $this->Section->find('first', $options);
-                        $this->set('representatives',$this->Section->Representative->repList_with_mobile(
-                                $this->request->data['Section']['house_id']));
+                        
+                        $this->set('ssList',$this->Section->Representative->repList_with_mobile(
+                                $this->request->data['Section']['house_id'], 'ss'));
+                        
+                        $this->set('srList',$this->Section->Representative->repList_with_mobile(
+                                $this->request->data['Section']['house_id'], 'sr', $this->request->data['Section']['ss_id']));
+                        
+                        $this->set('tsaList',$this->Section->Representative->repList_with_mobile(
+                                $this->request->data['Section']['house_id'], 'tsa'));
+                        
 		}
-		$houses = $this->Section->House->find('list');
+		$houses = $this->Section->House->find('list');                
 		$this->set(compact('houses'));                
 	}
 

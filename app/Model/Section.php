@@ -42,7 +42,49 @@ class Section extends AppModel {
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
-		)
+		),
+                'ss_id' => array(
+                    'numeric' => array(
+				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+                    'notempty' => array(
+                        'rule' => array('notempty'),
+                        'message' => 'Section must have a Sales Superviser',
+                    )
+                ),
+                'sr_id' => array(
+                    'numeric' => array(
+				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+                    'notempty' => array(
+                        'rule' => array('notempty'),
+                        'message' => 'Section must have a Sales Representative',
+                    )
+                ),
+                'tsa_id' => array(
+                    'numeric' => array(
+				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+                    'notempty' => array(
+                        'rule' => array('notempty'),
+                        'message' => 'Section must have a TSA',
+                    )
+                ),
 	);
 
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
@@ -60,10 +102,10 @@ class Section extends AppModel {
 			'fields' => '',
 			'order' => ''
 		),
-//		'Representative' => array(
-//			'className' => 'Representative',
-//			'foreignKey' => 'representative_id'
-//		)
+		'Representative' => array(
+			'className' => 'Representative',
+			'foreignKey' => 'sr_id'
+		)
 	);
 
 /**
@@ -112,5 +154,12 @@ class Section extends AppModel {
 			'counterQuery' => ''
 		)
 	);
+        
+        public function beforeSave(){
+            if( empty($this->data[ $this->alias ]['ss_id']) || empty($this->data[ $this->alias ]['sr_id'])
+                    || empty($this->data[ $this->alias ]['tsa_id']) ){
+                return false;
+            }
+        }
 
 }

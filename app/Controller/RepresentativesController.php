@@ -31,7 +31,7 @@ class RepresentativesController extends AppController {
             if( $this->request->is('ajax') ){
                 if( isset($_POST['house_id']) ){      
                     
-                    $ssList = $this->Representative->repList_with_mobile($_POST['house_id'], true);
+                    $ssList = $this->Representative->repList_with_mobile($_POST['house_id'], 'ss');
                     
                     echo json_encode($ssList);
                 }else{
@@ -144,7 +144,7 @@ class RepresentativesController extends AppController {
 			$this->request->data = $this->Representative->find('first', $options);
                         
                         $this->set('ss_id', array($this->Representative->repList_with_mobile($this->request->data['Representative']['house_id'],
-                                true)));
+                                'ss')));
 		}
 		$houses = $this->Representative->House->find('list');
 		$this->set(compact('houses'));
