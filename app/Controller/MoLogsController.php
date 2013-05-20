@@ -192,11 +192,19 @@ class MoLogsController extends AppController{
         
         $tok = strtok( $sms, ' ,\t\n');
         $tok = trim($tok);
-        while( $tok ){
+        for(;1;){
+            if(!is_numeric($tok) && $tok==false){
+                break;
+            }            
             $params[] = $tok;
             $tok = strtok(' ,\t\n');
             $tok = trim($tok);
-        }       
+        }
+//        while( $tok ){
+//            $params[] = $tok;
+//            $tok = strtok(' ,\t\n');
+//            $tok = trim($tok);
+//        }       
         
         $params[0] = isset($params[0]) ? strtoupper($params[0]) : 'XXX';
         $ttl_msg_part = count($params);
@@ -296,7 +304,10 @@ class MoLogsController extends AppController{
         
         $tok = strtok( $sms, ' ,\t\n');
         $tok = trim($tok);
-        while( $tok ){
+        for(;1;){
+            if(!is_numeric($tok) && $tok==false){
+                break;
+            }            
             $params[] = $tok;
             $tok = strtok(' ,\t\n');
             $tok = trim($tok);
@@ -404,11 +415,19 @@ class MoLogsController extends AppController{
         
         $tok = strtok( $sms, ' ,\t\n');
         $tok = trim($tok);
-        while( $tok ){
+        for(;1;){
+            if(!is_numeric($tok) && $tok==false){
+                break;
+            }            
             $params[] = $tok;
             $tok = strtok(' ,\t\n');
             $tok = trim($tok);
         }
+//        while( $tok ){
+//            $params[] = $tok;
+//            $tok = strtok(' ,\t\n');
+//            $tok = trim($tok);
+//        }
         
         $params[0] = isset($params[0]) ? strtoupper($params[0]) : 'XXX';        
 
@@ -461,11 +480,19 @@ class MoLogsController extends AppController{
         
         $tok = strtok( $sms, ' ,\t\n');
         $tok = trim($tok);
-        while( $tok ){
+        for(;1;){
+            if(!is_numeric($tok) && $tok==false){
+                break;
+            }            
             $params[] = $tok;
             $tok = strtok(' ,\t\n');
             $tok = trim($tok);
         }
+//        while( $tok ){
+//            $params[] = $tok;
+//            $tok = strtok(' ,\t\n');
+//            $tok = trim($tok);
+//        }
         
         $params[0] = isset($params[0]) ? strtoupper($params[0]) : 'XXX';        
 
