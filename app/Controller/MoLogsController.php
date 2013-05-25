@@ -26,7 +26,6 @@ class MoLogsController extends AppController{
      * 
      */
     public function index(){
-        //echo urlencode(':');exit;
         $this->paginate = array('limit' => 100);
         $this->set('mo_logs',$this->paginate());
     }
@@ -144,24 +143,6 @@ class MoLogsController extends AppController{
         return $data;
     }
     
-    /**
-     *
-     * @param type $mobile_number
-     * @param type $sms
-     * @param type $keyword
-     * @param type $date
-     * @param type $time_int
-     * @return type 
-     */
-    protected function _save_log( $mobile_number, $sms, $keyword, $date, $time_int){
-        $moLog['MoLog']['msisdn'] = $mobile_number;
-        $moLog['MoLog']['sms'] = $sms;
-        $moLog['MoLog']['keyword'] = $keyword;
-        $moLog['MoLog']['datetime'] = $date;
-        $moLog['MoLog']['time_int'] = $time_int;        
-        $this->MoLog->save($moLog);
-        return $this->MoLog->id;
-    }
         
     /**
      * This processes add and update sales request
@@ -186,7 +167,7 @@ class MoLogsController extends AppController{
         $sms_slice = explode(' ', $sms);
         $keyword = $sms_slice[0];
         
-        $lastMoLogId = $this->_save_log($mobile_number,$sms,$keyword,$date,$time_int);
+        $lastMoLogId = $this->MoLog->save_log($mobile_number,$sms,$keyword,$date,$time_int);
         
         $params = array();
         
@@ -200,12 +181,6 @@ class MoLogsController extends AppController{
             $tok = strtok(' ,\t\n');
             $tok = trim($tok);
         }
-//        while( $tok ){
-//            $params[] = $tok;
-//            $tok = strtok(' ,\t\n');
-//            $tok = trim($tok);
-//        }       
-        
         $params[0] = isset($params[0]) ? strtoupper($params[0]) : 'XXX';
         $ttl_msg_part = count($params);
 
@@ -298,7 +273,7 @@ class MoLogsController extends AppController{
 
         $sms_slice = explode(' ', $sms);
         $keyword = $sms_slice[0];
-        $lastMoLogId = $this->_save_log($mobile_number,$sms,$keyword,$date,$time_int);
+        $lastMoLogId = $this->MoLog->save_log($mobile_number,$sms,$keyword,$date,$time_int);
         
         $params = array();
         
@@ -355,7 +330,7 @@ class MoLogsController extends AppController{
 
                 $this->MoLog->query( $update_qry );        
                 
-                $tp = $this->_get_total_coupon_point($outletId[0]['outlets']['id']);
+                $tp = $this->MoLog->get_total_coupon_point($outletId[0]['outlets']['id']);
                 
                 $msg = 'Thank you! '.$params[2].' coupon points updated for '.
                         $outletId[0]['outlets']['title'].'. Current point is '.$tp.'.';
@@ -373,7 +348,7 @@ class MoLogsController extends AppController{
 
                 $this->MoLog->query($insert_qry);
                 
-                $tp = $this->_get_total_coupon_point($outletId[0]['outlets']['id']);
+                $tp = $this->MoLog->get_total_coupon_point($outletId[0]['outlets']['id']);
                 $msg = 'Thank you! '.$params[2].' coupon points added for '.
                         $outletId[0]['outlets']['title'].'. Current point: '.$tp.'.';
                 
@@ -382,13 +357,6 @@ class MoLogsController extends AppController{
         }
     }
     
-    protected function _get_total_coupon_point( $outletId ){
-        $total_point = $this->MoLog->query('SELECT SUM(total_score) AS total_point FROM coupons '.
-                        'WHERE coupons.outlet_id='.$outletId);
-
-        $tp = isset($total_point[0][0]['total_point']) ? $total_point[0][0]['total_point'] : 0;
-        return $tp;
-    }
     
     /**
      * 
@@ -423,11 +391,6 @@ class MoLogsController extends AppController{
             $tok = strtok(' ,\t\n');
             $tok = trim($tok);
         }
-//        while( $tok ){
-//            $params[] = $tok;
-//            $tok = strtok(' ,\t\n');
-//            $tok = trim($tok);
-//        }
         
         $params[0] = isset($params[0]) ? strtoupper($params[0]) : 'XXX';        
 
@@ -444,7 +407,7 @@ class MoLogsController extends AppController{
                 $this->MoLog->send_sms_free_of_charge($mobile_number, 0, $error, 796, $keyword, $date, $time_int);
                 die();
             }else{
-                $tp = $this->_get_total_coupon_point($outletId);
+                $tp = $this->MoLog->get_total_coupon_point($outletId);
                 $msg = 'Till now your total point is:'.$tp;
                 $this->MoLog->send_sms_free_of_charge($mobile_number, $outletId, $msg, 796, $keyword, $date, $time_int);
                 die();
@@ -458,8 +421,6 @@ class MoLogsController extends AppController{
      */
     public function redeem(){
         $this->layout = $this->autoRender = false;
-        
-        
         
         $error = '';
         $date = date("Y-m-d");
@@ -488,11 +449,6 @@ class MoLogsController extends AppController{
             $tok = strtok(' ,\t\n');
             $tok = trim($tok);
         }
-//        while( $tok ){
-//            $params[] = $tok;
-//            $tok = strtok(' ,\t\n');
-//            $tok = trim($tok);
-//        }
         
         $params[0] = isset($params[0]) ? strtoupper($params[0]) : 'XXX';        
 
@@ -515,7 +471,7 @@ class MoLogsController extends AppController{
                     ' AND is_redeem=1 AND coupon_counter='.$params[3]);
                 //pr($res);
             
-            $totalQp = $this->_get_total_coupon_point($outletId[0]['outlets']['id']);    
+            $totalQp = $this->MoLog->get_total_coupon_point($outletId[0]['outlets']['id']);    
             
             if( count($res)>0 ){
                 $totalQp += (-$res[0]['coupons']['total_score']);
@@ -541,14 +497,9 @@ class MoLogsController extends AppController{
                 
                 $totalQp += $params[2];
                 
-                //$tp = $this->_get_total_coupon_point($outletId[0]['outlets']['id']);
-                
                 $msg = 'Thank you! Redeem points updated for '.
                         $outletId[0]['outlets']['title'].'. Current'.
                         ' point: '.$totalQp.'.';
-                
-
-                //$msg = "After successful update your current coupon point total is: ".$tp.". Thank you.";
                 $this->MoLog->send_sms_free_of_charge($mobile_number, $outletId[0]['outlets']['id'], $msg, 796, $keyword, $date, $time_int);
             }
             else {
@@ -565,10 +516,50 @@ class MoLogsController extends AppController{
                 $msg = 'Thank you!'.(-$params[2]).' points redeemed from '.
                         $outletId[0]['outlets']['title'].'. Current'.
                         ' point: '.$totalQp.'.';
-
-                //$msg = "Redeem successful. Redeemed ".$params[2]." point. Current total coupon point is: ".$totalQp.". Thank you.";
                 $this->MoLog->send_sms_free_of_charge($mobile_number, $outletId[0]['outlets']['id'], $msg, 796, $keyword, $date, $time_int);                        
             }
         }
-    }    
+    } 
+    
+    /**
+     * @desc Suppose server was off for a day. In that case through this method all the sms stored in a xls
+     * file can be restored into database in proper way. 
+     */
+    public function import_backup(){
+        if( $this->request->is('post') ){
+                if( !empty($this->request->data['MoLog']['backup_xls']) ){
+                    if( $this->request->data['MoLog']['backup_xls']['error']==0){
+                        $renamed_f_name = time().$this->request->data['MoLog']['backup_xls']['name'];
+                        if( move_uploaded_file($this->request->data['MoLog']['backup_xls']['tmp_name'], WWW_ROOT.$renamed_f_name) ){
+                        	
+                            
+                            App::import('Vendor','PHPExcel',array('file' => 'PHPExcel/Classes/PHPExcel.php'));
+            
+                            //here i used microsoft excel 2007
+                            $objReader = PHPExcel_IOFactory::createReader('Excel2007');
+                            //set to read only
+                            $objReader->setReadDataOnly(true);
+                            //load excel file
+                            $objPHPExcel = $objReader->load($xlName);
+                            $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+
+                            $totalRow = $objPHPExcel->getActiveSheet()->getHighestRow();
+
+                            //pr($totalRow);
+
+                            for($i=2; $i<=$totalRow; $i++){ 
+
+                            }
+                            
+                        }else{
+                            $this->Session->setFlash(__('File upload failed! Please try again.'));
+                        }
+                    }else{
+                        $this->Session->setFlash(__('Your given file is corrupted! Please try with valid file.'));
+                    }
+                }else{
+                    $this->Session->setFlash(__('You have not selected any file to upload.'));
+                }
+            }
+    }
 }

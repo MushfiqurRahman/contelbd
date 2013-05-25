@@ -65,10 +65,12 @@ $cakeDescription = __d('cake_dev', 'ContelBD Mobile based reporting system');
 
                         <?php echo $this->fetch('content'); ?>
                     <?php 
-                        echo $this->Html->link('Home',array('controller' => 'pages', 'action' => 'display'));
-                        echo ' | '.$this->Html->link('SS/SR/TSA', array('controller' => 'representatives','action' => 'index'));
+                        //echo $this->Html->link('Home',array('controller' => 'pages', 'action' => 'display')).' | ';
+                        echo $this->Html->link('SS/SR/TSA', array('controller' => 'representatives','action' => 'index'));
                         echo ' | '.$this->Html->link('Brands', array('controller' => 'brands','action' => 'index'));
                         echo ' | '.$this->Html->link('Products', array('controller' => 'products','action' => 'index'));
+                        echo ' | '.$this->Html->link('Competitor Brands', array('controller' => 'competitor_brands','action' => 'index'));
+                        echo ' | '.$this->Html->link('Competitor Products', array('controller' => 'competitor_products','action' => 'index'));
                         echo ' | '.$this->Html->link('Regions', array('controller' => 'regions','action' => 'index'));
                         echo ' | '.$this->Html->link('Areas', array('controller' => 'areas','action' => 'index'));
                         echo ' | '.$this->Html->link('Houses', array('controller' => 'houses','action' => 'index'));
@@ -76,6 +78,8 @@ $cakeDescription = __d('cake_dev', 'ContelBD Mobile based reporting system');
                         echo ' | '.$this->Html->link('Outlets', array('controller' => 'outlets','action' => 'index'));
                         echo ' | '.$this->Html->link('Export For Bulk SMS', array('controller' => 'coupons','action' => 'each_day_report'));
                         echo ' | '.$this->Html->link('Import XLS', array('controller' => 'regions','action' => 'import_data'));
+                        echo ' | '.$this->Html->link('Import Backup', array('controller' => 'mologs','action' => 'import_backup'));
+                        echo ' | '.$this->Html->link('Import Competitors Sale', array('controller' => 'outlets','action' => 'import_competitor_sales'));
                         echo ' | '.$this->Html->link('Users', array('controller' => 'users','action' => 'index'));
                     ?>
                 
