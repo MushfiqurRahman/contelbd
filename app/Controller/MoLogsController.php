@@ -51,6 +51,14 @@ class MoLogsController extends AppController{
     }
     
     /**
+     *
+     * @return type 
+     */
+    protected function _processing(){
+        return $data;
+    }
+    
+    /**
      * @desc Save and update Sale and SaleDetail
      * @param type $rep_id
      * @param type $outlet_id
@@ -527,39 +535,65 @@ class MoLogsController extends AppController{
      */
     public function import_backup(){
         if( $this->request->is('post') ){
-                if( !empty($this->request->data['MoLog']['backup_xls']) ){
-                    if( $this->request->data['MoLog']['backup_xls']['error']==0){
-                        $renamed_f_name = time().$this->request->data['MoLog']['backup_xls']['name'];
-                        if( move_uploaded_file($this->request->data['MoLog']['backup_xls']['tmp_name'], WWW_ROOT.$renamed_f_name) ){
-                        	
-                            
-                            App::import('Vendor','PHPExcel',array('file' => 'PHPExcel/Classes/PHPExcel.php'));
-            
-                            //here i used microsoft excel 2007
-                            $objReader = PHPExcel_IOFactory::createReader('Excel2007');
-                            //set to read only
-                            $objReader->setReadDataOnly(true);
-                            //load excel file
-                            $objPHPExcel = $objReader->load($xlName);
-                            $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+            if( !empty($this->request->data['MoLog']['backup_xls']) ){
+                if( $this->request->data['MoLog']['backup_xls']['error']==0){
+                    $renamed_f_name = time().$this->request->data['MoLog']['backup_xls']['name'];
+                    if( move_uploaded_file($this->request->data['MoLog']['backup_xls']['tmp_name'], WWW_ROOT.$renamed_f_name) ){
 
-                            $totalRow = $objPHPExcel->getActiveSheet()->getHighestRow();
+                        $this->_import($renamed_f_name);
 
-                            //pr($totalRow);
-
-                            for($i=2; $i<=$totalRow; $i++){ 
-
-                            }
-                            
-                        }else{
-                            $this->Session->setFlash(__('File upload failed! Please try again.'));
-                        }
                     }else{
-                        $this->Session->setFlash(__('Your given file is corrupted! Please try with valid file.'));
+                        $this->Session->setFlash(__('File upload failed! Please try again.'));
                     }
                 }else{
-                    $this->Session->setFlash(__('You have not selected any file to upload.'));
+                    $this->Session->setFlash(__('Your given file is corrupted! Please try with valid file.'));
                 }
+            }else{
+                $this->Session->setFlash(__('You have not selected any file to upload.'));
             }
+        }
+    }
+    
+    /**
+     *
+     * @param type $fName 
+     */
+    protected function _import( $fName ){
+        
+        App::import('Vendor','PHPExcel',array('file' => 'PHPExcel/Classes/PHPExcel.php'));
+
+        //here i used microsoft excel 2007
+        $objReader = PHPExcel_IOFactory::createReader('Excel2007');
+        //set to read only
+        $objReader->setReadDataOnly(true);
+        //load excel file
+        $objPHPExcel = $objReader->load($xlName);
+        $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+
+        $totalRow = $objPHPExcel->getActiveSheet()->getHighestRow();
+
+        //pr($totalRow);
+
+        for($i=2; $i<=$totalRow; $i++){ 
+            $data['MSISDN'] = $objWorksheet->getCellByColumnAndRow(0,$i)->getValue();
+            $data['MSG'] = $objWorksheet->getCellByColumnAndRow(1,$i)->getValue();
+            $data['DATETIME'] = $objWorksheet->getCellByColumnAndRow(2,$i)->getValue();
+            
+            $sms_slice = explode(' ', $data['MSG']);
+            
+            if( $sms_slice[0]=='PSTT' ){
+                $url = Configure::read('base_url').'sms_pstt.php';
+            }else if( $sms_slice[0]=='CUP' ){
+                $url = Configure::read('base_url').'sms_cup.php';
+            }else if( $sms_slice[0]=='RP' ){
+                $url = Configure::read('base_url').'sms_rp.php';
+            }
+            $ch = curl_init();
+            curl_setopt($ch, 'CURLOPT_URL',$url);
+            curl_setopt($ch,'CURLOPT_POST',1);
+            curl_setopt($ch,'CURLOPT_POSTFIELDS',$data);
+            $response = curl_exec($ch);
+        }
+        curl_close($ch);
     }
 }
