@@ -534,7 +534,8 @@ class MoLogsController extends AppController{
 
         $totalRow = $objPHPExcel->getActiveSheet()->getHighestRow();
 
-        //pr($totalRow);
+        //pr($totalRow);exit;
+        $ch = curl_init();
 
         for($i=2; $i<=$totalRow; $i++){ 
             $data['MSISDN'] = $objWorksheet->getCellByColumnAndRow(0,$i)->getValue();
@@ -549,11 +550,11 @@ class MoLogsController extends AppController{
                 $url = Configure::read('base_url').'sms_cup.php';
             }else if( $sms_slice[0]=='RP' ){
                 $url = Configure::read('base_url').'sms_rp.php';
-            }
-            $ch = curl_init();
-            curl_setopt($ch, 'CURLOPT_URL',$url);
-            curl_setopt($ch,'CURLOPT_POST',1);
-            curl_setopt($ch,'CURLOPT_POSTFIELDS',$data);
+            }            
+            curl_setopt($ch, CURLOPT_URL,$url);
+            //curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch,CURLOPT_POST,1);
+            curl_setopt($ch,CURLOPT_POSTFIELDS,$data);
             $response = curl_exec($ch);
         }
         curl_close($ch);

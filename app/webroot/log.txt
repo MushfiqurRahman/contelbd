@@ -181,3 +181,13 @@
 8801722041106 Thank you! STT Report for BM STORE have been updated.	2013-05-27 04:55 AM
 8801722041106 Sorry! You have already sent STT for A02. Please send your request again.	2013-05-27 04:55 AM
 8801722041106 Thank you! STT Report for BM STORE have been received.	2013-05-27 05:07 AM
+8801730071809 Thank you! 100 coupon points added for BM STORE. Current point: 560.	2013-05-27 09:33 AM
+8801730071809 Thank you! 300 coupon points updated for BM STORE. Current point is 760.	2013-05-27 09:34 AM
+8801730071809 Invalid value! Total point is not equal to the sum of activity points	2013-05-27 09:34 AM
+8801730071819 Invalid value! Total point is not equal to the sum of activity points	2013-05-27 09:35 AM
+8801730071819 Invalid Mobile number! Please try again with valid mobile no.	2013-05-27 09:35 AM
+8801730071819 Invalid Mobile number! Please try again with valid mobile no.	2013-05-27 09:35 AM
+8801730071809 Thank you! 300 coupon points added for BM STORE. Current point: 1060.	2013-05-27 09:35 AM
+8801730071809 Thank you!200 points redeemed from BM STORE. Current point: 860.	2013-05-27 09:37 AM
+8801730071809 Thank you! Redeem points updated for BM STORE. Current point: 960.	2013-05-27 09:37 AM
+8801816015466 Till now your total point is:960	2013-05-27 09:38 AM
